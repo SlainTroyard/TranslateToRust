@@ -1,0 +1,23 @@
+# Rust build artifacts
+/target/
+Cargo.lock
+
+# Generated files
+/translated/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Private configuration files containing API keys
+todo.md
+llm_config.json
+scripts/setup_env.sh
+llm_configs/*.json
+
+# Keep the example files in Git
+!llm_config.json.example
+!scripts/setup_env.sh.example
+!llm_configs/*.json.example 
