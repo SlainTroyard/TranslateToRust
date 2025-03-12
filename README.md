@@ -192,8 +192,8 @@ cp llm_config.json.example llm_config.json
 The following LLM providers and models are supported:
 
 #### OpenAI
-- `gpt-4`
-- `gpt-3.5-turbo`
+- `gpt-4o`
+- `o1`
 
 #### Anthropic
 - `claude-3-opus-20240229`
