@@ -273,8 +273,8 @@ fn load_llm_config() -> Result<LlmConfig> {
 fn default_api_url_for_provider(provider: &LlmProvider) -> String {
     match provider {
         LlmProvider::OpenAI => "https://api.openai.com/v1/chat/completions".to_string(),
-        LlmProvider::Anthropic => "https://api.anthropic.com/v1/complete".to_string(),
-        LlmProvider::GoogleAI => "https://ai.googleapis.com/v1/projects/your-project/locations/us-central1/publishers/google/models/your-model:predict".to_string(),
+        LlmProvider::Anthropic => "https://api.anthropic.com/v1/messages".to_string(),
+        LlmProvider::GoogleAI => "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent".to_string(),
         LlmProvider::Local => "https://api.openai.com/v1/chat/completions".to_string(),
     }
 }

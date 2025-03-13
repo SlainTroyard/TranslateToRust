@@ -44,20 +44,88 @@ TranslateToRust/
 
 在使用前，需要先配置LLM API。目前支持OpenAI、Anthropic和GoogleAI三种API提供商。
 
-1. 复制`llm_config.json.example`文件为`llm_config.json`
+1. 复制示例配置文件为自己的配置文件:
+   - 对于OpenAI: 复制`llm_config.json.example`为`llm_config.json`
+   - 对于Claude: 复制`llm_configs/claude_config.json.example`为`llm_config.json`
+   - 对于Google AI: 复制`llm_configs/google_ai_config.json.example`为`llm_config.json`
+
 2. 根据您使用的API提供商，修改配置文件中的相关参数
+
+#### OpenAI配置示例
 
 ```json
 {
-  "provider": "OpenAI",  // 可选值: "OpenAI", "Anthropic", "GoogleAI"
-  "api_key": "your-api-key",
-  "api_url": "https://api.openai.com/v1/chat/completions",  // 根据供应商可能需要修改
-  "default_model": "gpt-4",  // 模型名称，取决于供应商
+  "provider": "OpenAI",
+  "api_key": "your-api-key-here",
+  "api_url": "https://api.openai.com/v1/chat/completions",
+  "default_model": "gpt-4o",
+  
   "model_params": {
     "temperature": 0.2,
-    "max_tokens": 4000
-    // 其他参数，参见下方参数说明
-  }
+    "max_tokens": 4000,
+    "top_p": 1.0,
+    "frequency_penalty": 0.0,
+    "presence_penalty": 0.0
+  },
+  
+  "headers": {
+    "content-type": "application/json"
+  },
+  
+  "system_message": "You are a C/C++ to Rust code translator expert. Translate the code accurately while using idiomatic Rust patterns."
+}
+```
+
+#### Claude/Anthropic配置示例
+
+```json
+{
+  "provider": "Anthropic",
+  "api_key": "your-anthropic-api-key-here",
+  "api_url": "https://api.anthropic.com/v1/messages",
+  "default_model": "claude-3-opus-20240229",
+  
+  "model_params": {
+    "temperature": 0.2,
+    "max_tokens": 4000,
+    "top_p": 1.0,
+    "top_k": 5,
+    "timeout": 300,
+    "stream": true
+  },
+  
+  "headers": {
+    "anthropic-version": "2023-06-01",
+    "content-type": "application/json"
+  },
+  
+  "system_message": "You are a C/C++ to Rust code translator expert. Translate the code accurately while using idiomatic Rust patterns."
+}
+```
+
+#### Google AI配置示例
+
+```json
+{
+  "provider": "GoogleAI",
+  "api_key": "your-google-ai-api-key-here",
+  "api_url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
+  "default_model": "gemini-pro",
+  
+  "model_params": {
+    "temperature": 0.2,
+    "maxOutputTokens": 4000,
+    "top_p": 0.95,
+    "top_k": 40,
+    "timeout": 300,
+    "stream": true
+  },
+  
+  "headers": {
+    "content-type": "application/json"
+  },
+  
+  "system_message": "You are a C/C++ to Rust code translator expert. Translate the code accurately while using idiomatic Rust patterns."
 }
 ```
 

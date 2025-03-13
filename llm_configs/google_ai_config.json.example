@@ -1,0 +1,21 @@
+{
+  "provider": "GoogleAI",
+  "api_key": "your-google-ai-api-key-here",
+  "api_url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
+  "default_model": "gemini-pro",
+  
+  "model_params": {
+    "temperature": 0.2,
+    "maxOutputTokens": 4000,
+    "top_p": 0.95,
+    "top_k": 40,
+    "timeout": 300,
+    "stream": true
+  },
+  
+  "headers": {
+    "content-type": "application/json"
+  },
+  
+  "system_message": "You are a C/C++ to Rust code translator expert. Translate the code accurately while using idiomatic Rust patterns."
+} 

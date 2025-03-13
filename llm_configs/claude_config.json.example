@@ -1,0 +1,22 @@
+{
+  "provider": "Anthropic",
+  "api_key": "your-anthropic-api-key-here",
+  "api_url": "https://api.anthropic.com/v1/messages",
+  "default_model": "claude-3-opus-20240229",
+  
+  "model_params": {
+    "temperature": 0.2,
+    "max_tokens": 4000,
+    "top_p": 1.0,
+    "top_k": 5,
+    "timeout": 300,
+    "stream": true
+  },
+  
+  "headers": {
+    "anthropic-version": "2023-06-01",
+    "content-type": "application/json"
+  },
+  
+  "system_message": "You are a C/C++ to Rust code translator expert. Translate the code accurately while using idiomatic Rust patterns."
+} 
