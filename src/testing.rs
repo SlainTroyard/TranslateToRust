@@ -126,7 +126,7 @@ pub fn test_solution(
                 results.failed += 1;
                 
                 // 检查是否是超时错误
-                let is_timeout = err.to_string().contains("timed out");
+                let is_timeout = err.to_string().contains("TIMEOUT");
                 if is_timeout {
                     timeout_count += 1;
                     info!("Test case {}/{} timed out", i + 1, test_cases.len());
@@ -320,7 +320,7 @@ fn run_test(executable: &Path, input: &str) -> Result<(String, f64)> {
             // 等待线程结束（但不应该等待太久）
             let _ = wait_handle.join();
             
-            return Err(anyhow::anyhow!("Process timed out after {} seconds", TIMEOUT_SECONDS));
+            return Err(anyhow::anyhow!("Process timed out after {} seconds (TIMEOUT)", TIMEOUT_SECONDS));
         }
     };
     

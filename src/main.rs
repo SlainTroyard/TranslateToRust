@@ -223,7 +223,7 @@ fn save_test_results(results: &testing::TestResults) -> Result<()> {
             writeln!(summary, "编译错误: {}", err)?;
         }
         writeln!(summary, "\n结果保存时间: {}", chrono::Local::now().format("%Y-%m-%d %H:%M:%S"))?;
-        println!("测试结果已保存到: {}", summary_file.display());
+        println!("测试结果已保存到: {}", summary_file.display()); // 重要的标记行，用于Python脚本检测
         return Ok(());
     }
     
@@ -301,7 +301,8 @@ fn save_test_results(results: &testing::TestResults) -> Result<()> {
         writeln!(case_details, "运行时间: {:.2} ms", case.runtime)?;
     }
     
-    println!("测试结果已保存到: {}", summary_file.display());
+    println!("测试结果已保存到: {}", summary_file.display()); // 重要的标记行，用于Python脚本检测
+    info!("Test results saved to: {}", summary_file.display());
     
     Ok(())
 }
