@@ -1,12 +1,12 @@
 use anyhow::{Context, Result};
 use log::{debug, error, info, warn};
 use std::fs;
-use std::io::{BufRead, BufReader, Write};
+use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
-use std::time::Instant;
-use std::io::Read;
+use std::time::{Instant, Duration};
 use std::os::unix::process::ExitStatusExt;
+use std::thread;
 
 // Define the paths to the FuzzForLeetcode project
 const FUZZ_OUTPUTS_DIR: &str = "../FuzzForLeetcode/fuzz_outputs";
@@ -68,7 +68,7 @@ pub fn test_solution(
     // 获取文件名用于显示
     let file_name = rust_solution.file_name()
         .map(|f| f.to_string_lossy().to_string())
-        .unwrap_or_else(|| format!("weekly_contest_{}_p{}.rs", contest, problem));
+        .unwrap_or_else(|| format!("weekly_contest_{}_p{}_{}.rs", contest, problem, language.to_lowercase()));
     
     // 创建基础的TestResults对象
     let mut results = TestResults {
@@ -112,6 +112,9 @@ pub fn test_solution(
     // 更新测试结果的总数
     results.total = test_cases.len();
     
+    // 计数超时的测试用例
+    let mut timeout_count = 0;
+    
     // 运行测试
     for (i, test_case) in test_cases.iter().enumerate() {
         debug!("Running test case {}/{}", i + 1, test_cases.len());
@@ -121,6 +124,13 @@ pub fn test_solution(
             Err(err) => {
                 warn!("Test case {}/{} failed to run: {}", i + 1, test_cases.len(), err);
                 results.failed += 1;
+                
+                // 检查是否是超时错误
+                let is_timeout = err.to_string().contains("timed out");
+                if is_timeout {
+                    timeout_count += 1;
+                    info!("Test case {}/{} timed out", i + 1, test_cases.len());
+                }
                 
                 // 记录失败的测试用例
                 results.failed_cases.push(FailedTestCase {
@@ -172,6 +182,11 @@ pub fn test_solution(
     // 计算平均运行时间
     if results.passed > 0 {
         results.average_runtime /= results.passed as f64;
+    }
+    
+    // 如果有超时的测试用例，记录在日志中
+    if timeout_count > 0 {
+        warn!("{} test cases timed out", timeout_count);
     }
     
     Ok(results)
@@ -256,9 +271,58 @@ fn run_test(executable: &Path, input: &str) -> Result<(String, f64)> {
         });
     }
     
-    // 等待进程完成并获取输出
-    let output = cmd.wait_with_output()
-        .context("Failed to wait for process completion")?;
+    // 添加超时机制 - 设置最大执行时间（秒）
+    const TIMEOUT_SECONDS: u64 = 30; // 最多允许执行30秒
+    
+    // 创建一个通道用于线程间通信
+    let (tx, rx) = std::sync::mpsc::channel();
+    
+    // 保存进程ID
+    let child_pid = cmd.id();
+    
+    // 创建一个线程来等待进程完成
+    let wait_handle = thread::spawn(move || {
+        match cmd.wait_with_output() {
+            Ok(output) => {
+                // 成功完成进程，发送输出
+                let _ = tx.send(Ok(output));
+            },
+            Err(e) => {
+                // 进程等待失败，发送错误
+                let _ = tx.send(Err(e));
+            }
+        }
+    });
+    
+    // 等待进程完成，最多等待TIMEOUT_SECONDS秒
+    let output = match rx.recv_timeout(Duration::from_secs(TIMEOUT_SECONDS)) {
+        Ok(result) => {
+            // 在超时前收到结果
+            match result {
+                Ok(output) => output,
+                Err(e) => return Err(anyhow::anyhow!("Process execution failed: {}", e)),
+            }
+        },
+        Err(_) => {
+            // 超时了，尝试终止进程
+            warn!("Process timed out after {} seconds", TIMEOUT_SECONDS);
+            
+            // 尝试终止进程 - 通过系统调用
+            if child_pid != 0 {
+                warn!("Killing process with PID: {}", child_pid);
+                // 在Unix系统上使用SIGKILL信号终止进程
+                let _ = Command::new("kill")
+                    .arg("-9")
+                    .arg(child_pid.to_string())
+                    .status();
+            }
+            
+            // 等待线程结束（但不应该等待太久）
+            let _ = wait_handle.join();
+            
+            return Err(anyhow::anyhow!("Process timed out after {} seconds", TIMEOUT_SECONDS));
+        }
+    };
     
     // 计算执行时间（毫秒）
     let elapsed = start_time.elapsed();

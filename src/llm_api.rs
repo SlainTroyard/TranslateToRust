@@ -1,7 +1,17 @@
-use anyhow::{Context, Result};
-use log::{debug, error, info, warn};
-use reqwest::blocking::Client;
-use serde_json::json;
+use anyhow::{bail, Context, Error, Result};
+use log::{debug, info, warn};
+use reqwest;
+use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
+use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
+use std::collections::HashMap;
+use std::env;
+use std::fmt;
+use std::fs;
+use std::io::Write;
+use std::path::{Path, PathBuf};
+use std::process::Command;
+use std::time::{Duration, Instant};
 use crate::translation::{LlmConfig, LlmProvider};
 
 // This module contains implementations for LLM API calls
@@ -35,7 +45,7 @@ fn call_openai_api(prompt: &str, config: &LlmConfig) -> Result<String> {
         .and_then(|v| v.as_u64())
         .unwrap_or(300);
     
-    let client = Client::builder()
+    let client = reqwest::blocking::Client::builder()
         .timeout(std::time::Duration::from_secs(timeout))
         .build()?;
     
@@ -180,7 +190,7 @@ fn call_anthropic_api(prompt: &str, config: &LlmConfig) -> Result<String> {
         .and_then(|v| v.as_u64())
         .unwrap_or(300);
     
-    let client = Client::builder()
+    let client = reqwest::blocking::Client::builder()
         .timeout(std::time::Duration::from_secs(timeout))
         .build()?;
     
@@ -334,19 +344,16 @@ fn call_google_api(prompt: &str, config: &LlmConfig) -> Result<String> {
         .and_then(|v| v.as_u64())
         .unwrap_or(300);
     
-    let client = Client::builder()
+    let client = reqwest::blocking::Client::builder()
         .timeout(std::time::Duration::from_secs(timeout))
         .build()?;
     
     info!("Sending request to URL: {}", config.api_url);
     
     // Prepare headers for Google AI API
-    let mut request = client.post(&config.api_url)
-        .header("Content-Type", "application/json");
-    
     // Google API需要在URL中添加API Key
     let url_with_key = format!("{}?key={}", config.api_url, config.api_key);
-    request = client.post(&url_with_key);
+    let mut request = client.post(&url_with_key);
     
     // Add any custom headers from config
     for (key, value) in &config.headers {

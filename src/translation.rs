@@ -3,10 +3,8 @@ use log::{debug, error, info, warn};
 use std::fs::{self, File};
 use std::io::Write;
 use std::path::{Path, PathBuf};
-use std::process::Command;
 use std::env;
 use serde::{Deserialize, Serialize};
-use serde_json::json;
 use std::collections::HashMap;
 use regex;
 
@@ -116,7 +114,7 @@ pub fn translate_solution(
     let output_dir = output_dir.unwrap_or_else(|| PathBuf::from("./translated"));
     fs::create_dir_all(&output_dir)?;
     
-    let rust_file = format!("weekly_contest_{}_p{}.rs", contest, problem);
+    let rust_file = format!("weekly_contest_{}_p{}_{}.rs", contest, problem, language.to_lowercase());
     let rust_path = output_dir.join(&rust_file);
     
     let mut file = File::create(&rust_path)
@@ -410,7 +408,7 @@ fn create_placeholder_translation(
     
     // 提取main函数中的输入输出模式
     let main_regex = regex::Regex::new(r"int\s+main\s*\(\s*\)\s*\{([\s\S]*)\}").unwrap();
-    let main_body = main_regex
+    let _main_body = main_regex
         .captures(source_code)
         .map(|caps| caps.get(1).unwrap().as_str())
         .unwrap_or("");

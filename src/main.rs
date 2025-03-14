@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
-use log::{error, info, warn};
+use log::{info, warn};
 use std::path::PathBuf;
 use std::fs::{self, File};
 use std::io::Write;
@@ -248,7 +248,7 @@ fn save_test_results(results: &testing::TestResults) -> Result<()> {
     // 写入失败案例的摘要
     if !results.failed_cases.is_empty() {
         writeln!(summary, "\n失败的测试用例:")?;
-        for (i, case) in results.failed_cases.iter().enumerate() {
+        for (i, _case) in results.failed_cases.iter().enumerate() {
             writeln!(summary, "用例 {}: 详情见 {}", i + 1, details_dir.join(format!("case_failed_{}.txt", i + 1)).display())?;
         }
     }
