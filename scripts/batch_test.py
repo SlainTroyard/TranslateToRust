@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import time
+import json
 import argparse
 import threading
 import fcntl
@@ -83,7 +84,39 @@ def release_cargo_lock(lock_file):
     fcntl.flock(lock_file, fcntl.LOCK_UN)
     lock_file.close()
 
-def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
+def ensure_dir_exists(directory):
+    """确保目录存在，如果不存在则创建"""
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+def save_result_to_file(filename, result, test_status, is_timeout=False):
+    """将测试结果保存到文件"""
+    # 确保结果目录存在
+    ensure_dir_exists(TEST_RESULTS_DIR)
+    
+    # 生成输出文件名：使用原始文件名并添加时间戳
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    base_name = os.path.splitext(os.path.basename(filename))[0]
+    status_tag = "timeout" if is_timeout else ("success" if test_status else "fail")
+    output_filename = f"{base_name}_{status_tag}_{timestamp}.txt"
+    output_path = os.path.join(TEST_RESULTS_DIR, output_filename)
+    
+    # 写入结果文件
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write(f"测试时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write(f"文件名: {filename}\n")
+        f.write(f"测试状态: {'超时' if is_timeout else ('成功' if test_status else '失败')}\n")
+        f.write(f"耗时: {result['elapsed_time']:.2f}秒\n")
+        f.write(f"返回码: {result['returncode']}\n")
+        f.write("\n====== 标准输出 ======\n")
+        f.write(result['stdout'])
+        f.write("\n====== 标准错误 ======\n")
+        f.write(result['stderr'])
+    
+    log_with_flush(f"测试结果已保存到: {output_path}")
+    return output_path
+
+def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT, file_path=None):
     """运行子进程，带有超时控制"""
     import subprocess
     
@@ -175,6 +208,10 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
                 'stderr': ''.join(stderr_buffer),
                 'elapsed_time': elapsed_time
             }
+            
+            # 将正常完成的结果保存到文件（如果提供了文件路径）
+            if file_path:
+                save_result_to_file(file_path, result, process.returncode == 0)
         
         except subprocess.TimeoutExpired:
             log_with_flush(f"进程超时（超过{timeout_seconds}秒）", is_error=True)
@@ -199,6 +236,10 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
                 'elapsed_time': elapsed_time,
                 'timed_out': True
             }
+            
+            # 将超时结果保存到文件（如果提供了文件路径）
+            if file_path:
+                save_result_to_file(file_path, result, False, is_timeout=True)
         
         except Exception as e:
             log_with_flush(f"执行过程中发生错误: {e}", is_error=True)
@@ -218,6 +259,10 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
                 'elapsed_time': elapsed_time,
                 'error': str(e)
             }
+            
+            # 将错误结果保存到文件（如果提供了文件路径）
+            if file_path:
+                save_result_to_file(file_path, result, False)
         
         finally:
             # 释放cargo锁
@@ -268,7 +313,8 @@ def test_single_file(rust_file_path, timeout_seconds=DEFAULT_PROCESS_TIMEOUT, ta
     result = run_process_with_timeout(
         cmd=cmd,
         cwd=TRANSLATE_TO_RUST_PATH,
-        timeout_seconds=timeout_seconds
+        timeout_seconds=timeout_seconds,
+        file_path=rust_file_path  # 传递文件路径用于保存结果
     )
     
     # 检查是否超时
