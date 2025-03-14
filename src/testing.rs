@@ -274,7 +274,7 @@ fn run_test(executable: &Path, input: &str) -> Result<(String, f64)> {
     }
     
     // 添加超时机制 - 设置最大执行时间（秒）
-    const TIMEOUT_SECONDS: u64 = 30; // 最多允许执行30秒
+    const TIMEOUT_SECONDS: u64 = 5; // 最多允许执行5秒
     
     // 创建一个通道用于线程间通信
     let (tx, rx) = std::sync::mpsc::channel();
