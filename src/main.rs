@@ -143,6 +143,9 @@ fn report_test_results(results: &testing::TestResults) {
     println!("Total Test Cases: {}", results.total);
     println!("Passed: {}", results.passed);
     println!("Failed: {}", results.failed);
+    if results.timeout_cases > 0 {
+        println!("超时: {} (包含在失败数中)", results.timeout_cases);
+    }
     println!("Success Rate: {:.2}%", 100.0 * results.passed as f64 / results.total as f64);
     println!("平均运行时间: {:.2} ms", results.average_runtime);
     
@@ -231,6 +234,9 @@ fn save_test_results(results: &testing::TestResults) -> Result<()> {
     writeln!(summary, "总测试用例: {}", results.total)?;
     writeln!(summary, "通过: {}", results.passed)?;
     writeln!(summary, "失败: {}", results.failed)?;
+    if results.timeout_cases > 0 {
+        writeln!(summary, "超时: {} (包含在失败数中)", results.timeout_cases)?;
+    }
     writeln!(summary, "成功率: {:.2}%", 100.0 * results.passed as f64 / results.total as f64)?;
     writeln!(summary, "平均运行时间: {:.2} ms", results.average_runtime)?;
     
@@ -263,19 +269,39 @@ fn save_test_results(results: &testing::TestResults) -> Result<()> {
     writeln!(all_cases_summary, "==== 所有测试用例摘要 ====\n")?;
     writeln!(all_cases_summary, "总计: {} 个测试用例", results.total)?;
     writeln!(all_cases_summary, "通过: {} 个", results.passed)?;
-    writeln!(all_cases_summary, "失败: {} 个\n", results.failed)?;
+    writeln!(all_cases_summary, "失败: {} 个", results.failed)?;
+    if results.timeout_cases > 0 {
+        writeln!(all_cases_summary, "超时: {} 个 (包含在失败数中)", results.timeout_cases)?;
+    }
+    writeln!(all_cases_summary)?;
     
     // 分批写入所有测试用例的简要信息
     for (i, case) in results.all_cases.iter().enumerate() {
+        let status = if case.is_passed { 
+            "通过" 
+        } else if case.is_timeout { 
+            "超时" 
+        } else { 
+            "失败" 
+        };
+        
         writeln!(all_cases_summary, "用例 {}: {} - 运行时间: {:.2} ms", 
                 i + 1, 
-                if case.is_passed { "通过" } else { "失败" },
+                status,
                 case.runtime)?;
     }
     
     // 分别保存每个测试用例的详细信息
     for (i, case) in results.all_cases.iter().enumerate() {
-        let case_status = if case.is_passed { "passed" } else { "failed" };
+        // 根据测试用例状态确定文件名前缀
+        let case_status = if case.is_passed { 
+            "passed"
+        } else if case.is_timeout { 
+            "timeout" 
+        } else { 
+            "failed" 
+        };
+        
         let case_file = details_dir.join(format!("case_{}_{}.txt", case_status, i + 1));
         
         // 分块写入测试用例，避免一次性写入过多数据
@@ -299,6 +325,11 @@ fn save_test_results(results: &testing::TestResults) -> Result<()> {
         
         // 写入运行时间
         writeln!(case_details, "运行时间: {:.2} ms", case.runtime)?;
+        
+        // 如果是超时，添加超时信息
+        if case.is_timeout {
+            writeln!(case_details, "状态: 超时")?;
+        }
     }
     
     println!("测试结果已保存到: {}", summary_file.display()); // 重要的标记行，用于Python脚本检测

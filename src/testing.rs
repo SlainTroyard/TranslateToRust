@@ -30,6 +30,7 @@ pub struct TestResults {
     pub compilation_success: bool,
     pub compilation_error: Option<String>,
     pub all_cases: Vec<TestCaseResult>,  // 所有测试用例的结果
+    pub timeout_cases: usize,  // 超时的测试用例数量
 }
 
 /// 单个测试用例的结果
@@ -40,6 +41,7 @@ pub struct TestCaseResult {
     pub actual_output: String,
     pub is_passed: bool,
     pub runtime: f64,
+    pub is_timeout: bool,  // 是否超时
 }
 
 impl Default for TestResults {
@@ -54,6 +56,7 @@ impl Default for TestResults {
             compilation_success: false,
             compilation_error: None,
             all_cases: Vec::new(),
+            timeout_cases: 0,  // 初始化为0
         }
     }
 }
@@ -112,9 +115,6 @@ pub fn test_solution(
     // 更新测试结果的总数
     results.total = test_cases.len();
     
-    // 计数超时的测试用例
-    let mut timeout_count = 0;
-    
     // 运行测试
     for (i, test_case) in test_cases.iter().enumerate() {
         debug!("Running test case {}/{}", i + 1, test_cases.len());
@@ -128,7 +128,7 @@ pub fn test_solution(
                 // 检查是否是超时错误
                 let is_timeout = err.to_string().contains("TIMEOUT");
                 if is_timeout {
-                    timeout_count += 1;
+                    results.timeout_cases += 1;
                     info!("Test case {}/{} timed out", i + 1, test_cases.len());
                 }
                 
@@ -146,6 +146,7 @@ pub fn test_solution(
                     actual_output: format!("ERROR: {}", err),
                     is_passed: false,
                     runtime: 0.0,
+                    is_timeout: is_timeout,  // 设置超时标志
                 });
                 
                 continue;
@@ -164,6 +165,7 @@ pub fn test_solution(
             actual_output: actual_output.clone(),
             is_passed,
             runtime,
+            is_timeout: false,  // 正常运行，非超时
         });
         
         if is_passed {
@@ -185,8 +187,8 @@ pub fn test_solution(
     }
     
     // 如果有超时的测试用例，记录在日志中
-    if timeout_count > 0 {
-        warn!("{} test cases timed out", timeout_count);
+    if results.timeout_cases > 0 {
+        warn!("{} test cases timed out", results.timeout_cases);
     }
     
     Ok(results)
