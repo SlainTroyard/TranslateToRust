@@ -203,6 +203,57 @@ test_results/
 
 更多关于测试功能的详细说明，请参考[测试功能使用指南](docs/testing_guide.md)。
 
+## 批处理工具
+
+本项目提供多种批处理工具，用于高效处理大量文件：
+
+### 批量翻译和测试
+
+使用`batch_translate_improved.py`脚本可以批量翻译并测试C/C++代码：
+
+```bash
+# 翻译和测试所有C/C++文件
+python scripts/batch_translate_improved.py
+
+# 翻译和测试特定比赛的文件
+python scripts/batch_translate_improved.py --contest 413
+```
+
+### 仅批量翻译
+
+使用`batch_transonly.py`脚本可以批量翻译C/C++代码（不测试）：
+
+```bash
+# 翻译所有C/C++文件（不测试）
+python scripts/batch_transonly.py
+
+# 翻译特定比赛的文件
+python scripts/batch_transonly.py --contest 413
+```
+
+### 批量测试
+
+使用`batch_test.py`脚本可以批量测试已翻译的Rust文件：
+
+```bash
+# 测试所有已翻译的文件
+python scripts/batch_test.py
+
+# 测试特定文件
+python scripts/batch_test.py --file ./translated/weekly_contest_413_p1_cpp.rs
+```
+
+### 生成测试报告
+
+使用`generate_test_reports.py`脚本可以生成测试报告：
+
+```bash
+# 生成最近测试结果的报告
+python scripts/generate_test_reports.py
+```
+
+详细的批处理工具说明请参考[批处理工具文档](README_BATCH.md)和[脚本使用文档](scripts/README.md)。
+
 ## Translation Method
 
 The project supports using large language models (LLMs) to translate C/C++ code to Rust. There are two ways to configure the LLM API access:
