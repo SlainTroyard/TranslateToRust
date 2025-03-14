@@ -66,15 +66,31 @@ def extract_test_info_from_file(result_file):
         
         # 如果编译成功，提取测试结果
         if compilation_success:
-            total_match = re.search(r"Total Test Cases: (\d+)", content)
-            passed_match = re.search(r"Passed: (\d+)", content)
-            failed_match = re.search(r"Failed: (\d+)", content)
-            success_rate_match = re.search(r"Success Rate: ([\d\.]+)%", content)
+            total_match = re.search(r"总测试用例: (\d+)", content)
+            if not total_match:
+                total_match = re.search(r"Total Test Cases: (\d+)", content)
+                
+            passed_match = re.search(r"通过: (\d+)", content)
+            if not passed_match:
+                passed_match = re.search(r"Passed: (\d+)", content)
+                
+            failed_match = re.search(r"失败: (\d+)", content)
+            if not failed_match:
+                failed_match = re.search(r"Failed: (\d+)", content)
+                
+            # 提取超时测试用例数量
+            timeout_match = re.search(r"超时: (\d+)", content)
+            
+            success_rate_match = re.search(r"成功率: ([\d\.]+)%", content)
+            if not success_rate_match:
+                success_rate_match = re.search(r"Success Rate: ([\d\.]+)%", content)
+                
             runtime_match = re.search(r"平均运行时间: ([\d\.]+) ms", content)
             
             result['total_cases'] = int(total_match.group(1)) if total_match else 0
             result['passed_cases'] = int(passed_match.group(1)) if passed_match else 0
             result['failed_cases'] = int(failed_match.group(1)) if failed_match else 0
+            result['timeout_cases'] = int(timeout_match.group(1)) if timeout_match else 0
             result['success_rate'] = float(success_rate_match.group(1)) if success_rate_match else 0.0
             result['average_runtime'] = float(runtime_match.group(1)) if runtime_match else 0.0
             
@@ -86,9 +102,8 @@ def extract_test_info_from_file(result_file):
             result['compilation_error'] = compilation_error_match.group(1) if compilation_error_match else "未知编译错误"
             result['success'] = False
         
-        # 检查是否超时
-        timeout_match = re.search(r"(超时|timed out)", content)
-        result['timed_out'] = bool(timeout_match)
+        # 检查是否有超时标记
+        result['timed_out'] = result.get('timeout_cases', 0) > 0 or bool(re.search(r"(超时|timed out|TIMEOUT)", content))
         
         return result
     except Exception as e:
@@ -182,13 +197,16 @@ def generate_markdown_report(results, problem_info, output_path=None):
     total_files = len(results)
     successful_tests = sum(1 for r in results if r.get('success', False))
     compilation_successful = sum(1 for r in results if r.get('compilation_success', False))
-    timed_out_tests = sum(1 for r in results if r.get('timed_out', False))
+    
+    # 超时统计 - 使用timeout_cases字段
+    total_timeout_tests = sum(1 for r in results if r.get('timed_out', False))
+    total_timeout_cases = sum(r.get('timeout_cases', 0) for r in results)
     
     # 语言统计
     languages = Counter(r.get('language', 'Unknown') for r in results)
     
     # 按难度统计
-    difficulty_stats = defaultdict(lambda: {'total': 0, 'success': 0, 'compilation': 0})
+    difficulty_stats = defaultdict(lambda: {'total': 0, 'success': 0, 'compilation': 0, 'timeout': 0})
     for result in results:
         contest = result.get('contest')
         problem = result.get('problem')
@@ -203,6 +221,8 @@ def generate_markdown_report(results, problem_info, output_path=None):
                 difficulty_stats[difficulty]['success'] += 1
             if result.get('compilation_success', False):
                 difficulty_stats[difficulty]['compilation'] += 1
+            if result.get('timed_out', False):
+                difficulty_stats[difficulty]['timeout'] += 1
     
     # 生成报告
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -214,7 +234,10 @@ def generate_markdown_report(results, problem_info, output_path=None):
         f.write(f"- 总测试文件数: {total_files}\n")
         f.write(f"- 测试成功数: {successful_tests} ({successful_tests/total_files*100:.2f}%)\n")
         f.write(f"- 编译成功数: {compilation_successful} ({compilation_successful/total_files*100:.2f}%)\n")
-        f.write(f"- 超时测试数: {timed_out_tests} ({timed_out_tests/total_files*100:.2f}%)\n\n")
+        f.write(f"- 超时测试文件数: {total_timeout_tests} ({total_timeout_tests/total_files*100:.2f}%)\n")
+        if total_timeout_cases > 0:
+            f.write(f"- 超时测试用例数: {total_timeout_cases}\n")
+        f.write("\n")
         
         # 按语言统计
         f.write("## 按语言统计\n\n")
@@ -226,19 +249,20 @@ def generate_markdown_report(results, problem_info, output_path=None):
         
         # 按难度统计
         f.write("## 按难度统计\n\n")
-        f.write("| 难度 | 测试文件数 | 测试成功 | 编译成功 |\n")
-        f.write("|------|------------|----------|----------|\n")
+        f.write("| 难度 | 测试文件数 | 测试成功 | 编译成功 | 超时 |\n")
+        f.write("|------|------------|----------|----------|------|\n")
         for difficulty, stats in difficulty_stats.items():
             total = stats['total']
             success = stats['success']
             compilation = stats['compilation']
-            f.write(f"| {difficulty} | {total} | {success} ({success/total*100:.2f}%) | {compilation} ({compilation/total*100:.2f}%) |\n")
+            timeout = stats['timeout']
+            f.write(f"| {difficulty} | {total} | {success} ({success/total*100:.2f}%) | {compilation} ({compilation/total*100:.2f}%) | {timeout} ({timeout/total*100:.2f}%) |\n")
         f.write("\n")
         
         # 测试详情
         f.write("## 测试详情\n\n")
-        f.write("| 文件名 | 比赛 | 题目 | 难度 | 编译 | 测试用例 | 通过率 | 运行时间 |\n")
-        f.write("|--------|------|------|------|------|----------|--------|----------|\n")
+        f.write("| 文件名 | 比赛 | 题目 | 难度 | 编译 | 测试用例 | 通过率 | 运行时间 | 状态 |\n")
+        f.write("|--------|------|------|------|------|----------|--------|----------|------|\n")
         
         for result in results:
             filename = result.get('filename', 'Unknown')
@@ -262,11 +286,19 @@ def generate_markdown_report(results, problem_info, output_path=None):
             runtime = result.get('average_runtime', 0)
             
             timed_out = result.get('timed_out', False)
-            if timed_out:
-                test_cases_str = "超时"
-                compilation = "⏱️"
+            timeout_cases = result.get('timeout_cases', 0)
             
-            f.write(f"| {filename} | {contest} | {problem} | {difficulty} | {compilation} | {test_cases_str} | {success_rate:.2f}% | {runtime:.2f} ms |\n")
+            status = "成功" if result.get('success', False) else "失败"
+            if timed_out:
+                if timeout_cases > 0:
+                    status = f"超时 ({timeout_cases})"
+                else:
+                    status = "超时"
+                compilation = "⏱️"
+            elif not result.get('compilation_success', False):
+                status = "编译失败"
+            
+            f.write(f"| {filename} | {contest} | {problem} | {difficulty} | {compilation} | {test_cases_str} | {success_rate:.2f}% | {runtime:.2f} ms | {status} |\n")
         
         f.write("\n")
         
@@ -291,16 +323,16 @@ def generate_markdown_report(results, problem_info, output_path=None):
                 f.write(f"- 原语言: {language}\n")
                 
                 timed_out = result.get('timed_out', False)
+                timeout_cases = result.get('timeout_cases', 0)
                 if timed_out:
-                    f.write(f"- 状态: **测试超时**\n")
+                    if timeout_cases > 0:
+                        f.write(f"- 状态: **测试超时** ({timeout_cases} 个用例超时)\n")
+                    else:
+                        f.write(f"- 状态: **测试超时**\n")
                 else:
                     compilation_success = result.get('compilation_success', False)
                     if not compilation_success:
                         f.write(f"- 状态: **编译失败**\n")
-                    else:
-                        total_cases = result.get('total_cases', 0)
-                        passed_cases = result.get('passed_cases', 0)
-                        f.write(f"- 状态: 编译成功，但测试失败 ({passed_cases}/{total_cases} 通过)\n")
                 
                 # 包含失败的详细信息链接
                 results_file = result.get('results_file')

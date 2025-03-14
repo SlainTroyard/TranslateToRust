@@ -335,6 +335,7 @@ def test_single_file(rust_file_path, timeout_seconds=DEFAULT_PROCESS_TIMEOUT, ta
     
     compilation_success = False
     success_rate = 0
+    timeout_cases = 0
     
     # 尝试从输出中提取测试统计信息
     compilation_match = re.search(r"编译状态: (\w+)", output)
@@ -345,9 +346,20 @@ def test_single_file(rust_file_path, timeout_seconds=DEFAULT_PROCESS_TIMEOUT, ta
     if rate_match:
         success_rate = float(rate_match.group(1))
     
+    # 检查是否有超时的测试用例
+    timeout_match = re.search(r"超时: (\d+)", output)
+    if timeout_match:
+        timeout_cases = int(timeout_match.group(1))
+    
     # 精简显示测试结果
     compilation_status = "成功" if compilation_success else "失败"
-    log_with_flush(f"{task_prefix} 测试完成: {filename} (编译:{compilation_status}, 成功率:{success_rate}%)")
+    result_line = f"{task_prefix} 测试完成: {filename} (编译:{compilation_status}, 成功率:{success_rate}%"
+    
+    if timeout_cases > 0:
+        result_line += f", 超时用例:{timeout_cases}"
+    
+    result_line += ")"
+    log_with_flush(result_line)
     
     return result['returncode'] == 0
 
