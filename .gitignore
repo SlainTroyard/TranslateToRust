@@ -4,8 +4,15 @@ Cargo.lock
 
 # Generated files
 /translated/
+!translated/.gitkeep
 /test_build/
+!test_build/.gitkeep
 /translation_reports/
+!translation_reports/.gitkeep
+/test_results/
+!test_results/.gitkeep
+/test_reports/
+!test_reports/.gitkeep
 
 # Python cache files
 __pycache__/
