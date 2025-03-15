@@ -359,15 +359,15 @@ REQUIREMENTS:
 1. Translate the ENTIRE file as a complete program, including the main function and I/O handling
 2. Preserve the algorithm logic exactly
 3. Use idiomatic Rust with proper error handling
-4. Maintain the same stdin/stdout format as the original code
+4. Maintain the EXACT SAME stdin/stdout format as the original code
 5. Add helpful comments where needed
 
 IMPORTANT FOR I/O HANDLING:
-- For this specific program, the test will provide coordinates as TWO SEPARATE LINES in stdin
-- The first line contains the first coordinate (e.g., "a1")
-- The second line contains the second coordinate (e.g., "c3")
-- Do NOT expect both coordinates on the same line
-- Ensure your code reads each coordinate from a separate line
+- CAREFULLY analyze the original code to understand the exact input/output format
+- The input may consist of multiple lines or multiple values per line
+- Preserve the exact same input parsing logic as the original code
+- Ensure your output matches the exact format of the original code
+- Do not make assumptions about the input format - follow the original code
 
 Your response MUST contain ONLY the Rust code wrapped in a ```rust code block.
 "#
