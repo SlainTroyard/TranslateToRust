@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+Batch Translation and Testing Script for TranslateToRust
+
+This script combines translation and testing of C/C++ code to Rust.
+It's an all-in-one solution that first translates the code and then tests it.
+"""
+
 import os
 import subprocess
 import json
@@ -7,26 +14,262 @@ import sys
 import csv
 import signal
 import time
+import glob
+import argparse
+import random
+import threading
+import fcntl
+import psutil
 from datetime import datetime
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
-import argparse
 import timeout_handler
 
 # 定义常量
 FUZZ_FOR_LEETCODE_PATH = str(Path(os.path.dirname(os.path.abspath(__file__))).parent.parent / "FuzzForLeetcode")
 TRANSLATE_TO_RUST_PATH = str(Path(os.path.dirname(os.path.abspath(__file__))).parent)
-MAX_WORKERS = 4  # 并行处理的最大线程数
-DEFAULT_PROCESS_TIMEOUT = 10 * 60  # 默认进程超时时间（秒）：10分钟
+TRANSLATED_DIR = os.path.join(TRANSLATE_TO_RUST_PATH, "translated")
+TEST_RESULTS_DIR = os.path.join(TRANSLATE_TO_RUST_PATH, "test_results")
+TRANSLATION_REPORTS_DIR = os.path.join(TRANSLATE_TO_RUST_PATH, "translation_reports")
+MAX_WORKERS = 2  # 并行处理的最大线程数，降低以避免资源争用
+DEFAULT_PROCESS_TIMEOUT = 20 * 60  # 默认进程超时时间（秒）：20分钟
+CARGO_LOCK_FILE = os.path.join(TRANSLATE_TO_RUST_PATH, ".cargo_test_lock")
+MIN_TASK_DELAY = 2  # 任务之间的最小延迟（秒）
+MAX_TASK_DELAY = 5  # 任务之间的最大延迟（秒）
+
+# 创建一个全局信号量，用于限制并发任务数量
+cargo_semaphore = threading.Semaphore(1)  # 一次只允许一个cargo命令运行
 
 # 辅助函数：打印消息并刷新缓冲区
-def log_with_flush(message):
+def log_with_flush(message, is_error=False):
     """打印消息并立即刷新输出缓冲区，防止长时间运行时输出卡住"""
-    print(message)
-    sys.stdout.flush()
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if is_error:
+        print(f"[{timestamp}] [ERROR] {message}", file=sys.stderr)
+        sys.stderr.flush()
+    else:
+        print(f"[{timestamp}] {message}")
+        sys.stdout.flush()
 
-# 存储结果的数据结构
-results = []
+def get_system_load():
+    """获取系统负载信息"""
+    return {
+        'cpu_percent': psutil.cpu_percent(interval=0.1),
+        'memory_percent': psutil.virtual_memory().percent,
+        'available_memory_gb': round(psutil.virtual_memory().available / (1024**3), 2)
+    }
+
+def wait_if_system_overloaded():
+    """如果系统负载过高，等待一段时间"""
+    load = get_system_load()
+    if load['cpu_percent'] > 80 or load['memory_percent'] > 80:
+        delay = random.uniform(5, 15)  # 随机等待5-15秒
+        log_with_flush(f"系统负载过高 (CPU: {load['cpu_percent']}%, 内存: {load['memory_percent']}%), 等待 {delay:.1f} 秒")
+        time.sleep(delay)
+        return True
+    return False
+
+def acquire_cargo_lock():
+    """获取cargo操作的文件锁"""
+    # 确保锁文件存在
+    if not os.path.exists(CARGO_LOCK_FILE):
+        open(CARGO_LOCK_FILE, 'w').close()
+    
+    # 尝试获取锁
+    lock_file = open(CARGO_LOCK_FILE, 'r+')
+    while True:
+        try:
+            fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return lock_file
+        except IOError:
+            log_with_flush("等待其他cargo进程完成...")
+            time.sleep(1)
+
+def release_cargo_lock(lock_file):
+    """释放cargo操作的文件锁"""
+    fcntl.flock(lock_file, fcntl.LOCK_UN)
+    lock_file.close()
+
+def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT, acquire_lock=True):
+    """运行子进程，带有超时控制"""
+    if acquire_lock:
+        # 获取cargo锁
+        log_with_flush(f"等待获取cargo锁: {' '.join(cmd)}")
+        with cargo_semaphore:
+            # 检查系统负载
+            while wait_if_system_overloaded():
+                pass
+            
+            lock_file = acquire_cargo_lock()
+            log_with_flush(f"获取cargo锁成功，执行命令: {' '.join(cmd)}, 超时时间: {timeout_seconds}秒")
+    else:
+        log_with_flush(f"执行命令: {' '.join(cmd)}, 超时时间: {timeout_seconds}秒")
+    
+    try:
+        # 启动子进程
+        process = subprocess.Popen(
+            cmd,
+            cwd=cwd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            bufsize=1,  # 行缓冲
+        )
+        
+        # 记录开始时间
+        start_time = time.time()
+        
+        # 创建输出缓冲区
+        stdout_buffer = []
+        stderr_buffer = []
+        # 标记是否生成了测试结果文件
+        test_files_generated = False
+        
+        # 非阻塞读取输出
+        def read_output():
+            nonlocal test_files_generated
+            while process.poll() is None:
+                stdout_line = process.stdout.readline()
+                if stdout_line:
+                    stdout_buffer.append(stdout_line)
+                    print(stdout_line, end='')
+                    sys.stdout.flush()
+                    # 检查是否已生成测试结果文件
+                    if "测试结果已保存到:" in stdout_line or "Test results saved to:" in stdout_line:
+                        test_files_generated = True
+                
+                stderr_line = process.stderr.readline()
+                if stderr_line:
+                    stderr_buffer.append(stderr_line)
+                    # 检查是否包含warning
+                    if "warning:" in stderr_line:
+                        # 警告输出到标准输出，不作为错误处理
+                        print(stderr_line, end='')
+                        sys.stdout.flush()
+                    else:
+                        # 真正的错误输出到标准错误
+                        print(stderr_line, end='', file=sys.stderr)
+                        sys.stderr.flush()
+                
+                # 短暂休眠，避免CPU资源占用过高
+                time.sleep(0.1)
+        
+        # 在单独的线程中读取输出
+        output_thread = threading.Thread(target=read_output)
+        output_thread.daemon = True
+        output_thread.start()
+        
+        # 等待进程完成或超时
+        try:
+            process.wait(timeout=timeout_seconds)
+            # 进程完成，等待输出线程结束
+            output_thread.join(timeout=2)
+        except subprocess.TimeoutExpired:
+            log_with_flush(f"进程超时（超过{timeout_seconds}秒）", is_error=True)
+            
+            # 终止进程
+            try:
+                process.terminate()
+                process.wait(timeout=5)  # 给进程一些时间来清理
+            except:
+                # 如果进程没有及时终止，强制杀死
+                try:
+                    process.kill()
+                except:
+                    log_with_flush("警告: 无法终止进程", is_error=True)
+            
+            elapsed_time = time.time() - start_time
+            
+            # 读取剩余的输出
+            remaining_stdout, remaining_stderr = "", ""
+            try:
+                remaining_stdout, remaining_stderr = process.communicate(timeout=2)
+            except:
+                pass
+            
+            if remaining_stdout:
+                stdout_buffer.append(remaining_stdout)
+                print(remaining_stdout, end='')
+                sys.stdout.flush()
+            if remaining_stderr:
+                stderr_buffer.append(remaining_stderr)
+                print(remaining_stderr, end='', file=sys.stderr)
+                sys.stderr.flush()
+            
+            result = {
+                'returncode': -1,
+                'stdout': ''.join(stdout_buffer),
+                'stderr': ''.join(stderr_buffer) + f"\n进程超时（超过{timeout_seconds}秒）",
+                'elapsed_time': elapsed_time,
+                'timed_out': True
+            }
+            
+            if acquire_lock:
+                release_cargo_lock(lock_file)
+            
+            # 任务之间添加随机延迟，避免资源冲突
+            delay = random.uniform(MIN_TASK_DELAY, MAX_TASK_DELAY)
+            log_with_flush(f"任务完成，等待 {delay:.1f} 秒后处理下一个任务...")
+            time.sleep(delay)
+            
+            return result
+        
+        # 进程正常完成
+        # 读取剩余的输出
+        remaining_stdout, remaining_stderr = process.communicate()
+        if remaining_stdout:
+            stdout_buffer.append(remaining_stdout)
+            print(remaining_stdout, end='')
+            sys.stdout.flush()
+        if remaining_stderr:
+            stderr_buffer.append(remaining_stderr)
+            if "warning:" in remaining_stderr:
+                print(remaining_stderr, end='')
+                sys.stdout.flush()
+            else:
+                print(remaining_stderr, end='', file=sys.stderr)
+                sys.stderr.flush()
+        
+        elapsed_time = time.time() - start_time
+        log_with_flush(f"进程完成，耗时: {elapsed_time:.2f}秒")
+        
+        result = {
+            'returncode': process.returncode,
+            'stdout': ''.join(stdout_buffer),
+            'stderr': ''.join(stderr_buffer),
+            'elapsed_time': elapsed_time
+        }
+        
+        if acquire_lock:
+            release_cargo_lock(lock_file)
+        
+        # 任务之间添加随机延迟，避免资源冲突
+        delay = random.uniform(MIN_TASK_DELAY, MAX_TASK_DELAY)
+        log_with_flush(f"任务完成，等待 {delay:.1f} 秒后处理下一个任务...")
+        time.sleep(delay)
+        
+        return result
+    except Exception as e:
+        log_with_flush(f"执行过程中发生错误: {e}", is_error=True)
+        
+        # 确保进程被终止
+        try:
+            process.terminate()
+        except:
+            pass
+        
+        elapsed_time = time.time() - start_time
+        
+        if acquire_lock:
+            release_cargo_lock(lock_file)
+        
+        return {
+            'returncode': -1,
+            'stdout': ''.join(stdout_buffer),
+            'stderr': ''.join(stderr_buffer) + f"\n执行错误: {e}",
+            'elapsed_time': elapsed_time,
+            'error': str(e)
+        }
 
 def get_difficulty(contest, problem, language):
     """获取题目难度"""
@@ -37,7 +280,7 @@ def get_difficulty(contest, problem, language):
             data = json.load(f)
             return data.get("problem_info", {}).get("difficulty", "Unknown")
     except Exception as e:
-        log_with_flush(f"Error getting difficulty for {contest} p{problem} ({language}): {e}")
+        log_with_flush(f"Error getting difficulty for {contest} p{problem} ({language}): {e}", is_error=True)
         return "Unknown"
 
 def get_tags(contest, problem, language):
@@ -49,7 +292,7 @@ def get_tags(contest, problem, language):
             data = json.load(f)
             return data.get("problem_info", {}).get("tags", [])
     except Exception as e:
-        log_with_flush(f"Error getting tags for {contest} p{problem} ({language}): {e}")
+        log_with_flush(f"Error getting tags for {contest} p{problem} ({language}): {e}", is_error=True)
         return []
 
 def get_title(contest, problem, language):
@@ -61,499 +304,437 @@ def get_title(contest, problem, language):
             data = json.load(f)
             return data.get("problem_info", {}).get("title", "Unknown")
     except Exception as e:
-        log_with_flush(f"Error getting title for {contest} p{problem} ({language}): {e}")
+        log_with_flush(f"Error getting title for {contest} p{problem} ({language}): {e}", is_error=True)
         return "Unknown"
 
-def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
-    """运行子进程，带有超时控制"""
-    log_with_flush(f"执行命令: {' '.join(cmd)}, 超时时间: {timeout_seconds}秒")
+def extract_file_info_from_path(file_path):
+    """从文件路径中提取比赛、题目和语言信息"""
+    filename = os.path.basename(file_path)
     
-    # 启动子进程
-    process = subprocess.Popen(
-        cmd,
-        cwd=cwd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        bufsize=1,  # 行缓冲
+    # 对于C/C++源文件
+    pattern_source = r"weekly_contest_(\d+)_p(\d+)\.([a-z]+)"
+    match_source = re.match(pattern_source, filename)
+    if match_source:
+        contest = int(match_source.group(1))
+        problem = int(match_source.group(2))
+        ext = match_source.group(3).lower()
+        language = "CPP" if ext == "cpp" else "C"
+        return contest, problem, language
+    
+    # 对于Rust翻译文件
+    pattern_rust = r"weekly_contest_(\d+)_p(\d+)_([a-z]+)\.rs"
+    match_rust = re.match(pattern_rust, filename)
+    if match_rust:
+        contest = int(match_rust.group(1))
+        problem = int(match_rust.group(2))
+        language = match_rust.group(3).upper()
+        return contest, problem, language
+    
+    return None, None, None
+
+def find_source_files(language=None, contest=None, problem=None):
+    """查找所有需要翻译的源文件"""
+    source_files = []
+    
+    # 确定要搜索的目录
+    if language is None or language.upper() == "CPP":
+        # 添加C++文件
+        cpp_src_dir = os.path.join(FUZZ_FOR_LEETCODE_PATH, "C_CPP", "CPP", "src")
+        pattern = os.path.join(cpp_src_dir, "weekly_contest_*.cpp")
+        for file_path in glob.glob(pattern):
+            c, p, l = extract_file_info_from_path(file_path)
+            if (contest is None or c == contest) and (problem is None or p == problem):
+                source_files.append(file_path)
+    
+    if language is None or language.upper() == "C":
+        # 添加C文件
+        c_src_dir = os.path.join(FUZZ_FOR_LEETCODE_PATH, "C_CPP", "C", "src")
+        pattern = os.path.join(c_src_dir, "weekly_contest_*.c")
+        for file_path in glob.glob(pattern):
+            c, p, l = extract_file_info_from_path(file_path)
+            if (contest is None or c == contest) and (problem is None or p == problem):
+                source_files.append(file_path)
+    
+    return source_files
+
+def translate_file(contest, problem, language, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
+    """翻译单个C/C++文件到Rust"""
+    log_with_flush(f"翻译 Weekly Contest {contest} Problem {problem} ({language})...")
+    
+    # 准备翻译命令
+    cmd = [
+        "cargo", "run", "--", "translate",
+        "--contest", str(contest),
+        "--problem", str(problem),
+        "--language", language,
+        "--method", "llm"
+    ]
+    
+    # 执行翻译命令
+    result = run_process_with_timeout(
+        cmd=cmd,
+        cwd=TRANSLATE_TO_RUST_PATH,
+        timeout_seconds=timeout_seconds
     )
     
-    # 记录开始时间
-    start_time = time.time()
+    # 检查是否超时
+    timed_out = result.get('timed_out', False)
+    if timed_out:
+        log_with_flush(f"翻译超时：Weekly Contest {contest} Problem {problem} ({language})", is_error=True)
+        return None
     
-    # 启动超时监控
-    monitor_thread = None
-    try:
-        # 创建输出缓冲区
-        stdout_buffer = []
-        stderr_buffer = []
+    # 检查翻译是否成功
+    if result['returncode'] != 0:
+        log_with_flush(f"翻译失败：Weekly Contest {contest} Problem {problem} ({language})", is_error=True)
+        return None
+    
+    # 返回翻译后的Rust文件路径
+    rust_file = os.path.join(TRANSLATED_DIR, f"weekly_contest_{contest}_p{problem}_{language.lower()}.rs")
+    if os.path.exists(rust_file):
+        log_with_flush(f"翻译成功：{rust_file}")
+        return rust_file
+    else:
+        log_with_flush(f"翻译结果未找到：{rust_file}", is_error=True)
+        return None
+
+def test_rust_file(rust_file_path, contest, problem, language, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
+    """测试翻译后的Rust文件"""
+    if not rust_file_path or not os.path.exists(rust_file_path):
+        log_with_flush(f"Rust文件不存在: {rust_file_path}", is_error=True)
+        return None
+    
+    log_with_flush(f"测试 Rust 文件: {os.path.basename(rust_file_path)}")
+    
+    # 准备测试命令
+    cmd = [
+        "cargo", "run", "--", "test",
+        "--contest", str(contest),
+        "--problem", str(problem),
+        "--language", language,
+        "--rust-solution", rust_file_path
+    ]
+    
+    # 执行测试命令
+    result = run_process_with_timeout(
+        cmd=cmd,
+        cwd=TRANSLATE_TO_RUST_PATH,
+        timeout_seconds=timeout_seconds
+    )
+    
+    # 提取测试结果
+    output = result['stdout']
+    
+    # 提取编译状态
+    compilation_success = "编译状态: 成功" in output or "Compilation Status: Success" in output
+    
+    # 如果编译成功，提取测试结果
+    if compilation_success:
+        total_match = re.search(r"总测试用例: (\d+)", output)
+        if not total_match:
+            total_match = re.search(r"Total Test Cases: (\d+)", output)
+            
+        passed_match = re.search(r"通过: (\d+)", output)
+        if not passed_match:
+            passed_match = re.search(r"Passed: (\d+)", output)
+            
+        failed_match = re.search(r"失败: (\d+)", output)
+        if not failed_match:
+            failed_match = re.search(r"Failed: (\d+)", output)
+            
+        success_rate_match = re.search(r"成功率: ([\d\.]+)%", output)
+        if not success_rate_match:
+            success_rate_match = re.search(r"Success Rate: ([\d\.]+)%", output)
+            
+        runtime_match = re.search(r"平均运行时间: ([\d\.]+) ms", output)
         
-        # 非阻塞读取输出
-        def read_output():
-            while process.poll() is None:
-                stdout_line = process.stdout.readline()
-                if stdout_line:
-                    stdout_buffer.append(stdout_line)
-                    print(stdout_line, end='')
-                    sys.stdout.flush()
-                
-                stderr_line = process.stderr.readline()
-                if stderr_line:
-                    stderr_buffer.append(stderr_line)
-                    print(f"ERROR: {stderr_line}", end='')
-                    sys.stdout.flush()
-                
-                # 短暂休眠，避免CPU资源占用过高
-                time.sleep(0.1)
-        
-        # 在单独的线程中读取输出
-        import threading
-        output_thread = threading.Thread(target=read_output)
-        output_thread.daemon = True
-        output_thread.start()
-        
-        # 等待进程完成或超时
-        process.wait(timeout=timeout_seconds)
-        
-        # 进程完成，等待输出线程结束
-        output_thread.join(timeout=2)
-        
-        # 读取剩余的输出
-        remaining_stdout, remaining_stderr = process.communicate()
-        if remaining_stdout:
-            stdout_buffer.append(remaining_stdout)
-        if remaining_stderr:
-            stderr_buffer.append(remaining_stderr)
-        
-        elapsed_time = time.time() - start_time
-        log_with_flush(f"进程完成，耗时: {elapsed_time:.2f}秒")
-        
-        return {
-            'returncode': process.returncode,
-            'stdout': ''.join(stdout_buffer),
-            'stderr': ''.join(stderr_buffer),
-            'elapsed_time': elapsed_time
+        test_results = {
+            'compilation_success': True,
+            'total_cases': int(total_match.group(1)) if total_match else 0,
+            'passed_cases': int(passed_match.group(1)) if passed_match else 0,
+            'failed_cases': int(failed_match.group(1)) if failed_match else 0,
+            'success_rate': float(success_rate_match.group(1)) if success_rate_match else 0.0,
+            'average_runtime': float(runtime_match.group(1)) if runtime_match else 0.0
         }
-    
-    except subprocess.TimeoutExpired:
-        log_with_flush(f"进程超时（超过{timeout_seconds}秒）")
         
-        # 终止进程
-        try:
-            process.terminate()
-            process.wait(timeout=5)  # 给进程一些时间来清理
-        except:
-            # 如果进程没有及时终止，强制杀死
-            try:
-                process.kill()
-            except:
-                log_with_flush("警告: 无法终止进程")
+        # 提取测试结果文件路径
+        result_file_match = re.search(r"测试结果已保存到: (.+?)[\r\n]", output)
+        if not result_file_match:
+            result_file_match = re.search(r"Test results saved to: (.+?)[\r\n]", output)
+            
+        if result_file_match:
+            test_results['result_file'] = result_file_match.group(1)
         
-        elapsed_time = time.time() - start_time
+        log_with_flush(f"测试结果: 通过 {test_results['passed_cases']}/{test_results['total_cases']} 成功率 {test_results['success_rate']}%")
         
-        return {
-            'returncode': -1,
-            'stdout': ''.join(stdout_buffer),
-            'stderr': ''.join(stderr_buffer) + f"\n进程超时（超过{timeout_seconds}秒）",
-            'elapsed_time': elapsed_time,
-            'timed_out': True
-        }
-    
-    except Exception as e:
-        log_with_flush(f"执行过程中发生错误: {e}")
+        return test_results
+    else:
+        # 如果编译失败，提取编译错误
+        compilation_error_match = re.search(r"编译错误: (.+?)[\r\n]", output)
+        if not compilation_error_match:
+            compilation_error_match = re.search(r"Compilation Error: (.+?)[\r\n]", output)
+            
+        error_message = compilation_error_match.group(1) if compilation_error_match else "Unknown compilation error"
         
-        # 确保进程被终止
-        try:
-            process.terminate()
-        except:
-            pass
-        
-        elapsed_time = time.time() - start_time
+        log_with_flush(f"编译失败: {error_message}", is_error=True)
         
         return {
-            'returncode': -1,
-            'stdout': ''.join(stdout_buffer),
-            'stderr': ''.join(stderr_buffer) + f"\n执行错误: {e}",
-            'elapsed_time': elapsed_time,
-            'error': str(e)
+            'compilation_success': False,
+            'error': error_message
         }
 
 def process_solution(contest, problem, language, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
-    """处理单个解决方案"""
-    log_with_flush(f"Processing {language} solution for Weekly Contest {contest} Problem {problem}...")
-    
-    # 检查源文件是否存在
-    source_file = os.path.join(FUZZ_FOR_LEETCODE_PATH, "C_CPP", language, "src", 
-                              f"weekly_contest_{contest}_p{problem}.{'cpp' if language == 'CPP' else 'c'}")
-    if not os.path.exists(source_file):
-        log_with_flush(f"Source file not found: {source_file}")
-        return None
+    """处理单个解决方案的翻译和测试"""
+    log_with_flush(f"处理 Weekly Contest {contest} Problem {problem} ({language})...")
     
     # 获取题目信息
     difficulty = get_difficulty(contest, problem, language)
     tags = get_tags(contest, problem, language)
     title = get_title(contest, problem, language)
     
-    # 运行翻译命令
-    log_with_flush(f"开始执行翻译命令，这可能需要一些时间...")
-    cmd = [
-        "cargo", "run", "--", "run",
-        "--contest", str(contest),
-        "--problem", str(problem),
-        "--language", language
-    ]
+    # 步骤1：翻译
+    log_with_flush(f"步骤 1/2: 翻译 {language} 代码...")
+    start_time = time.time()
+    rust_file = translate_file(contest, problem, language, timeout_seconds)
+    translation_time = time.time() - start_time
     
-    try:
-        # 使用带超时控制的进程执行
-        process_result = run_process_with_timeout(
-            cmd=cmd,
-            cwd=TRANSLATE_TO_RUST_PATH,
-            timeout_seconds=timeout_seconds
-        )
-        
-        output = process_result['stdout']
-        error = process_result['stderr']
-        elapsed_time = process_result['elapsed_time']
-        
-        # 检查是否超时
-        timed_out = process_result.get('timed_out', False)
-        
-        # 检查是否成功
-        process_success = process_result['returncode'] == 0
-        
-        if timed_out:
-            log_with_flush(f"翻译命令执行超时（超过{timeout_seconds}秒）")
-            
-            # 创建一个失败的结果
-            result = {
-                "contest": contest,
-                "problem": problem,
-                "title": title,
-                "language": language,
-                "difficulty": difficulty,
-                "tags": tags,
-                "process_success": False,
-                "translation_success": False,
-                "compilation_success": False,
-                "test_cases_total": 0,
-                "test_cases_passed": 0,
-                "test_cases_failed": 0,
-                "success_rate": 0.0,
-                "average_runtime": 0.0,
-                "elapsed_time": elapsed_time,
-                "timed_out": True
-            }
-            
-            return result
-        
-        # 提取编译状态
-        compilation_success = "编译状态: 成功" in output
-        
-        # 提取测试结果
-        test_cases_total = 0
-        test_cases_passed = 0
-        test_cases_failed = 0
-        success_rate = 0
-        average_runtime = 0
-        
-        if compilation_success:
-            # 提取测试统计信息
-            total_match = re.search(r"Total Test Cases: (\d+)", output)
-            passed_match = re.search(r"Passed: (\d+)", output)
-            failed_match = re.search(r"Failed: (\d+)", output)
-            rate_match = re.search(r"Success Rate: ([\d\.]+)%", output)
-            runtime_match = re.search(r"平均运行时间: ([\d\.]+) ms", output)
-            
-            if total_match:
-                test_cases_total = int(total_match.group(1))
-            if passed_match:
-                test_cases_passed = int(passed_match.group(1))
-            if failed_match:
-                test_cases_failed = int(failed_match.group(1))
-            if rate_match:
-                success_rate = float(rate_match.group(1))
-            if runtime_match:
-                average_runtime = float(runtime_match.group(1))
-        
-        # 更新翻译成功的定义：编译成功且测试用例全部通过
-        # 如果没有测试用例(test_cases_total = 0)，则只要求编译成功
-        translation_success = compilation_success and (test_cases_failed == 0)
-        if test_cases_total == 0 and compilation_success:
-            translation_success = True  # 只有编译成功，没有测试用例时也算成功
-        
-        # 保存结果
-        result = {
+    if not rust_file:
+        log_with_flush(f"翻译失败，跳过测试", is_error=True)
+        return {
             "contest": contest,
             "problem": problem,
             "title": title,
             "language": language,
             "difficulty": difficulty,
             "tags": tags,
-            "process_success": process_success,  # 保留原始的进程成功状态
-            "translation_success": translation_success,  # 新的定义：编译成功且测试通过
-            "compilation_success": compilation_success,
-            "test_cases_total": test_cases_total,
-            "test_cases_passed": test_cases_passed,
-            "test_cases_failed": test_cases_failed,
-            "success_rate": success_rate,
-            "average_runtime": average_runtime,
-            "elapsed_time": elapsed_time
+            "translation_success": False,
+            "compilation_success": False,
+            "test_cases_total": 0,
+            "test_cases_passed": 0,
+            "test_cases_failed": 0,
+            "success_rate": 0.0,
+            "average_runtime": 0.0,
+            "translation_time": translation_time,
+            "total_time": translation_time
         }
-        
-        log_with_flush(f"处理完成: Weekly Contest {contest} Problem {problem} ({language})")
-        
-        return result
     
-    except Exception as e:
-        log_with_flush(f"Error processing {language} solution for Weekly Contest {contest} Problem {problem}: {e}")
-        return None
+    # 步骤2：测试
+    log_with_flush(f"步骤 2/2: 测试翻译后的Rust代码...")
+    start_time = time.time()
+    test_results = test_rust_file(rust_file, contest, problem, language, timeout_seconds)
+    testing_time = time.time() - start_time
+    
+    if not test_results:
+        log_with_flush(f"测试失败", is_error=True)
+        return {
+            "contest": contest,
+            "problem": problem,
+            "title": title,
+            "language": language,
+            "difficulty": difficulty,
+            "tags": tags,
+            "translation_success": True,
+            "compilation_success": False,
+            "test_cases_total": 0,
+            "test_cases_passed": 0,
+            "test_cases_failed": 0,
+            "success_rate": 0.0,
+            "average_runtime": 0.0,
+            "translation_time": translation_time,
+            "testing_time": testing_time,
+            "total_time": translation_time + testing_time
+        }
+    
+    # 汇总结果
+    compilation_success = test_results.get('compilation_success', False)
+    
+    result = {
+        "contest": contest,
+        "problem": problem,
+        "title": title,
+        "language": language,
+        "difficulty": difficulty,
+        "tags": tags,
+        "translation_success": True,
+        "compilation_success": compilation_success,
+        "rust_file": rust_file,
+        "translation_time": translation_time,
+        "testing_time": testing_time,
+        "total_time": translation_time + testing_time
+    }
+    
+    # 如果编译成功，添加测试结果
+    if compilation_success:
+        result.update({
+            "test_cases_total": test_results.get('total_cases', 0),
+            "test_cases_passed": test_results.get('passed_cases', 0),
+            "test_cases_failed": test_results.get('failed_cases', 0),
+            "success_rate": test_results.get('success_rate', 0.0),
+            "average_runtime": test_results.get('average_runtime', 0.0),
+            "result_file": test_results.get('result_file', None)
+        })
+    else:
+        result.update({
+            "test_cases_total": 0,
+            "test_cases_passed": 0,
+            "test_cases_failed": 0,
+            "success_rate": 0.0,
+            "average_runtime": 0.0,
+            "error": test_results.get('error', "Unknown error")
+        })
+    
+    log_with_flush(f"处理完成: Weekly Contest {contest} Problem {problem} ({language})")
+    return result
 
-def find_all_solutions():
-    """查找所有需要翻译的解决方案"""
-    solutions = []
+def generate_report(results, output_dir=None):
+    """生成测试报告"""
+    if not results:
+        log_with_flush("没有结果可以生成报告", is_error=True)
+        return
     
-    # 查找C++解决方案
-    cpp_path = os.path.join(FUZZ_FOR_LEETCODE_PATH, "C_CPP", "CPP", "src")
-    for file in os.listdir(cpp_path):
-        if file.endswith(".cpp") and file.startswith("weekly_contest_"):
-            match = re.match(r"weekly_contest_(\d+)_p(\d+)\.cpp", file)
-            if match:
-                contest = int(match.group(1))
-                problem = int(match.group(2))
-                solutions.append((contest, problem, "CPP"))
+    if output_dir is None:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_dir = os.path.join(TRANSLATION_REPORTS_DIR, f"report_{timestamp}")
     
-    # 查找C解决方案
-    c_path = os.path.join(FUZZ_FOR_LEETCODE_PATH, "C_CPP", "C", "src")
-    for file in os.listdir(c_path):
-        if file.endswith(".c") and file.startswith("weekly_contest_"):
-            match = re.match(r"weekly_contest_(\d+)_p(\d+)\.c", file)
-            if match:
-                contest = int(match.group(1))
-                problem = int(match.group(2))
-                solutions.append((contest, problem, "C"))
-    
-    return solutions
-
-def generate_report(results, output_dir):
-    """生成统计报告"""
     os.makedirs(output_dir, exist_ok=True)
     
-    # 按多个维度统计结果
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    report_path = os.path.join(output_dir, f"translation_report_{timestamp}")
+    # 生成CSV报告
+    csv_file = os.path.join(output_dir, "results.csv")
+    log_with_flush(f"生成CSV报告: {csv_file}")
     
-    # 保存原始数据
-    csv_path = f"{report_path}.csv"
-    with open(csv_path, 'w', newline='') as f:
+    with open(csv_file, 'w', newline='') as f:
         fieldnames = [
-            "contest", "problem", "title", "language", "difficulty", "tags",
-            "process_success", "translation_success", "compilation_success", 
+            "contest", "problem", "title", "language", "difficulty",
+            "translation_success", "compilation_success",
             "test_cases_total", "test_cases_passed", "test_cases_failed",
-            "success_rate", "average_runtime", "elapsed_time"
+            "success_rate", "average_runtime", "translation_time", "testing_time", "total_time"
         ]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
+        
         for result in results:
-            # 处理tags列表，将其转换为字符串
-            result_copy = result.copy()
-            result_copy["tags"] = ", ".join(result_copy["tags"])
-            writer.writerow(result_copy)
+            # 准备行数据
+            row = {field: result.get(field, "") for field in fieldnames}
+            writer.writerow(row)
     
-    # 生成统计报告
-    with open(f"{report_path}.md", 'w') as f:
-        f.write("# C/C++ to Rust Translation Report\n\n")
-        f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-        f.write("**注意:** 在本报告中，「翻译成功」定义为编译成功且通过所有测试用例\n\n")
+    # 生成Markdown报告
+    md_file = os.path.join(output_dir, "results.md")
+    log_with_flush(f"生成Markdown报告: {md_file}")
+    
+    with open(md_file, 'w') as f:
+        f.write("# 翻译与测试报告\n\n")
+        f.write(f"生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
         
         # 总体统计
-        total_count = len(results)
-        c_count = sum(1 for r in results if r["language"] == "C")
-        cpp_count = sum(1 for r in results if r["language"] == "CPP")
-        
-        translation_success_count = sum(1 for r in results if r["translation_success"])
-        compilation_success_count = sum(1 for r in results if r["compilation_success"])
+        total_solutions = len(results)
+        translation_success = sum(1 for r in results if r.get("translation_success", False))
+        compilation_success = sum(1 for r in results if r.get("compilation_success", False))
+        test_success = sum(1 for r in results if r.get("test_cases_passed", 0) == r.get("test_cases_total", 0) and r.get("test_cases_total", 0) > 0)
         
         f.write("## 总体统计\n\n")
-        f.write(f"- 总解决方案数量: {total_count}\n")
-        f.write(f"- C语言解决方案: {c_count}\n")
-        f.write(f"- C++解决方案: {cpp_count}\n")
-        f.write(f"- 翻译成功率: {translation_success_count/total_count*100:.2f}% ({translation_success_count}/{total_count})\n")
-        f.write(f"- 编译成功率: {compilation_success_count/total_count*100:.2f}% ({compilation_success_count}/{total_count})\n\n")
+        f.write(f"- 总解决方案数: {total_solutions}\n")
+        f.write(f"- 翻译成功数: {translation_success} ({translation_success/total_solutions*100:.2f}%)\n")
+        f.write(f"- 编译成功数: {compilation_success} ({compilation_success/total_solutions*100:.2f}%)\n")
+        f.write(f"- 测试全部通过数: {test_success} ({test_success/total_solutions*100:.2f}%)\n\n")
         
         # 按难度统计
-        f.write("## 按难度统计\n\n")
-        difficulties = ["Easy", "Medium", "Hard", "Unknown"]
-        f.write("| 难度 | 总数 | 翻译成功 | 编译成功 | 测试用例通过率 | 平均运行时间(ms) |\n")
-        f.write("|------|------|----------|----------|----------------|------------------|\n")
-        
-        for difficulty in difficulties:
-            difficulty_results = [r for r in results if r["difficulty"] == difficulty]
-            if not difficulty_results:
-                continue
-                
-            count = len(difficulty_results)
-            translation_success = sum(1 for r in difficulty_results if r["translation_success"])
-            compilation_success = sum(1 for r in difficulty_results if r["compilation_success"])
-            
-            # 只考虑编译成功的案例计算平均通过率和运行时间
-            compiled_results = [r for r in difficulty_results if r["compilation_success"]]
-            if compiled_results:
-                avg_success_rate = sum(r["success_rate"] for r in compiled_results) / len(compiled_results)
-                avg_runtime = sum(r["average_runtime"] for r in compiled_results) / len(compiled_results)
-            else:
-                avg_success_rate = 0
-                avg_runtime = 0
-                
-            f.write(f"| {difficulty} | {count} | {translation_success} ({translation_success/count*100:.2f}%) | "
-                   f"{compilation_success} ({compilation_success/count*100:.2f}%) | {avg_success_rate:.2f}% | {avg_runtime:.2f} |\n")
-        
-        f.write("\n")
-        
-        # 按语言统计
-        f.write("## 按语言统计\n\n")
-        f.write("| 语言 | 总数 | 翻译成功 | 编译成功 | 测试用例通过率 | 平均运行时间(ms) |\n")
-        f.write("|------|------|----------|----------|----------------|------------------|\n")
-        
-        for language in ["C", "CPP"]:
-            language_results = [r for r in results if r["language"] == language]
-            if not language_results:
-                continue
-                
-            count = len(language_results)
-            translation_success = sum(1 for r in language_results if r["translation_success"])
-            compilation_success = sum(1 for r in language_results if r["compilation_success"])
-            
-            # 只考虑编译成功的案例计算平均通过率和运行时间
-            compiled_results = [r for r in language_results if r["compilation_success"]]
-            if compiled_results:
-                avg_success_rate = sum(r["success_rate"] for r in compiled_results) / len(compiled_results)
-                avg_runtime = sum(r["average_runtime"] for r in compiled_results) / len(compiled_results)
-            else:
-                avg_success_rate = 0
-                avg_runtime = 0
-                
-            f.write(f"| {language} | {count} | {translation_success} ({translation_success/count*100:.2f}%) | "
-                   f"{compilation_success} ({compilation_success/count*100:.2f}%) | {avg_success_rate:.2f}% | {avg_runtime:.2f} |\n")
-        
-        f.write("\n")
-        
-        # 按标签统计
-        f.write("## 按标签统计\n\n")
-        
-        # 收集所有标签
-        all_tags = set()
+        difficulty_stats = {}
         for result in results:
-            all_tags.update(result["tags"])
-        
-        f.write("| 标签 | 总数 | 翻译成功 | 编译成功 | 测试用例通过率 | 平均运行时间(ms) |\n")
-        f.write("|------|------|----------|----------|----------------|------------------|\n")
-        
-        for tag in sorted(all_tags):
-            # 包含该标签的结果
-            tag_results = [r for r in results if tag in r["tags"]]
-            if not tag_results:
-                continue
-                
-            count = len(tag_results)
-            translation_success = sum(1 for r in tag_results if r["translation_success"])
-            compilation_success = sum(1 for r in tag_results if r["compilation_success"])
+            difficulty = result.get("difficulty", "Unknown")
+            if difficulty not in difficulty_stats:
+                difficulty_stats[difficulty] = {
+                    "total": 0,
+                    "translation_success": 0,
+                    "compilation_success": 0,
+                    "test_success": 0
+                }
             
-            # 只考虑编译成功的案例计算平均通过率和运行时间
-            compiled_results = [r for r in tag_results if r["compilation_success"]]
-            if compiled_results:
-                avg_success_rate = sum(r["success_rate"] for r in compiled_results) / len(compiled_results)
-                avg_runtime = sum(r["average_runtime"] for r in compiled_results) / len(compiled_results)
-            else:
-                avg_success_rate = 0
-                avg_runtime = 0
-                
-            f.write(f"| {tag} | {count} | {translation_success} ({translation_success/count*100:.2f}%) | "
-                   f"{compilation_success} ({compilation_success/count*100:.2f}%) | {avg_success_rate:.2f}% | {avg_runtime:.2f} |\n")
+            difficulty_stats[difficulty]["total"] += 1
+            if result.get("translation_success", False):
+                difficulty_stats[difficulty]["translation_success"] += 1
+            if result.get("compilation_success", False):
+                difficulty_stats[difficulty]["compilation_success"] += 1
+            if result.get("test_cases_passed", 0) == result.get("test_cases_total", 0) and result.get("test_cases_total", 0) > 0:
+                difficulty_stats[difficulty]["test_success"] += 1
         
-        f.write("\n")
+        f.write("## 按难度统计\n\n")
+        f.write("| 难度 | 总数 | 翻译成功率 | 编译成功率 | 测试通过率 |\n")
+        f.write("|------|------|------------|------------|------------|\n")
         
-        # 按比赛统计
-        f.write("## 按比赛统计\n\n")
+        for difficulty, stats in difficulty_stats.items():
+            f.write(f"| {difficulty} | {stats['total']} | {stats['translation_success']/stats['total']*100:.2f}% | {stats['compilation_success']/stats['total']*100:.2f}% | {stats['test_success']/stats['total']*100:.2f}% |\n")
         
-        # 收集所有比赛
-        all_contests = sorted(set(r["contest"] for r in results))
+        f.write("\n## 详细结果\n\n")
+        f.write("| 比赛 | 题目 | 语言 | 难度 | 翻译 | 编译 | 测试用例 | 通过率 | 平均运行时间 |\n")
+        f.write("|------|------|------|------|------|------|----------|--------|---------------|\n")
         
-        f.write("| 比赛 | 总数 | 翻译成功 | 编译成功 | 测试用例通过率 | 平均运行时间(ms) |\n")
-        f.write("|------|------|----------|----------|----------------|------------------|\n")
-        
-        for contest in all_contests:
-            # 该比赛的结果
-            contest_results = [r for r in results if r["contest"] == contest]
-            if not contest_results:
-                continue
-                
-            count = len(contest_results)
-            translation_success = sum(1 for r in contest_results if r["translation_success"])
-            compilation_success = sum(1 for r in contest_results if r["compilation_success"])
+        for result in results:
+            contest = result.get("contest", "")
+            problem = result.get("problem", "")
+            title = result.get("title", "Unknown")
+            language = result.get("language", "")
+            difficulty = result.get("difficulty", "Unknown")
+            translation = "✅" if result.get("translation_success", False) else "❌"
+            compilation = "✅" if result.get("compilation_success", False) else "❌"
+            test_cases = f"{result.get('test_cases_passed', 0)}/{result.get('test_cases_total', 0)}"
+            success_rate = f"{result.get('success_rate', 0.0):.2f}%"
+            runtime = f"{result.get('average_runtime', 0.0):.2f} ms"
             
-            # 只考虑编译成功的案例计算平均通过率和运行时间
-            compiled_results = [r for r in contest_results if r["compilation_success"]]
-            if compiled_results:
-                avg_success_rate = sum(r["success_rate"] for r in compiled_results) / len(compiled_results)
-                avg_runtime = sum(r["average_runtime"] for r in compiled_results) / len(compiled_results)
-            else:
-                avg_success_rate = 0
-                avg_runtime = 0
-                
-            f.write(f"| Weekly Contest {contest} | {count} | {translation_success} ({translation_success/count*100:.2f}%) | "
-                   f"{compilation_success} ({compilation_success/count*100:.2f}%) | {avg_success_rate:.2f}% | {avg_runtime:.2f} |\n")
-        
-        print(f"Report generated: {report_path}.md")
-        print(f"Raw data saved to: {csv_path}")
-        
-        return f"{report_path}.md"
+            f.write(f"| {contest} | {problem} | {language} | {difficulty} | {translation} | {compilation} | {test_cases} | {success_rate} | {runtime} |\n")
+    
+    log_with_flush(f"报告生成完成，保存在: {output_dir}")
+    return output_dir
 
 def main():
-    parser = argparse.ArgumentParser(description="批量翻译FuzzForLeetcode中的C/C++代码到Rust")
-    parser.add_argument("--max-workers", type=int, default=MAX_WORKERS, help=f"最大并行处理线程数，默认为{MAX_WORKERS}")
-    parser.add_argument("--output", type=str, default="./translation_reports", help="报告输出目录")
-    parser.add_argument("--contest", type=int, help="指定比赛编号")
-    parser.add_argument("--problem", type=int, help="指定题目编号")
-    parser.add_argument("--language", type=str, choices=["C", "CPP"], help="指定语言")
-    
+    """主函数"""
+    parser = argparse.ArgumentParser(description="Batch translate and test C/C++ to Rust")
+    parser.add_argument("--contest", type=int, help="Contest number to process")
+    parser.add_argument("--problem", type=int, help="Problem number to process")
+    parser.add_argument("--language", type=str, choices=["C", "CPP"], help="Language to process")
+    parser.add_argument("--output", type=str, help="Output directory for reports")
+    parser.add_argument("--timeout", type=int, default=DEFAULT_PROCESS_TIMEOUT, help="Timeout for each process in seconds")
+    parser.add_argument("--max-workers", type=int, default=MAX_WORKERS, help="Maximum number of parallel workers")
     args = parser.parse_args()
     
-    log_with_flush("开始批量翻译FuzzForLeetcode中的C/C++代码到Rust...")
+    # 设置全局变量
+    global MAX_WORKERS
+    MAX_WORKERS = args.max_workers
     
-    # 查找所有解决方案
-    if args.contest and args.problem and args.language:
-        solutions = [(args.contest, args.problem, args.language)]
-    else:
-        solutions = find_all_solutions()
+    # 创建目录
+    os.makedirs(TRANSLATED_DIR, exist_ok=True)
+    os.makedirs(TEST_RESULTS_DIR, exist_ok=True)
+    os.makedirs(TRANSLATION_REPORTS_DIR, exist_ok=True)
     
-    log_with_flush(f"找到{len(solutions)}个解决方案需要翻译")
+    log_with_flush(f"开始批量翻译和测试，最大工作线程数: {MAX_WORKERS}")
     
-    # 使用线程池并行处理
+    # 找到所有需要处理的源文件
+    source_files = find_source_files(args.language, args.contest, args.problem)
+    
+    if not source_files:
+        log_with_flush("没有找到源文件", is_error=True)
+        return
+    
+    log_with_flush(f"找到 {len(source_files)} 个源文件")
+    
     results = []
-    with ThreadPoolExecutor(max_workers=args.max_workers) as executor:
-        future_to_solution = {
-            executor.submit(process_solution, contest, problem, language): (contest, problem, language)
-            for contest, problem, language in solutions
-        }
-        
-        for future in future_to_solution:
-            contest, problem, language = future_to_solution[future]
-            try:
-                result = future.result()
-                if result:
-                    results.append(result)
-                    log_with_flush(f"完成 {language} Weekly Contest {contest} Problem {problem}")
-                    sys.stdout.flush()  # 强制刷新输出缓冲区
-            except Exception as e:
-                print(f"处理 {language} Weekly Contest {contest} Problem {problem} 失败: {e}")
-                print(f"处理失败")
+    
+    # 处理所有源文件
+    for file_path in source_files:
+        contest, problem, language = extract_file_info_from_path(file_path)
+        result = process_solution(contest, problem, language, args.timeout)
+        if result:
+            results.append(result)
     
     # 生成报告
     if results:
-        report_path = generate_report(results, args.output)
-        print(f"翻译完成。报告已生成: {report_path}")
+        output_dir = generate_report(results, args.output)
+        log_with_flush(f"批量翻译和测试完成，报告保存在: {output_dir}")
     else:
-        print("没有成功翻译的结果")
-    
+        log_with_flush("批量翻译和测试完成，但没有结果")
+
 if __name__ == "__main__":
-    main() 
+    timeout_handler.setup_signal_handlers()
+    try:
+        main()
+    except KeyboardInterrupt:
+        log_with_flush("用户中断，正在退出...", is_error=True)
+        sys.exit(1) 
