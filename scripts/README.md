@@ -47,7 +47,7 @@ python scripts/batch_transonly.py --max-workers 2
 python scripts/batch_transonly.py --contest 413 --problem 1 --language CPP
 
 # 指定超时时间
-python scripts/batch_transonly.py --timeout 300  # 设置超时为300秒
+python scripts/batch_transonly.py --timeout 600  # 设置超时为600秒
 
 # 指定输出目录
 python scripts/batch_transonly.py --output-dir ./custom_translated
@@ -56,7 +56,7 @@ python scripts/batch_transonly.py --output-dir ./custom_translated
 ### 参数说明
 
 - `--max-workers N`: 最大并行工作线程数（默认：4）
-- `--timeout N`: 每个翻译任务的超时时间，单位秒（默认：600）
+- `--timeout N`: 每个翻译任务的超时时间，单位秒（默认： 2400）
 - `--output-dir PATH`: 保存翻译后Rust文件的目录（默认：./translated）
 - `--method METHOD`: 使用的翻译方法（默认：llm）
 - `--file FILE`: 翻译特定C/C++文件，而不是搜索文件
@@ -75,7 +75,7 @@ python scripts/batch_transonly.py --output-dir ./custom_translated
 python scripts/batch_test.py
 
 # 指定超时时间
-python scripts/batch_test.py --timeout 600  # 设置超时为600秒
+python scripts/batch_test.py --timeout  2400  # 设置超时为 2400秒
 
 # 测试特定文件
 python scripts/batch_test.py --file ./translated/weekly_contest_413_p1_cpp.rs
@@ -118,10 +118,10 @@ python scripts/generate_test_reports.py --format json
 
 ```bash
 # 监控特定进程，如果超过指定时间（秒）则终止
-python scripts/timeout_handler.py --pid 12345 --timeout 300
+python scripts/timeout_handler.py --pid 12345 --timeout 2400
 
 # 启用详细日志
-python scripts/timeout_handler.py --pid 12345 --timeout 300 --verbose
+python scripts/timeout_handler.py --pid 12345 --timeout  2400 --verbose
 ```
 
 也可以在自己的 Python 脚本中导入：
@@ -139,7 +139,7 @@ timeout_handler.monitor_process(pid, timeout_seconds)
 
 - 按回车键可能会刷新输出
 - 使用超时处理脚本监控进程
-- 设置较小的超时时间，比如 `--timeout 300`
+- 设置较小的超时时间，比如 `--timeout 2400`
 
 ### 2. 批量测试失败怎么办？
 
