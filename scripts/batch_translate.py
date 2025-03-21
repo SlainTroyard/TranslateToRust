@@ -49,7 +49,7 @@ def log_with_flush(message, is_error=False):
         sys.stderr.flush()
     else:
         print(f"[{timestamp}] {message}")
-        sys.stdout.flush()
+    sys.stdout.flush()
 
 def get_system_load():
     """获取系统负载信息"""
@@ -103,22 +103,22 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT, 
             lock_file = acquire_cargo_lock()
             log_with_flush(f"获取cargo锁成功，执行命令: {' '.join(cmd)}, 超时时间: {timeout_seconds}秒")
     else:
-        log_with_flush(f"执行命令: {' '.join(cmd)}, 超时时间: {timeout_seconds}秒")
+    log_with_flush(f"执行命令: {' '.join(cmd)}, 超时时间: {timeout_seconds}秒")
     
     try:
-        # 启动子进程
-        process = subprocess.Popen(
-            cmd,
-            cwd=cwd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            bufsize=1,  # 行缓冲
-        )
-        
-        # 记录开始时间
-        start_time = time.time()
-        
+    # 启动子进程
+    process = subprocess.Popen(
+        cmd,
+        cwd=cwd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        bufsize=1,  # 行缓冲
+    )
+    
+    # 记录开始时间
+    start_time = time.time()
+    
         # 创建输出缓冲区
         stdout_buffer = []
         stderr_buffer = []
@@ -145,7 +145,7 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT, 
                     if "warning:" in stderr_line:
                         # 警告输出到标准输出，不作为错误处理
                         print(stderr_line, end='')
-                        sys.stdout.flush()
+                    sys.stdout.flush()
                     else:
                         # 真正的错误输出到标准错误
                         print(stderr_line, end='', file=sys.stderr)
@@ -161,9 +161,9 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT, 
         
         # 等待进程完成或超时
         try:
-            process.wait(timeout=timeout_seconds)
-            # 进程完成，等待输出线程结束
-            output_thread.join(timeout=2)
+        process.wait(timeout=timeout_seconds)
+        # 进程完成，等待输出线程结束
+        output_thread.join(timeout=2)
         except subprocess.TimeoutExpired:
             log_with_flush(f"进程超时（超过{timeout_seconds}秒）", is_error=True)
             
@@ -239,7 +239,7 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT, 
             'stderr': ''.join(stderr_buffer),
             'elapsed_time': elapsed_time
         }
-        
+    
         if acquire_lock:
             release_cargo_lock(lock_file)
         
@@ -416,11 +416,11 @@ def test_rust_file(rust_file_path, contest, problem, language, timeout_seconds=D
     
     # 执行测试命令
     result = run_process_with_timeout(
-        cmd=cmd,
-        cwd=TRANSLATE_TO_RUST_PATH,
-        timeout_seconds=timeout_seconds
-    )
-    
+            cmd=cmd,
+            cwd=TRANSLATE_TO_RUST_PATH,
+            timeout_seconds=timeout_seconds
+        )
+        
     # 提取测试结果
     output = result['stdout']
     
@@ -500,19 +500,19 @@ def process_solution(contest, problem, language, timeout_seconds=DEFAULT_PROCESS
     if not rust_file:
         log_with_flush(f"翻译失败，跳过测试", is_error=True)
         return {
-            "contest": contest,
-            "problem": problem,
-            "title": title,
-            "language": language,
-            "difficulty": difficulty,
-            "tags": tags,
-            "translation_success": False,
-            "compilation_success": False,
-            "test_cases_total": 0,
-            "test_cases_passed": 0,
-            "test_cases_failed": 0,
-            "success_rate": 0.0,
-            "average_runtime": 0.0,
+                "contest": contest,
+                "problem": problem,
+                "title": title,
+                "language": language,
+                "difficulty": difficulty,
+                "tags": tags,
+                "translation_success": False,
+                "compilation_success": False,
+                "test_cases_total": 0,
+                "test_cases_passed": 0,
+                "test_cases_failed": 0,
+                "success_rate": 0.0,
+                "average_runtime": 0.0,
             "translation_time": translation_time,
             "total_time": translation_time
         }
@@ -721,8 +721,8 @@ def main():
     for file_path in source_files:
         contest, problem, language = extract_file_info_from_path(file_path)
         result = process_solution(contest, problem, language, args.timeout)
-        if result:
-            results.append(result)
+                if result:
+                    results.append(result)
     
     # 生成报告
     if results:
@@ -730,11 +730,11 @@ def main():
         log_with_flush(f"批量翻译和测试完成，报告保存在: {output_dir}")
     else:
         log_with_flush("批量翻译和测试完成，但没有结果")
-
+    
 if __name__ == "__main__":
     timeout_handler.setup_signal_handlers()
     try:
-        main()
+    main() 
     except KeyboardInterrupt:
         log_with_flush("用户中断，正在退出...", is_error=True)
         sys.exit(1) 
