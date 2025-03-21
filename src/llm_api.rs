@@ -111,8 +111,14 @@ fn call_openai_api(prompt: &str, config: &LlmConfig) -> Result<String> {
         }
     }
     
-    // 确保启用流式模式
-    payload["stream"] = json!(true);
+    // 检查是否有流式处理设置，尊重配置文件中的设置
+    let use_stream = config.model_params.extra_params.get("stream")
+        .and_then(|v| v.as_bool())
+        .unwrap_or(true);  // 默认使用流式处理
+    
+    if use_stream {
+        payload["stream"] = json!(true);
+    }
     
     debug!("OpenAI request payload: {}", payload);
     
@@ -138,35 +144,53 @@ fn call_openai_api(prompt: &str, config: &LlmConfig) -> Result<String> {
     // 记录原始响应文本
     debug!("Raw response text (truncated): {}", text.chars().take(500).collect::<String>());
     
-    // 处理每一行作为单独的SSE事件
-    for line in text.lines() {
-        if line.starts_with("data:") && !line.contains("data: [DONE]") {
-            // 跳过"data: "前缀
-            let json_content = if line.len() > 6 { &line[6..] } else { continue };
-            
-            debug!("Processing stream line: {}", json_content);
-            
-            if let Ok(json) = serde_json::from_str::<serde_json::Value>(json_content) {
-                debug!("Parsed JSON: {}", json);
+    if use_stream {
+        // 处理每一行作为单独的SSE事件
+        for line in text.lines() {
+            if line.starts_with("data:") && !line.contains("data: [DONE]") {
+                // 跳过"data: "前缀
+                let json_content = if line.len() > 6 { &line[6..] } else { continue };
                 
-                // 正常情况下从delta中提取内容
-                if let Some(content) = json["choices"][0]["delta"]["content"].as_str() {
-                    debug!("Found content in delta: {}", content);
-                    full_content.push_str(content);
+                debug!("Processing stream line: {}", json_content);
+                
+                if let Ok(json) = serde_json::from_str::<serde_json::Value>(json_content) {
+                    debug!("Parsed JSON: {}", json);
+                    
+                    // 正常情况下从delta中提取内容
+                    if let Some(content) = json["choices"][0]["delta"]["content"].as_str() {
+                        debug!("Found content in delta: {}", content);
+                        full_content.push_str(content);
+                    }
+                    // 对于某些API，可能是在message中而不是delta
+                    else if let Some(content) = json["choices"][0]["message"]["content"].as_str() {
+                        debug!("Found content in message: {}", content);
+                        full_content.push_str(content);
+                    }
+                    else {
+                        debug!("Could not find content in JSON structure: {:?}", json);
+                    }
+                } else {
+                    debug!("Failed to parse JSON: {}", json_content);
                 }
-                // 对于某些API，可能是在message中而不是delta
-                else if let Some(content) = json["choices"][0]["message"]["content"].as_str() {
-                    debug!("Found content in message: {}", content);
-                    full_content.push_str(content);
-                }
-                else {
-                    debug!("Could not find content in JSON structure: {:?}", json);
-                }
-            } else {
-                debug!("Failed to parse JSON: {}", json_content);
+            } else if line.contains("data: [DONE]") {
+                debug!("End of stream marker found");
             }
-        } else if line.contains("data: [DONE]") {
-            debug!("End of stream marker found");
+        }
+    } else {
+        // 处理非流式响应
+        if let Ok(json) = serde_json::from_str::<serde_json::Value>(&text) {
+            debug!("Parsed non-stream JSON response: {}", json);
+            
+            // 从标准OpenAI响应格式中提取内容
+            if let Some(content) = json["choices"][0]["message"]["content"].as_str() {
+                debug!("Found content in message: {}", content);
+                full_content = content.to_string();
+            } else {
+                warn!("Could not find content in OpenAI non-stream response");
+                debug!("Response structure: {:?}", json);
+            }
+        } else {
+            warn!("Failed to parse OpenAI non-stream response as JSON");
         }
     }
     
