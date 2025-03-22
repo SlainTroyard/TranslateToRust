@@ -61,16 +61,12 @@ impl Default for LlmConfig {
     fn default() -> Self {
         Self {
             provider: LlmProvider::OpenAI,
-            api_key: String::new(),
+            api_key: "".to_string(),
             api_url: "https://api.openai.com/v1/chat/completions".to_string(),
             default_model: "gpt-4".to_string(),
             model_params: ModelParams::default(),
-            headers: {
-                let mut headers = std::collections::HashMap::new();
-                headers.insert("content-type".to_string(), "application/json".to_string());
-                headers
-            },
-            system_message: Some("You are a C/C++ to Rust code translator expert.".to_string()),
+            headers: std::collections::HashMap::new(),
+            system_message: Some("".to_string()),
         }
     }
 }
@@ -153,7 +149,7 @@ fn load_llm_config() -> Result<LlmConfig> {
                         headers.insert("content-type".to_string(), "application/json".to_string());
                         headers
                     },
-                    system_message: Some("You are a C/C++ to Rust code translator expert.".to_string()),
+                    system_message: Some("".to_string()),
                 });
             },
             _ => bail!("Unsupported LLM provider: {}", provider),
@@ -263,7 +259,7 @@ fn load_llm_config() -> Result<LlmConfig> {
             headers.insert("content-type".to_string(), "application/json".to_string());
             headers
         },
-        system_message: Some("You are a C/C++ to Rust code translator expert.".to_string()),
+        system_message: Some("".to_string()),
     })
 }
 
@@ -280,10 +276,10 @@ fn default_api_url_for_provider(provider: &LlmProvider) -> String {
 /// Get the default system message for a given provider
 fn default_system_message_for_provider(provider: &LlmProvider) -> String {
     match provider {
-        LlmProvider::OpenAI => "You are a C/C++ to Rust code translator expert.".to_string(),
-        LlmProvider::Anthropic => "You are a C/C++ to Rust code translator expert.".to_string(),
-        LlmProvider::GoogleAI => "You are a C/C++ to Rust code translator expert.".to_string(),
-        LlmProvider::Local => "You are a C/C++ to Rust code translator expert.".to_string(),
+        LlmProvider::OpenAI => "".to_string(),
+        LlmProvider::Anthropic => "".to_string(),
+        LlmProvider::GoogleAI => "".to_string(),
+        LlmProvider::Local => "".to_string(),
     }
 }
 
