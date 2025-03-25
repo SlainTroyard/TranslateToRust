@@ -9,7 +9,9 @@
 - **多维度统计**：生成详细的统计报告，包括按难度、按语言、按标签、按比赛等多个维度
 - **并行处理**：支持多线程并行处理，提高批量翻译的效率
 - **可定制化**：支持指定特定比赛、特定题目或特定语言进行翻译
-- **仅翻译模式**：支持只进行翻译而不测试，适用于快速处理大量文件
+- **资源管理**：系统负载监控和自动调节
+- **错误处理**：完善的错误处理和重试机制
+- **报告生成**：支持多种格式的测试报告生成
 
 ## 如何使用
 
@@ -19,6 +21,7 @@
 
 1. TranslateToRust项目已正确配置，特别是LLM API配置
 2. FuzzForLeetcode项目结构完整，包含需要翻译的C/C++代码文件
+3. 系统有足够的资源（CPU、内存）用于并行处理
 
 ### 使用步骤
 
@@ -43,13 +46,16 @@
 
    ```bash
    # 翻译所有C/C++代码
-    python batch_translate.py > batch_log.txt 2>&1
+   python batch_translate.py > batch_log.txt 2>&1
    
    # 调整并行线程数
-   ./batch_translate.py --max-workers 8
+   python batch_translate.py --max-workers 8
    
    # 指定输出目录
-   ./batch_translate.py --output /path/to/output/dir
+   python batch_translate.py --output-dir /path/to/output/dir
+   
+   # 指定超时时间
+   python batch_translate.py --timeout 600
    ```
 
 ## 统计报告说明
@@ -65,6 +71,8 @@
 - 总解决方案数量
 - C和C++各自的解决方案数量
 - 翻译成功率和编译成功率
+- 平均处理时间
+- 资源使用情况
 
 ### 2. 按难度统计 
 
@@ -73,6 +81,7 @@
 - 翻译成功率和编译成功率
 - 测试用例平均通过率
 - 平均运行时间
+- 错误分布情况
 
 ### 3. 按语言统计
 
@@ -81,6 +90,7 @@
 - 编译成功率
 - 测试用例平均通过率
 - 平均运行时间
+- 常见错误类型
 
 ### 4. 按标签统计
 
@@ -89,6 +99,7 @@
 - 翻译成功率和编译成功率
 - 测试用例平均通过率
 - 平均运行时间
+- 特定类型的错误分析
 
 ### 5. 按比赛统计
 
@@ -97,11 +108,11 @@
 - 翻译成功率和编译成功率
 - 测试用例平均通过率
 - 平均运行时间
+- 比赛难度分布
 
 ## 脚本文件说明
 
-- `scripts/batch_translate_improved.py`：主要的批量翻译和测试脚本
-- `scripts/batch_transonly.py`：仅进行翻译而不测试的脚本
+- `scripts/batch_translate.py`：主要的批量翻译和测试脚本
 - `scripts/batch_test.py`：批量测试已翻译的Rust文件的脚本
 - `scripts/generate_test_reports.py`：生成测试报告的脚本
 - `scripts/setup_reports_dir.sh`：创建翻译报告目录的脚本
@@ -112,191 +123,120 @@
 
 - 批量翻译可能需要较长时间，特别是文件较多时
 - 批量翻译过程中可能会消耗大量API调用，请注意API使用成本
-- 如果遇到网络问题或API限制，可以考虑减少并行线程数或分批次运行 
+- 如果遇到网络问题或API限制，可以考虑减少并行线程数或分批次运行
+- 建议定期备份翻译结果和测试报告
+- 监控系统资源使用情况，必要时调整并行度
 
-# Batch Processing Tools
+## 资源管理
 
-This document describes the batch processing tools available in the TranslateToRust project.
+### 系统负载监控
 
-## Overview
+- CPU使用率监控
+- 内存使用情况跟踪
+- 磁盘I/O监控
+- 网络带宽使用情况
 
-The project includes several scripts for batch processing:
+### 自动调节机制
 
-1. **batch_translate_improved.py**: Translates and tests C/C++ files to Rust
-2. **batch_transonly.py**: Translates C/C++ files to Rust without testing them
-3. **batch_test.py**: Tests all translated Rust files in the `translated` directory
-4. **generate_test_reports.py**: Generates comprehensive reports from test results
+- 系统过载时自动降低并行度
+- 资源不足时自动暂停任务
+- 动态调整超时时间
+- 智能任务调度
 
-## Batch Translation and Testing
+### 错误处理
 
-The `batch_translate_improved.py` script automates both translation and testing of C/C++ files.
+- 自动重试机制
+- 错误分类和统计
+- 详细的错误日志
+- 失败任务恢复
 
-### Usage
+## 最佳实践
 
-```bash
-python scripts/batch_translate_improved.py [options]
-```
+1. 资源管理
+   - 从较少的工作线程开始（2-4）
+   - 执行过程中监控系统资源
+   - 根据问题复杂度调整超时时间
+   - 定期检查系统负载
 
-### Options
+2. 测试策略
+   - 按相似复杂度分批运行测试
+   - 使用适当的超时值
+   - 对可能不稳定的测试启用重试
+   - 保存中间结果
 
-- `--max-workers N`: Maximum number of parallel workers (default: 4)
-- `--output PATH`: Directory to save reports (default: ./reports)
-- `--language {C,CPP}`: Specify which language to translate (C or CPP), omit to translate both
-- `--contest N`: Translate files from a specific contest
-- `--problem N`: Translate files for a specific problem
+3. 报告生成
+   - 定期生成报告
+   - 保留历史数据用于趋势分析
+   - 包含失败案例的详细信息
+   - 分析错误模式和趋势
 
-### Examples
+## 故障排除
 
-```bash
-# Translate and test all C/C++ files
-python scripts/batch_translate_improved.py
+### 常见问题
 
-# Translate and test only C++ files
-python scripts/batch_translate_improved.py --language CPP
+1. 系统资源问题
+   - 减少工作线程数
+   - 增加超时时间
+   - 监控系统负载
+   - 清理临时文件
 
-# Translate and test files from a specific contest
-python scripts/batch_translate_improved.py --contest 413
-```
+2. Cargo锁冲突
+   - 检查锁文件
+   - 清理锁文件
+   - 减少并发操作
+   - 使用文件锁机制
 
-## Batch Translation Only
+3. 测试失败
+   - 检查编译错误
+   - 验证测试用例
+   - 调整超时设置
+   - 启用重试机制
 
-The `batch_transonly.py` script automates translation of C/C++ files to Rust without testing them.
+### 解决方案
 
-### Usage
+1. 性能优化
+   - 调整并行度
+   - 优化资源使用
+   - 改进错误处理
+   - 优化测试策略
 
-```bash
-python scripts/batch_transonly.py [options]
-```
+2. 稳定性提升
+   - 完善错误处理
+   - 增加重试机制
+   - 改进资源管理
+   - 优化报告生成
 
-### Options
+3. 可维护性
+   - 完善文档
+   - 添加日志
+   - 改进代码结构
+   - 增加测试覆盖
 
-- `--max-workers N`: Maximum number of parallel workers (default: 4)
-- `--timeout N`: Timeout in seconds for each translation (default: 600)
-- `--output-dir PATH`: Directory to save translated Rust files (default: ./translated)
-- `--method METHOD`: Translation method to use (default: llm)
-- `--file FILE`: Translate a specific C/C++ file instead of searching for files
-- `--language {C,CPP}`: Specify which language to translate (C or CPP), omit to translate both
-- `--contest N`: Translate files from a specific contest
-- `--problem N`: Translate files for a specific problem
+## 配置示例
 
-### Examples
-
-Translate all available C and C++ files:
-```bash
-python scripts/batch_transonly.py
-```
-
-Translate only C++ files:
-```bash
-python scripts/batch_transonly.py --language CPP
-```
-
-Translate files from a specific contest:
-```bash
-python scripts/batch_transonly.py --contest 413
-```
-
-Translate a specific file:
-```bash
-python scripts/batch_transonly.py --file /path/to/weekly_contest_413_p1.cpp
-```
-
-## Batch Testing
-
-The `batch_test.py` script automates testing of Rust files.
-
-### Usage
-
-```bash
-python scripts/batch_test.py [options]
-```
-
-### Options
-
-- `--max-workers N`: Maximum number of parallel workers (default: 4)
-- `--timeout N`: Timeout in seconds for each test (default: 600)
-- `--dir PATH`: Directory containing Rust files to test (default: ./translated)
-- `--file FILE`: Test a specific Rust file instead of the entire directory
-- `--output PATH`: Directory to save test results (default: ./test_results)
-
-### Examples
-
-Test all Rust files in the translated directory:
-```bash
-python scripts/batch_test.py
-```
-
-Test a specific file:
-```bash
-python scripts/batch_test.py --file translated/weekly_contest_413_p1_cpp.rs
-```
-
-Test with a custom timeout:
-```bash
-python scripts/batch_test.py --timeout 300
-```
-
-## Test Reports
-
-The `generate_test_reports.py` script generates comprehensive reports from test results.
-
-### Usage
-
-```bash
-python scripts/generate_test_reports.py [options]
-```
-
-### Options
-
-- `--output-dir PATH`: Directory to save reports (default: ./test_reports)
-- `--format {markdown,json,both}`: Report format (default: both)
-- `--days N`: Process test results from the last N days (default: 7)
-- `--input FILE`: Process a specific test results file
-
-### Examples
-
-Generate reports from recent test results:
-```bash
-python scripts/generate_test_reports.py
-```
-
-Generate only markdown reports:
-```bash
-python scripts/generate_test_reports.py --format markdown
-```
-
-Process results from the last 30 days:
-```bash
-python scripts/generate_test_reports.py --days 30
-```
-
-## Complete Workflow
-
-For a complete translation and testing workflow:
-
-1. **Translate files with testing**: 
-   ```
-   python scripts/batch_translate_improved.py --language CPP
-   ```
-
-2. **Or translate files without testing**:
-   ```
-   python scripts/batch_transonly.py --language CPP
-   ```
-
-3. **Test translated files** (if using batch_transonly.py):
-   ```
-   python scripts/batch_test.py
-   ```
-
-4. **Generate reports**:
-   ```
-   python scripts/generate_test_reports.py
-   ```
-
-## Performance Considerations
-
-- Translation processes can be resource-intensive and time-consuming
-- Consider reducing the number of parallel workers if you encounter performance issues
-- For large batches, it may be more efficient to use batch_transonly.py first, then batch_test.py
-- Set appropriate timeouts based on your system's capabilities and the complexity of the code being translated/tested 
+```json
+{
+    "batch_translate": {
+        "max_workers": 4,
+        "timeout": 600,
+        "retry_count": 2,
+        "resource_thresholds": {
+            "cpu_percent": 80,
+            "memory_percent": 80,
+            "disk_percent": 90
+        }
+    },
+    "batch_test": {
+        "max_workers": 2,
+        "timeout": 1800,
+        "retry_count": 1,
+        "test_categories": ["unit", "integration"]
+    },
+    "report_generation": {
+        "days": 7,
+        "format": "markdown",
+        "include_details": true,
+        "charts": true
+    }
+}
+``` 

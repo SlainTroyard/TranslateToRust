@@ -4,11 +4,10 @@
 
 ## 目录
 1. [批量翻译脚本](#批量翻译脚本)
-2. [批量仅翻译脚本](#批量仅翻译脚本)
-3. [批量测试脚本](#批量测试脚本)
-4. [测试报告生成脚本](#测试报告生成脚本)
-5. [超时处理脚本](#超时处理脚本)
-6. [常见问题](#常见问题)
+2. [批量测试脚本](#批量测试脚本)
+3. [测试报告生成脚本](#测试报告生成脚本)
+4. [超时处理脚本](#超时处理脚本)
+5. [常见问题](#常见问题)
 
 ## 批量翻译脚本
 
@@ -18,45 +17,25 @@
 
 ```bash
 # 翻译所有解决方案
-python scripts/batch_translate_improved.py
+python scripts/batch_translate.py
 
 # 指定线程数
-python scripts/batch_translate_improved.py --max-workers 2
+python scripts/batch_translate.py --max-workers 2
 
 # 翻译特定解决方案
-python scripts/batch_translate_improved.py --contest 413 --problem 1 --language CPP
+python scripts/batch_translate.py --contest 413 --problem 1 --language CPP
 
 # 指定输出目录
-python scripts/batch_translate_improved.py --output ./custom_reports
-```
-
-## 批量仅翻译脚本
-
-批量仅翻译脚本(`batch_transonly.py`)可以将C/C++代码翻译为Rust，但不进行测试，适用于快速翻译大量文件的场景。
-
-### 使用方法
-
-```bash
-# 翻译所有C/C++解决方案（不测试）
-python scripts/batch_transonly.py
-
-# 指定线程数
-python scripts/batch_transonly.py --max-workers 2
-
-# 翻译特定解决方案
-python scripts/batch_transonly.py --contest 413 --problem 1 --language CPP
+python scripts/batch_translate.py --output-dir ./custom_reports
 
 # 指定超时时间
-python scripts/batch_transonly.py --timeout 600  # 设置超时为600秒
-
-# 指定输出目录
-python scripts/batch_transonly.py --output-dir ./custom_translated
+python scripts/batch_translate.py --timeout 1800  # 设置超时为1800秒
 ```
 
 ### 参数说明
 
-- `--max-workers N`: 最大并行工作线程数（默认：4）
-- `--timeout N`: 每个翻译任务的超时时间，单位秒（默认： 1200）
+- `--max-workers N`: 最大并行工作线程数（默认：1）
+- `--timeout N`: 每个翻译任务的超时时间，单位秒（默认：600）
 - `--output-dir PATH`: 保存翻译后Rust文件的目录（默认：./translated）
 - `--method METHOD`: 使用的翻译方法（默认：llm）
 - `--file FILE`: 翻译特定C/C++文件，而不是搜索文件
@@ -66,7 +45,7 @@ python scripts/batch_transonly.py --output-dir ./custom_translated
 
 ## 批量测试脚本
 
-批量测试脚本可以自动测试 `translated` 目录中的 Rust 文件。
+批量测试脚本可以自动测试翻译后的 Rust 文件。
 
 ### 使用方法
 
@@ -75,17 +54,29 @@ python scripts/batch_transonly.py --output-dir ./custom_translated
 python scripts/batch_test.py
 
 # 指定超时时间
-python scripts/batch_test.py --timeout  1200  # 设置超时为 1200秒
+python scripts/batch_test.py --timeout 1200  # 设置超时为 1200秒
 
 # 测试特定文件
 python scripts/batch_test.py --file ./translated/weekly_contest_413_p1_cpp.rs
 
 # 测试特定目录
-python scripts/batch_test.py --dir ./custom_translated_dir
+python scripts/batch_test.py --directory ./custom_translated_dir
 
 # 指定输出目录
-python scripts/batch_test.py --output ./custom_results
+python scripts/batch_test.py --output-dir ./custom_results
+
+# 指定重试次数
+python scripts/batch_test.py --retry-count 2
 ```
+
+### 参数说明
+
+- `--directory PATH`: 要测试的目录（默认：./translated）
+- `--file PATH`: 测试特定文件
+- `--timeout N`: 每个测试任务的超时时间，单位秒（默认：1800）
+- `--max-workers N`: 最大并行工作线程数（默认：2）
+- `--retry-count N`: 失败测试的重试次数（默认：1）
+- `--output-dir PATH`: 测试结果输出目录（默认：./test_results）
 
 ## 测试报告生成脚本
 
@@ -97,18 +88,25 @@ python scripts/batch_test.py --output ./custom_results
 # 生成最新测试结果的报告
 python scripts/generate_test_reports.py
 
-# 指定测试结果文件
-python scripts/generate_test_reports.py --input ./test_results/batch_test_results_20230101_120000.json
+# 指定天数范围
+python scripts/generate_test_reports.py --days 7
+
+# 指定输出格式
+python scripts/generate_test_reports.py --format json
+
+# 包含详细信息
+python scripts/generate_test_reports.py --include-details
 
 # 指定输出目录
 python scripts/generate_test_reports.py --output-dir ./custom_reports
-
-# 仅生成 Markdown 报告
-python scripts/generate_test_reports.py --format markdown
-
-# 仅生成 JSON 报告
-python scripts/generate_test_reports.py --format json
 ```
+
+### 参数说明
+
+- `--days N`: 包含最近N天的测试结果（默认：7）
+- `--format FORMAT`: 输出格式：markdown 或 json（默认：markdown）
+- `--output-dir PATH`: 报告输出目录（默认：./test_reports）
+- `--include-details`: 包含详细的测试用例信息
 
 ## 超时处理脚本
 
@@ -121,7 +119,7 @@ python scripts/generate_test_reports.py --format json
 python scripts/timeout_handler.py --pid 12345 --timeout 1200
 
 # 启用详细日志
-python scripts/timeout_handler.py --pid 12345 --timeout  1200 --verbose
+python scripts/timeout_handler.py --pid 12345 --timeout 1200 --verbose
 ```
 
 也可以在自己的 Python 脚本中导入：
@@ -146,6 +144,7 @@ timeout_handler.monitor_process(pid, timeout_seconds)
 - 检查测试结果目录中的具体错误信息
 - 查看日志中是否有编译错误
 - 尝试手动运行单个测试看看详细错误
+- 使用 `--retry-count` 参数增加重试次数
 
 ### 3. 如何自定义测试超时时间？
 
@@ -169,23 +168,47 @@ python scripts/batch_test.py --max-workers 8
 
 ```bash
 # 1. 批量翻译
-python scripts/batch_translate_improved.py
+python scripts/batch_translate.py --max-workers 4
 
 # 2. 批量测试
-python scripts/batch_test.py
+python scripts/batch_test.py --max-workers 2 --retry-count 2
 
 # 3. 生成报告
-python scripts/generate_test_reports.py 
+python scripts/generate_test_reports.py --days 7 --include-details
 ```
 
-### 仅翻译工作流示例
+## 资源管理
 
-如果只需要翻译而不需要测试（例如为了快速获取大量翻译结果）：
+脚本包含以下资源管理功能：
 
-```bash
-# 1. 只执行翻译（不测试）
-python scripts/batch_transonly.py --language CPP --max-workers 8
+1. 系统负载监控
+   - 自动监控 CPU 和内存使用情况
+   - 系统过载时自动延迟任务
+   - 可配置的资源使用阈值
 
-# 2. 之后可以选择性地对翻译结果进行测试
-python scripts/batch_test.py --dir ./translated
-``` 
+2. 进程管理
+   - 优雅的进程终止
+   - 进程树清理
+   - 超时处理与清理
+
+3. 并发控制
+   - 基于文件的 cargo 操作锁定
+   - 可配置的工作线程池
+   - 资源感知的任务调度
+
+## 最佳实践
+
+1. 资源管理
+   - 从较少的工作线程开始（2-4）
+   - 执行过程中监控系统资源
+   - 根据问题复杂度调整超时时间
+
+2. 测试策略
+   - 按相似复杂度分批运行测试
+   - 使用适当的超时值
+   - 对可能不稳定的测试启用重试
+
+3. 报告生成
+   - 定期生成报告
+   - 保留历史数据用于趋势分析
+   - 包含失败案例的详细信息 

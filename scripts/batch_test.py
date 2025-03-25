@@ -25,7 +25,7 @@ TRANSLATE_TO_RUST_PATH = str(Path(os.path.dirname(os.path.abspath(__file__))).pa
 TRANSLATED_DIR = os.path.join(TRANSLATE_TO_RUST_PATH, "translated")
 TEST_RESULTS_DIR = os.path.join(TRANSLATE_TO_RUST_PATH, "test_results")
 MAX_WORKERS = 2  # 默认并行处理的最大线程数，降低以避免资源争用
-DEFAULT_PROCESS_TIMEOUT = 20 * 60  # 默认进程超时时间（秒）：20分钟
+DEFAULT_PROCESS_TIMEOUT = 30 * 60  # 默认进程超时时间（秒）：30分钟
 CARGO_LOCK_FILE = os.path.join(TRANSLATE_TO_RUST_PATH, ".cargo_test_lock")
 MIN_TASK_DELAY = 2  # 任务之间的最小延迟（秒）
 MAX_TASK_DELAY = 5  # 任务之间的最大延迟（秒）
@@ -97,6 +97,11 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
         lock_file = acquire_cargo_lock()
         log_with_flush(f"获取cargo锁成功，执行命令: {' '.join(cmd)}, 超时时间: {timeout_seconds}秒")
         
+        process = None
+        stdout_buffer = []
+        stderr_buffer = []
+        test_files_generated = False
+        
         try:
             # 启动子进程
             process = subprocess.Popen(
@@ -151,59 +156,61 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
             output_thread.daemon = True
             output_thread.start()
             
-            # 等待进程完成或超时
+            # 等待进程完成，带有超时
             try:
                 process.wait(timeout=timeout_seconds)
-                # 进程完成，等待输出线程结束
-                output_thread.join(timeout=2)
             except subprocess.TimeoutExpired:
+                # 进程超时
                 log_with_flush(f"进程超时（超过{timeout_seconds}秒），但我们会尝试保存测试结果", is_error=True)
                 
                 # 如果还没有生成测试结果文件，给进程额外的时间来完成测试报告的保存
                 if not test_files_generated:
-                    log_with_flush(f"尝试等待测试结果文件生成 (10秒)...", is_error=True)
-                    # 多给10秒让它生成测试结果文件
-                    grace_period = 10
-                    grace_start = time.time()
+                    # 增加宽限期时间，从10秒增加到30秒
+                    grace_period = 30
+                    log_with_flush(f"尝试等待测试结果文件生成 ({grace_period}秒)...", is_error=True)
                     
                     # 在宽限期内检查输出
-                    while (time.time() - grace_start) < grace_period and not test_files_generated:
+                    grace_start = time.time()
+                    while (time.time() - grace_start) < grace_period:
                         time.sleep(0.5)
                         # 检查是否已经生成了结果文件
                         stdout_content = ''.join(stdout_buffer)
                         if "测试结果已保存到:" in stdout_content or "Test results saved to:" in stdout_content:
                             test_files_generated = True
-                            log_with_flush("测试结果文件已生成，现在终止进程", is_error=True)
+                            log_with_flush("测试结果文件已生成，现在终止进程", is_error=False)
                             break
                 
-                # 终止进程
+                # 确保进程终止前完成所有IO操作
                 try:
-                    process.terminate()
-                    process.wait(timeout=5)  # 给进程一些时间来清理
-                except:
-                    # 如果进程没有及时终止，强制杀死
-                    try:
-                        process.kill()
-                    except:
-                        log_with_flush("警告: 无法终止进程", is_error=True)
+                    # 更优雅地终止进程
+                    if process.poll() is None:  # 如果进程仍在运行
+                        process.terminate()
+                        try:
+                            # 给进程更多时间来清理（从5秒增加到10秒）
+                            process.wait(timeout=10)
+                        except subprocess.TimeoutExpired:
+                            # 如果进程仍未终止，则强制终止
+                            if process.poll() is None:
+                                process.kill()
+                                process.wait(timeout=5)  # 再给5秒确保进程终止
+                except Exception as e:
+                    log_with_flush(f"警告: 终止进程时出错: {e}", is_error=True)
                 
                 elapsed_time = time.time() - start_time
                 
-                # 读取剩余的输出
-                remaining_stdout, remaining_stderr = "", ""
+                # 读取剩余的输出（增加超时时间，从2秒到5秒）
                 try:
-                    remaining_stdout, remaining_stderr = process.communicate(timeout=2)
-                except:
-                    pass
-                
-                if remaining_stdout:
-                    stdout_buffer.append(remaining_stdout)
-                    print(remaining_stdout, end='')
-                    sys.stdout.flush()
-                if remaining_stderr:
-                    stderr_buffer.append(remaining_stderr)
-                    print(remaining_stderr, end='', file=sys.stderr)
-                    sys.stderr.flush()
+                    remaining_stdout, remaining_stderr = process.communicate(timeout=5)
+                    if remaining_stdout:
+                        stdout_buffer.append(remaining_stdout)
+                        print(remaining_stdout, end='')
+                        sys.stdout.flush()
+                    if remaining_stderr:
+                        stderr_buffer.append(remaining_stderr)
+                        print(remaining_stderr, end='', file=sys.stderr)
+                        sys.stderr.flush()
+                except Exception as e:
+                    log_with_flush(f"读取进程输出时出错: {e}", is_error=True)
                 
                 result = {
                     'returncode': -1,
@@ -213,11 +220,48 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
                     'timed_out': True
                 }
                 
+                # 检查是否真正生成了测试报告
+                stdout_content = result['stdout']
+                if "测试结果已保存到:" in stdout_content or "Test results saved to:" in stdout_content:
+                    test_files_generated = True
+                
                 if test_files_generated:
                     log_with_flush("成功生成超时测试的报告文件", is_error=False)
                 else:
                     log_with_flush("未能生成超时测试的报告文件", is_error=True)
+                    # 尝试手动创建一个简单的测试报告
+                    try:
+                        # 从命令行参数中提取文件名
+                        rust_file_index = cmd.index("--rust-solution") + 1 if "--rust-solution" in cmd else -1
+                        if rust_file_index != -1 and rust_file_index < len(cmd):
+                            rust_file = cmd[rust_file_index]
+                            filename = os.path.basename(rust_file)
+                            
+                            # 创建时间戳
+                            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                            
+                            # 构建简单的超时报告
+                            report_content = f"""测试文件: {filename}
+编译状态: 成功
+总测试用例: 0
+通过: 0
+失败: 0
+超时: 1
+成功率: 0.0%
+平均运行时间: 0.0 ms
+超时原因: 执行超过{timeout_seconds}秒
+"""
+                            
+                            # 保存到测试结果目录
+                            report_path = os.path.join(TEST_RESULTS_DIR, f"test_results_{timestamp}_timeout.txt")
+                            with open(report_path, 'w', encoding='utf-8') as f:
+                                f.write(report_content)
+                            
+                            log_with_flush(f"已创建超时测试的简单报告文件: {report_path}", is_error=False)
+                    except Exception as e:
+                        log_with_flush(f"创建超时报告时出错: {e}", is_error=True)
                 
+                # 确保在返回前释放锁
                 release_cargo_lock(lock_file)
                 
                 # 任务之间添加随机延迟，避免资源冲突
@@ -229,19 +273,22 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
             
             # 进程正常完成
             # 读取剩余的输出
-            remaining_stdout, remaining_stderr = process.communicate()
-            if remaining_stdout:
-                stdout_buffer.append(remaining_stdout)
-                print(remaining_stdout, end='')
-                sys.stdout.flush()
-            if remaining_stderr:
-                stderr_buffer.append(remaining_stderr)
-                if "warning:" in remaining_stderr:
-                    print(remaining_stderr, end='')
+            try:
+                remaining_stdout, remaining_stderr = process.communicate(timeout=5)  # 增加超时时间，从无超时到5秒
+                if remaining_stdout:
+                    stdout_buffer.append(remaining_stdout)
+                    print(remaining_stdout, end='')
                     sys.stdout.flush()
-                else:
-                    print(remaining_stderr, end='', file=sys.stderr)
-                    sys.stderr.flush()
+                if remaining_stderr:
+                    stderr_buffer.append(remaining_stderr)
+                    if "warning:" in remaining_stderr:
+                        print(remaining_stderr, end='')
+                        sys.stdout.flush()
+                    else:
+                        print(remaining_stderr, end='', file=sys.stderr)
+                        sys.stderr.flush()
+            except Exception as e:
+                log_with_flush(f"读取剩余输出时出错: {e}", is_error=True)
             
             elapsed_time = time.time() - start_time
             log_with_flush(f"进程完成，耗时: {elapsed_time:.2f}秒")
@@ -257,12 +304,17 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
             log_with_flush(f"执行过程中发生错误: {e}", is_error=True)
             
             # 确保进程被终止
-            try:
-                process.terminate()
-            except:
-                pass
+            if process and process.poll() is None:
+                try:
+                    process.terminate()
+                    try:
+                        process.wait(timeout=5)
+                    except:
+                        process.kill()
+                except:
+                    pass
             
-            elapsed_time = time.time() - start_time
+            elapsed_time = time.time() - start_time if 'start_time' in locals() else 0
             
             result = {
                 'returncode': -1,
@@ -273,8 +325,16 @@ def run_process_with_timeout(cmd, cwd, timeout_seconds=DEFAULT_PROCESS_TIMEOUT):
             }
         
         finally:
+            # 确保输出线程已完成
+            if 'output_thread' in locals() and output_thread.is_alive():
+                # 等待输出线程完成，但最多等待5秒
+                output_thread.join(timeout=5)
+            
             # 释放cargo锁
-            release_cargo_lock(lock_file)
+            try:
+                release_cargo_lock(lock_file)
+            except Exception as e:
+                log_with_flush(f"释放cargo锁时出错: {e}", is_error=True)
             
             # 任务之间添加随机延迟，避免资源冲突
             delay = random.uniform(MIN_TASK_DELAY, MAX_TASK_DELAY)

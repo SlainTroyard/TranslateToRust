@@ -243,13 +243,14 @@ fn run_test(executable: &Path, input: &str) -> Result<(String, f64)> {
     let start_time = Instant::now();
     
     // 在单独的线程中写入输入，避免大输入导致的阻塞
-    if let Some(mut stdin) = stdin {
+    let input_thread = if let Some(mut stdin) = stdin {
         // 将输入克隆到单独的线程，避免阻塞主线程
         let input_copy = input.to_string();
-        std::thread::spawn(move || {
+        let thread_handle = thread::spawn(move || {
             // 分批写入输入，每次写入固定大小
             const CHUNK_SIZE: usize = 8192;  // 8KB 块大小
             let mut input_bytes = input_copy.as_bytes();
+            let mut result = Ok(());
             
             while !input_bytes.is_empty() {
                 let chunk_size = std::cmp::min(CHUNK_SIZE, input_bytes.len());
@@ -257,21 +258,34 @@ fn run_test(executable: &Path, input: &str) -> Result<(String, f64)> {
                 
                 if let Err(e) = stdin.write_all(chunk) {
                     debug!("Failed to write chunk to stdin: {}", e);
-                    return;
+                    result = Err(e);
+                    break;
                 }
                 
                 input_bytes = rest;
             }
             
             // 确保输入以换行符结束
-            if !input_copy.ends_with('\n') {
-                let _ = stdin.write_all(b"\n");
+            if result.is_ok() && !input_copy.ends_with('\n') {
+                if let Err(e) = stdin.write_all(b"\n") {
+                    result = Err(e);
+                }
             }
             
             // 刷新并关闭stdin
-            let _ = stdin.flush();
+            if result.is_ok() {
+                if let Err(e) = stdin.flush() {
+                    result = Err(e);
+                }
+            }
+            
+            result
         });
-    }
+        
+        Some(thread_handle)
+    } else {
+        None
+    };
     
     // 添加超时机制 - 设置最大执行时间（秒）
     const TIMEOUT_SECONDS: u64 = 10; // 最多允许执行10秒
@@ -302,7 +316,14 @@ fn run_test(executable: &Path, input: &str) -> Result<(String, f64)> {
             // 在超时前收到结果
             match result {
                 Ok(output) => output,
-                Err(e) => return Err(anyhow::anyhow!("Process execution failed: {}", e)),
+                Err(e) => {
+                    // 确保释放所有资源
+                    if let Some(handle) = input_thread {
+                        let _ = handle.join();
+                    }
+                    let _ = wait_handle.join();
+                    return Err(anyhow::anyhow!("Process execution failed: {}", e));
+                },
             }
         },
         Err(_) => {
@@ -317,6 +338,17 @@ fn run_test(executable: &Path, input: &str) -> Result<(String, f64)> {
                     .arg("-9")
                     .arg(child_pid.to_string())
                     .status();
+                
+                // 额外确保进程树被终止 - 使用pkill杀死可能的子进程
+                let _ = Command::new("pkill")
+                    .arg("-P")
+                    .arg(child_pid.to_string())
+                    .status();
+            }
+            
+            // 等待输入线程结束（如果存在）
+            if let Some(handle) = input_thread {
+                let _ = handle.join();
             }
             
             // 等待线程结束（但不应该等待太久）
@@ -325,6 +357,22 @@ fn run_test(executable: &Path, input: &str) -> Result<(String, f64)> {
             return Err(anyhow::anyhow!("Process timed out after {} seconds (TIMEOUT)", TIMEOUT_SECONDS));
         }
     };
+    
+    // 确保输入线程已完成（如果存在）
+    if let Some(handle) = input_thread {
+        match handle.join() {
+            Ok(write_result) => {
+                if let Err(e) = write_result {
+                    debug!("Error writing to process stdin: {}", e);
+                    // 不将此视为致命错误，继续处理输出
+                }
+            },
+            Err(_) => {
+                debug!("Input thread panicked");
+                // 不将此视为致命错误，继续处理输出
+            }
+        }
+    }
     
     // 计算执行时间（毫秒）
     let elapsed = start_time.elapsed();
@@ -514,4 +562,120 @@ fn parse_test_cases(content: &str) -> Result<Vec<TestCase>> {
     }
     
     Ok(test_cases)
+}
+
+/// Save test results to a file
+pub fn save_test_results(results: &TestResults, rust_solution: &Path) -> Result<PathBuf> {
+    // 创建测试结果目录
+    let results_dir = Path::new("test_results");
+    std::fs::create_dir_all(results_dir)?;
+    
+    // 生成时间戳
+    let now = chrono::Local::now();
+    let timestamp = now.format("%Y%m%d_%H%M%S");
+    
+    // 构建文件名
+    let filename = format!("test_results_{}.txt", timestamp);
+    let filepath = results_dir.join(&filename);
+    
+    // 确保目录存在
+    if let Some(parent) = filepath.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    
+    // 打开文件并写入结果 - 使用带缓冲的写入器
+    let file = std::fs::File::create(&filepath)?;
+    let mut writer = std::io::BufWriter::new(file);
+    
+    // 写入基本信息
+    writeln!(writer, "测试文件: {}", results.file_name)?;
+    writeln!(writer, "编译状态: {}", if results.compilation_success { "成功" } else { "失败" })?;
+    
+    if results.compilation_success {
+        // 计算成功率
+        let success_rate = if results.total > 0 {
+            (results.passed as f64 / results.total as f64) * 100.0
+        } else {
+            0.0
+        };
+        
+        writeln!(writer, "总测试用例: {}", results.total)?;
+        writeln!(writer, "通过: {}", results.passed)?;
+        writeln!(writer, "失败: {}", results.failed)?;
+        
+        // 添加超时测试用例数
+        if results.timeout_cases > 0 {
+            writeln!(writer, "超时: {}", results.timeout_cases)?;
+        }
+        
+        writeln!(writer, "成功率: {:.2}%", success_rate)?;
+        writeln!(writer, "平均运行时间: {:.2} ms", results.average_runtime)?;
+        
+        // 输出详细的测试结果
+        if !results.failed_cases.is_empty() {
+            writeln!(writer, "\n失败的测试用例详情:")?;
+            for (i, case) in results.failed_cases.iter().enumerate() {
+                writeln!(writer, "\n失败用例 #{}", i + 1)?;
+                writeln!(writer, "输入: {}", case.input)?;
+                writeln!(writer, "期望输出: {}", case.expected_output)?;
+                writeln!(writer, "实际输出: {}", case.actual_output)?;
+            }
+        }
+        
+        // 创建详细测试用例结果目录
+        if !results.all_cases.is_empty() {
+            let details_dir = results_dir.join(format!("details_{}", timestamp));
+            std::fs::create_dir_all(&details_dir)?;
+            
+            // 保存所有测试用例的摘要
+            let all_cases_path = details_dir.join("all_cases_summary.txt");
+            let all_cases_file = std::fs::File::create(&all_cases_path)?;
+            let mut all_cases_writer = std::io::BufWriter::new(all_cases_file);
+            
+            writeln!(all_cases_writer, "测试文件: {}", results.file_name)?;
+            writeln!(all_cases_writer, "总测试用例: {}", results.total)?;
+            writeln!(all_cases_writer, "通过: {}", results.passed)?;
+            writeln!(all_cases_writer, "失败: {}", results.failed)?;
+            writeln!(all_cases_writer, "超时: {}", results.timeout_cases)?;
+            writeln!(all_cases_writer, "成功率: {:.2}%", success_rate)?;
+            writeln!(all_cases_writer, "\n各测试用例结果:")?;
+            
+            for (i, case) in results.all_cases.iter().enumerate() {
+                let status = if case.is_passed { "通过" } else if case.is_timeout { "超时" } else { "失败" };
+                writeln!(all_cases_writer, "\n用例 #{} - {}", i + 1, status)?;
+                writeln!(all_cases_writer, "运行时间: {:.2} ms", case.runtime)?;
+                
+                // 单独保存每个测试用例的详细信息（特别是大型输入/输出）
+                let case_file_path = details_dir.join(format!("case_{}.txt", i + 1));
+                let case_file = std::fs::File::create(&case_file_path)?;
+                let mut case_writer = std::io::BufWriter::new(case_file);
+                
+                writeln!(case_writer, "状态: {}", status)?;
+                writeln!(case_writer, "运行时间: {:.2} ms", case.runtime)?;
+                writeln!(case_writer, "\n输入:")?;
+                writeln!(case_writer, "{}", case.input)?;
+                writeln!(case_writer, "\n期望输出:")?;
+                writeln!(case_writer, "{}", case.expected_output)?;
+                writeln!(case_writer, "\n实际输出:")?;
+                writeln!(case_writer, "{}", case.actual_output)?;
+                
+                // 刷新并关闭文件
+                case_writer.flush()?;
+            }
+            
+            // 刷新并关闭摘要文件
+            all_cases_writer.flush()?;
+            
+            // 在主结果中添加详细信息目录的位置
+            writeln!(writer, "\n详细测试结果已保存到: {}", details_dir.display())?;
+        }
+    } else if let Some(error) = &results.compilation_error {
+        writeln!(writer, "编译错误: {}", error)?;
+    }
+    
+    // 刷新并关闭文件
+    writer.flush()?;
+    
+    info!("Test results saved to: {}", filepath.display());
+    Ok(filepath)
 } 
