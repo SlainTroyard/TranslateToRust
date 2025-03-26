@@ -35,3 +35,6 @@ llm_configs/*.json
 !llm_config.json.example
 !scripts/setup_env.sh.example
 !llm_configs/*.json.example 
+
+# Backup files
+*.bak 
