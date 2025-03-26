@@ -1,0 +1,10 @@
+==== 测试用例 152 (failed) ====
+
+输入:
+phiouetejukdholuyafxepdeemedguwakdzryoskltauzofgaxzcziyuokqesw
+34
+期望输出:
+0
+实际输出:
+
+运行时间: 0.70 ms

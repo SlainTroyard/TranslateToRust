@@ -1,0 +1,46 @@
+==== 测试用例 44 (passed) ====
+
+输入:
+36
+fi
+mm
+if
+wd
+fd
+wf
+fw
+di
+wc
+cf
+ci
+cd
+df
+ww
+mi
+cc
+mc
+im
+ff
+mw
+fm
+mf
+fc
+cw
+dw
+dd
+iw
+dm
+wi
+ic
+wm
+md
+id
+cm
+ii
+dc
+期望输出:
+0 0 2 2 0 2 0 0 2 0 0 0 2 0 0 0 0 0 0 0 0 0 2 0 0 0
+实际输出:
+0 0 2 2 0 2 0 0 2 0 0 0 2 0 0 0 0 0 0 0 0 0 2 0 0 0
+
+运行时间: 1.37 ms

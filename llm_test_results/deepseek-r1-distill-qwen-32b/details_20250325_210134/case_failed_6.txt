@@ -1,0 +1,10 @@
+==== 测试用例 6 (failed) ====
+
+输入:
+sklikuzyesabuvkwgnqapqmtjnapjwwhctduupqdvexhmqyteuolcyfohbdurmpmmmhrlybxwwmkpvmamdzrop
+66
+期望输出:
+0
+实际输出:
+
+运行时间: 0.93 ms

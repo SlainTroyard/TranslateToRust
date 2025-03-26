@@ -1,0 +1,61 @@
+==== 测试用例 88 (failed) ====
+
+输入:
+49
+pk
+zz
+xy
+pv
+yv
+dp
+vd
+pz
+pd
+kv
+yy
+zy
+xz
+xv
+dv
+dd
+yk
+xk
+kz
+kk
+zp
+yz
+yd
+vz
+dz
+xp
+kp
+pp
+kx
+yx
+dk
+vp
+xx
+yp
+dy
+vk
+vv
+dx
+py
+kd
+xd
+vx
+vy
+zd
+ky
+px
+zk
+zx
+zv
+期望输出:
+0 0 0 2 0 0 0 0 0 0 2 0 0 0 0 2 0 0 0 0 0 2 0 2 2 2
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/deepseek-r1/weekly_contest_434_p4_cpp.rs:37:24:
+attempt to subtract with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

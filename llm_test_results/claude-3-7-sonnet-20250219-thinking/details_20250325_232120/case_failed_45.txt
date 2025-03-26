@@ -1,0 +1,13 @@
+==== 测试用例 45 (failed) ====
+
+输入:
+22
+17 25 25 2 25 18 2 27 6 30 12 28 6 23 7 9 10 24 26 3 3 12
+期望输出:
+192137400
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-thinking/weekly_contest_421_p1_c.rs:71:47:
+Expected an integer: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

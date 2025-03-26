@@ -1,0 +1,51 @@
+==== 测试用例 56 (passed) ====
+
+输入:
+41
+ei
+eu
+tx
+mm
+li
+tm
+em
+ti
+jm
+et
+ul
+um
+ut
+iu
+mj
+lj
+im
+ue
+ux
+ix
+uj
+lm
+ex
+xj
+xu
+xx
+le
+xl
+te
+ll
+xe
+il
+ij
+xm
+uu
+tu
+xi
+lx
+jt
+tl
+mi
+期望输出:
+0 0 0 0 1 0 0 0 1 1 0 2 2 0 0 0 0 0 0 2 2 0 0 2 0 0
+实际输出:
+0 0 0 0 1 0 0 0 1 1 0 2 2 0 0 0 0 0 0 2 2 0 0 2 0 0
+
+运行时间: 0.57 ms

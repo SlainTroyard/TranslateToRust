@@ -1,0 +1,18 @@
+==== 测试用例 71 (failed) ====
+
+输入:
+10 8
+MESSAGE 589 ALL
+MESSAGE 827 HERE
+MESSAGE 356 id3 id6
+MESSAGE 433 ALL
+OFFLINE 545 id6
+MESSAGE 722 ALL
+OFFLINE 250 id1
+MESSAGE 569 HERE
+期望输出:
+Mentions: 2 2 2 3 2 2 2 2 2 2
+实际输出:
+Mentions: 0 0 0 0 0 0 0 0 0 0
+
+运行时间: 1.35 ms

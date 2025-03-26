@@ -1,0 +1,11 @@
+==== 测试用例 58 (failed) ====
+
+输入:
+41
+20 20 22 19 19 14 17 10 6 23 19 12 21 12 18 29 27 13 26 13 13 4 29 22 15 12 5 15 30 10 17 12 15 29 22 27 4 27 17 19 3
+期望输出:
+116454478140
+实际输出:
+Placeholder implementation. To get a proper translation, configure LLM API.
+
+运行时间: 0.60 ms

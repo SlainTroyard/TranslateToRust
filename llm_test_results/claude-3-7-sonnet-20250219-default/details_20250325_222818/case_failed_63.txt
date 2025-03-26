@@ -1,0 +1,13 @@
+==== 测试用例 63 (failed) ====
+
+输入:
+44
+14 2 24 6 22 22 18 24 26 28 18 26 22 21 29 22 1 12 21 16 23 30 25 26 30 11 21 21 11 21 13 29 16 2 1 15 2 4 15 7 2 10 30 15
+期望输出:
+2403601200
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-default/weekly_contest_421_p1_cpp.rs:18:9:
+attempt to multiply with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

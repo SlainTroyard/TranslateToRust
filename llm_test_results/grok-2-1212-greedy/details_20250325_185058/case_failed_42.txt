@@ -1,0 +1,13 @@
+==== 测试用例 42 (failed) ====
+
+输入:
+qyfcbtoxbspqhguxpjtesqcyhjyrdoyspabxqfqsmvikvlkntkiyaxxtfytxonzowjggialwemqzygfaefeggrxahbczmojgdvenqjxaugsndrvyujlemyhmerfnpqzygwhichbxsemmzzcqthdmcnvxzywlmujefpeoulbosfocodmtsqxtqdgcuxgcvzpjvlbtfmwjjadiyoiqxqkshcqobkmwsujrwattzokbikbcouolhfmnddewmfaiimiocwedatyjydzipiwnvlqteofrqiydhgajnznuhsyizgyouzmtafatonmvysjhetltqfgiizwdgka
+44
+期望输出:
+zzcqthdmcnvxzywlmujefpeoulbosfocodmtsqxtqdgcuxgcvzpjvlbtfmwjjadiyoiqxqkshcqobkmwsujrwattzokbikbcouolhfmnddewmfaiimiocwedatyjydzipiwnvlqteofrqiydhgajnznuhsyizgyouzmtafatonmvysjhetltqfgiizwdgka
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/grok-2-1212-greedy/weekly_contest_430_p2_cpp.rs:16:27:
+begin <= end (166 <= 165) when slicing `qyfcbtoxbspqhguxpjtesqcyhjyrdoyspabxqfqsmvikvlkntkiyaxxtfytxonzowjggialwemqzygfaefeggrxahbczmojgdvenqjxaugsndrvyujlemyhmerfnpqzygwhichbxsemmzzcqthdmcnvxzywlmujefpeoulbosfocodmtsqxtqdgcuxgcvzpjvlbtfmwjjadiyoiqxqkshcqobkmwsujrwattzokbikbcouolhfmnddewmfaiimio`[...]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

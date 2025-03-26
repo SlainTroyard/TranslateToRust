@@ -1,242 +1,244 @@
-# 批量翻译C/C++到Rust功能说明
+# TranslateToRust 批量处理功能
 
-本项目现已支持批量翻译FuzzForLeetcode中的C/C++代码到Rust，并生成详细的统计报告。该功能可以帮助您批量处理多个LeetCode竞赛题目的代码，并对翻译结果进行多维度分析。
+本文档详细说明如何使用 TranslateToRust 的批量处理功能进行代码翻译、测试和报告生成。
 
 ## 功能概述
 
-- **批量翻译**：自动扫描FuzzForLeetcode项目中的所有C/C++代码文件，将它们翻译为Rust代码
-- **自动测试**：对翻译后的Rust代码进行编译和测试，验证其正确性
-- **多维度统计**：生成详细的统计报告，包括按难度、按语言、按标签、按比赛等多个维度
-- **并行处理**：支持多线程并行处理，提高批量翻译的效率
-- **可定制化**：支持指定特定比赛、特定题目或特定语言进行翻译
-- **资源管理**：系统负载监控和自动调节
-- **错误处理**：完善的错误处理和重试机制
-- **报告生成**：支持多种格式的测试报告生成
+- 批量翻译 C/C++ 代码为 Rust（支持多种 LLM 模型）
+- 批量测试翻译后的代码，收集详细的性能和兼容性数据
+- 为不同 LLM 模型生成对比报告
+- 支持智能资源管理和任务调度
+- 高级超时处理和进程管理，防止系统资源耗尽
+- 详细的测试统计和失败分析
 
-## 如何使用
+## 批量翻译
 
-### 准备工作
+批量翻译脚本可以自动将 FuzzForLeetcode 中的 C/C++ 解决方案翻译为 Rust。
 
-在使用批量翻译功能前，请确保：
+### 基本用法
 
-1. TranslateToRust项目已正确配置，特别是LLM API配置
-2. FuzzForLeetcode项目结构完整，包含需要翻译的C/C++代码文件
-3. 系统有足够的资源（CPU、内存）用于并行处理
+```bash
+# 翻译所有解决方案
+python scripts/batch_translate.py
 
-### 使用步骤
+# 指定语言
+python scripts/batch_translate.py --language CPP
 
-1. **设置翻译报告目录**
+# 指定比赛和问题
+python scripts/batch_translate.py --contest 413 --problem 1
+```
 
-   ```bash
-   cd /home/xiaofan/dev_25/transproj/TranslateToRust/scripts
-   ./setup_reports_dir.sh
-   ```
+### 高级参数
 
-2. **运行单个示例**（可选，用于测试）
+```bash
+# 设置翻译方法、超时和并行数
+python scripts/batch_translate.py --method llm --timeout 1800 --max-workers 4
 
-   ```bash
-   # 默认翻译Weekly Contest 413 Problem 1 (CPP)
-   ./run_example.sh
-   
-   # 指定比赛、题目和语言
-   ./run_example.sh 413 2 C
-   ```
+# 指定输出目录
+python scripts/batch_translate.py --output-dir ./custom_translated
+```
 
-3. **运行批量翻译**
+### 所有可用参数
 
-   ```bash
-   # 翻译所有C/C++代码
-   python batch_translate.py > batch_log.txt 2>&1
-   
-   # 调整并行线程数
-   python batch_translate.py --max-workers 8
-   
-   # 指定输出目录
-   python batch_translate.py --output-dir /path/to/output/dir
-   
-   # 指定超时时间
-   python batch_translate.py --timeout 600
-   ```
+- `--max-workers N`: 最大并行工作线程数（默认：1）
+- `--timeout N`: 每个翻译任务的超时时间，单位秒（默认：1800）
+- `--output-dir PATH`: 保存翻译后Rust文件的目录（默认：./translated）
+- `--method METHOD`: 使用的翻译方法（默认：llm）
+- `--language {C,CPP}`: 指定要翻译的语言（C或CPP），省略则翻译两种语言
+- `--contest N`: 翻译特定比赛的文件
+- `--problem N`: 翻译特定问题的文件
 
-## 统计报告说明
+## 批量测试
 
-批量翻译完成后，系统会生成包含以下内容的统计报告：
+批量测试脚本可以自动测试翻译后的 Rust 文件。
 
-### 重要说明
+### 基本用法
 
-在统计报告中，**翻译成功**的定义为：**代码编译成功且通过所有测试用例**。这确保了翻译结果不仅在语法上正确，而且在功能上与原始C/C++代码一致。
+```bash
+# 测试所有翻译的文件
+python scripts/batch_test.py
 
-### 1. 总体统计
+# 测试特定目录
+python scripts/batch_test.py --directory ./translated
 
-- 总解决方案数量
-- C和C++各自的解决方案数量
-- 翻译成功率和编译成功率
-- 平均处理时间
-- 资源使用情况
+# 测试特定文件
+python scripts/batch_test.py --file ./translated/weekly_contest_123_p1_cpp.rs
+```
 
-### 2. 按难度统计 
+### 高级参数
 
-按照LeetCode题目难度（Easy、Medium、Hard）分类统计：
-- 每个难度级别的题目数量
-- 翻译成功率和编译成功率
-- 测试用例平均通过率
-- 平均运行时间
-- 错误分布情况
+```bash
+# 设置超时和重试
+python scripts/batch_test.py --timeout 1200 --retry-count 2
 
-### 3. 按语言统计
+# 指定输出目录和并行数
+python scripts/batch_test.py --output-dir ./custom_results --max-workers 2
+```
 
-比较C和C++代码的：
-- 翻译成功率
-- 编译成功率
-- 测试用例平均通过率
-- 平均运行时间
-- 常见错误类型
+### 所有可用参数
 
-### 4. 按标签统计
+- `--directory PATH`: 要测试的目录（默认：./translated）
+- `--file PATH`: 测试特定文件
+- `--timeout N`: 每个测试任务的超时时间，单位秒（默认：1800）
+- `--max-workers N`: 最大并行工作线程数（默认：2）
+- `--retry-count N`: 失败测试的重试次数（默认：1）
+- `--output-dir PATH`: 测试结果输出目录（默认：./test_results）
 
-按照算法类型和数据结构（如树、图、动态规划等）分类统计：
-- 每种类型的题目数量
-- 翻译成功率和编译成功率
-- 测试用例平均通过率
-- 平均运行时间
-- 特定类型的错误分析
+## LLM 特定测试
 
-### 5. 按比赛统计
+LLM 特定测试脚本用于测试和比较各种 LLM 模型翻译的 Rust 代码质量。
 
-按照LeetCode周赛分类统计：
-- 每场比赛的题目数量
-- 翻译成功率和编译成功率
-- 测试用例平均通过率
-- 平均运行时间
-- 比赛难度分布
+### 基本用法
 
-## 脚本文件说明
+```bash
+# 测试所有 LLM 翻译的文件
+python scripts/batch_test_llm.py
 
-- `scripts/batch_translate.py`：主要的批量翻译和测试脚本
-- `scripts/batch_test.py`：批量测试已翻译的Rust文件的脚本
-- `scripts/generate_test_reports.py`：生成测试报告的脚本
-- `scripts/setup_reports_dir.sh`：创建翻译报告目录的脚本
-- `scripts/run_example.sh`：运行单个示例的脚本
-- `scripts/README.md`：详细的脚本使用说明
+# 只生成报告，不进行测试
+python scripts/batch_test_llm.py --skip-tests
 
-## 注意事项
+# 只进行测试，不生成报告
+python scripts/batch_test_llm.py --skip-report
+```
 
-- 批量翻译可能需要较长时间，特别是文件较多时
-- 批量翻译过程中可能会消耗大量API调用，请注意API使用成本
-- 如果遇到网络问题或API限制，可以考虑减少并行线程数或分批次运行
-- 建议定期备份翻译结果和测试报告
-- 监控系统资源使用情况，必要时调整并行度
+### 高级用法
 
-## 资源管理
+```bash
+# 指定特定的 LLM 模型进行测试
+python scripts/batch_test_llm.py --models claude-3-7-sonnet-20250219-default gpt-4o-2024-11-20-default
+
+# 设置超时和并行数
+python scripts/batch_test_llm.py --timeout 1800 --max-workers 2
+```
+
+### 所有可用参数
+
+- `--skip-tests`: 跳过测试，只生成报告
+- `--skip-report`: 跳过报告生成，只运行测试
+- `--models MODEL1 MODEL2 ...`: 指定要测试的模型名称
+- `--timeout N`: 每个测试任务的超时时间，单位秒（默认：1800）
+- `--max-workers N`: 最大并行工作线程数（默认：2）
+- `--output-dir PATH`: 指定测试结果输出目录
+
+## 报告生成
+
+报告生成脚本可以基于测试结果创建综合报告。
+
+### 基本用法
+
+```bash
+# 生成标准测试报告
+python scripts/generate_test_reports.py
+
+# 生成 LLM 测试报告
+python scripts/generate_test_reports.py --llm
+
+# 指定输出格式
+python scripts/generate_test_reports.py --format all
+```
+
+### 高级用法
+
+```bash
+# 指定天数范围和是否包含详细信息
+python scripts/generate_test_reports.py --days 7 --include-details
+
+# 生成特定模型的报告
+python scripts/generate_test_reports.py --llm --models claude-3-7-sonnet-20250219-default
+```
+
+### 所有可用参数
+
+- `--days N`: 包含最近 N 天的测试结果（默认：7）
+- `--format FORMAT`: 输出格式：markdown、json、csv 或 all（默认：markdown）
+- `--output-dir PATH`: 报告输出目录（默认：./test_reports 或 ./llm_test_reports）
+- `--include-details`: 包含详细的测试用例信息
+- `--llm`: 使用 LLM 测试结果目录
+- `--models MODEL1 MODEL2 ...`: 指定要报告的模型
+
+## 资源管理策略
+
+该工具使用智能资源管理来确保系统稳定运行：
 
 ### 系统负载监控
 
-- CPU使用率监控
-- 内存使用情况跟踪
-- 磁盘I/O监控
-- 网络带宽使用情况
+- 自动监控 CPU 和内存使用情况
+- 当系统负载过高时，自动延迟任务执行
+- 可配置的资源使用阈值（默认 CPU 和内存阈值为 80%）
 
-### 自动调节机制
+### 进程管理
 
-- 系统过载时自动降低并行度
-- 资源不足时自动暂停任务
-- 动态调整超时时间
-- 智能任务调度
+- Cargo 进程的并发控制（文件锁）
+- 随机任务启动延迟，避免资源尖峰
+- 优雅的进程终止和资源释放
 
-### 错误处理
+### 超时处理
 
-- 自动重试机制
-- 错误分类和统计
-- 详细的错误日志
-- 失败任务恢复
+- 可配置的超时时间
+- 宽限期处理，确保测试结果被保存
+- 智能进程树终止，防止僵尸进程
 
 ## 最佳实践
 
-1. 资源管理
-   - 从较少的工作线程开始（2-4）
-   - 执行过程中监控系统资源
-   - 根据问题复杂度调整超时时间
-   - 定期检查系统负载
+1. **翻译策略**
+   - 从少量文件开始测试翻译质量
+   - 对于复杂问题，适当增加超时时间
+   - 为不同 LLM 模型保存单独的翻译结果
 
-2. 测试策略
-   - 按相似复杂度分批运行测试
-   - 使用适当的超时值
-   - 对可能不稳定的测试启用重试
-   - 保存中间结果
+2. **测试策略**
+   - 限制并行测试数量（2-4 个）避免资源竞争
+   - 对大型测试用例适当增加超时时间
+   - 为不稳定测试启用重试功能
 
-3. 报告生成
-   - 定期生成报告
-   - 保留历史数据用于趋势分析
-   - 包含失败案例的详细信息
-   - 分析错误模式和趋势
+3. **报告生成**
+   - 定期生成报告以跟踪进度
+   - 使用 `--include-details` 获取深入的失败分析
+   - 保留历史报告以便比较不同版本的性能
 
-## 故障排除
+## 常见问题解决
 
-### 常见问题
+### 1. 翻译失败
 
-1. 系统资源问题
-   - 减少工作线程数
-   - 增加超时时间
-   - 监控系统负载
-   - 清理临时文件
+- 检查 `llm_config.json` 的配置是否正确
+- 验证 API 密钥是否有效
+- 检查网络连接
+- 尝试增加超时时间
 
-2. Cargo锁冲突
-   - 检查锁文件
-   - 清理锁文件
-   - 减少并发操作
-   - 使用文件锁机制
+### 2. 测试超时
 
-3. 测试失败
-   - 检查编译错误
-   - 验证测试用例
-   - 调整超时设置
-   - 启用重试机制
+- 增加 `--timeout` 参数的值
+- 减少 `--max-workers` 以减轻系统负载
+- 检查测试代码中是否有无限循环
+- 使用 `--retry-count` 重试不稳定的测试
 
-### 解决方案
+### 3. 资源耗尽
 
-1. 性能优化
-   - 调整并行度
-   - 优化资源使用
-   - 改进错误处理
-   - 优化测试策略
+- 减少 `--max-workers` 参数值
+- 在高负载时段避免运行批量任务
+- 监控系统资源使用情况
+- 考虑清理已完成的测试结果
 
-2. 稳定性提升
-   - 完善错误处理
-   - 增加重试机制
-   - 改进资源管理
-   - 优化报告生成
+## 完整执行流程示例
 
-3. 可维护性
-   - 完善文档
-   - 添加日志
-   - 改进代码结构
-   - 增加测试覆盖
+执行完整的翻译、测试、报告生成工作流：
 
-## 配置示例
+```bash
+# 1. 配置 LLM API
+cp llm_config.json.example llm_config.json
+# 编辑 llm_config.json 配置文件
 
-```json
-{
-    "batch_translate": {
-        "max_workers": 4,
-        "timeout": 600,
-        "retry_count": 2,
-        "resource_thresholds": {
-            "cpu_percent": 80,
-            "memory_percent": 80,
-            "disk_percent": 90
-        }
-    },
-    "batch_test": {
-        "max_workers": 2,
-        "timeout": 1800,
-        "retry_count": 1,
-        "test_categories": ["unit", "integration"]
-    },
-    "report_generation": {
-        "days": 7,
-        "format": "markdown",
-        "include_details": true,
-        "charts": true
-    }
-}
+# 2. 批量翻译 C++ 解决方案
+python scripts/batch_translate.py --language CPP --max-workers 2
+
+# 3. 批量测试翻译结果
+python scripts/batch_test.py --max-workers 2 --retry-count 1
+
+# 4. 生成综合报告
+python scripts/generate_test_reports.py --format all --include-details
+
+# 5. LLM 特定测试（如果使用多个 LLM 模型）
+python scripts/batch_test_llm.py
+
+# 6. 生成 LLM 对比报告
+python scripts/generate_test_reports.py --llm --format all
 ``` 

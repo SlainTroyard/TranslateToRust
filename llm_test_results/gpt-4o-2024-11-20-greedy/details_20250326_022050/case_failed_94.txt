@@ -1,0 +1,20 @@
+==== 测试用例 94 (failed) ====
+
+输入:
+9 8
+MESSAGE 922 ALL
+OFFLINE 956 id3
+MESSAGE 98 id3 id8 id2
+MESSAGE 378 id8 id2
+MESSAGE 773 ALL
+MESSAGE 864 ALL
+MESSAGE 775 HERE
+OFFLINE 436 id6
+期望输出:
+Mentions: 4 4 4 5 4 4 4 4 4
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gpt-4o-2024-11-20-greedy/weekly_contest_434_p2_c.rs:101:37:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

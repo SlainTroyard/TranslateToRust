@@ -1,0 +1,22 @@
+==== 测试用例 27 (failed) ====
+
+输入:
+9
+3 3 3 3 3 3 3 3 3
+65 83 16
+49 80 24
+73 62 20
+20 30 3
+77 40 70
+44 23 25
+92 35 37
+21 17 95
+77 36 88
+期望输出:
+662
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gpt-4o-2024-11-20-default/weekly_contest_413_p3_c.rs:22:29:
+index out of bounds: the len is 3 but the index is 3
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

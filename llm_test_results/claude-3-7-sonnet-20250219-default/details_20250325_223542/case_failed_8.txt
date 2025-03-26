@@ -1,0 +1,12 @@
+==== 测试用例 8 (failed) ====
+
+输入:
+0205780461345547245921755534145039438113421741627738006340365262002757176191
+期望输出:
+400383390
+实际输出:
+ERROR: Process exited with code -6: 
+thread 'main' has overflowed its stack
+fatal runtime error: stack overflow
+
+运行时间: 0.00 ms

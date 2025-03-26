@@ -1,0 +1,59 @@
+==== 测试用例 32 (passed) ====
+
+输入:
+47
+ag
+yg
+eg
+yv
+vk
+bk
+qb
+va
+ev
+ke
+vg
+bv
+ea
+qk
+aq
+ge
+ba
+yy
+gb
+kb
+ya
+ab
+aa
+ey
+ek
+qy
+gk
+ye
+qa
+yb
+gy
+bg
+qg
+ee
+ga
+gv
+kg
+bb
+qv
+yk
+be
+kv
+kk
+qq
+av
+ky
+vb
+期望输出:
+2 2 0 0 2 0 1 0 0 0 2 0 0 0 0 0 2 0 0 0 0 2 0 0 2 0 
+2 2 0 0 2 0 2 0 0 0 2 0 0 0 0 0 2 0 0 0 0 1 0 0 2 0
+实际输出:
+2 2 0 0 2 0 1 0 0 0 2 0 0 0 0 0 2 0 0 0 0 2 0 0 2 0
+2 2 0 0 2 0 2 0 0 0 2 0 0 0 0 0 2 0 0 0 0 1 0 0 2 0
+
+运行时间: 0.59 ms

@@ -1,0 +1,46 @@
+==== 测试用例 30 (passed) ====
+
+输入:
+36
+cy
+gb
+cb
+gc
+jj
+pg
+cj
+yp
+yb
+bj
+cc
+gg
+jc
+cg
+py
+bc
+bg
+by
+gp
+jg
+jp
+pc
+jb
+jy
+bp
+yj
+pb
+gy
+pp
+bb
+yg
+yy
+pj
+yc
+cp
+gj
+期望输出:
+0 2 2 0 0 0 2 0 0 2 0 0 0 0 0 2 0 0 0 0 0 0 0 0 2 0
+实际输出:
+0 2 2 0 0 0 2 0 0 2 0 0 0 0 0 2 0 0 0 0 0 0 0 0 2 0
+
+运行时间: 0.60 ms

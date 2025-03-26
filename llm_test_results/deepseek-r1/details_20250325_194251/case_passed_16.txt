@@ -1,0 +1,12 @@
+==== 测试用例 16 (passed) ====
+
+输入:
+4 2
+MESSAGE 815 ALL
+OFFLINE 394 id1
+期望输出:
+Mentions: 1 1 1 1
+实际输出:
+Mentions: 1 1 1 1
+
+运行时间: 1.66 ms

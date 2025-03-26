@@ -1,0 +1,10 @@
+==== 测试用例 68 (passed) ====
+
+输入:
+aqynvplmc
+期望输出:
+a aa ab ac ad ae af ag ah ai aj ak al am an ao ap aq aqa aqb aqc aqd aqe aqf aqg aqh aqi aqj aqk aql aqm aqn aqo aqp aqq aqr aqs aqt aqu aqv aqw aqx aqy aqya aqyb aqyc aqyd aqye aqyf aqyg aqyh aqyi aqyj aqyk aqyl aqym aqyn aqyna aqynb aqync aqynd aqyne aqynf aqyng aqynh aqyni aqynj aqynk aqynl aqynm aqynn aqyno aqynp aqynq aqynr aqyns aqynt aqynu aqynv aqynva aqynvb aqynvc aqynvd aqynve aqynvf aqynvg aqynvh aqynvi aqynvj aqynvk aqynvl aqynvm aqynvn aqynvo aqynvp aqynvpa aqynvpb aqynvpc aqynvpd aqynvpe aqynvpf aqynvpg aqynvph aqynvpi aqynvpj aqynvpk aqynvpl aqynvpla aqynvplb aqynvplc aqynvpld aqynvple aqynvplf aqynvplg aqynvplh aqynvpli aqynvplj aqynvplk aqynvpll aqynvplm aqynvplma aqynvplmb aqynvplmc
+实际输出:
+a aa ab ac ad ae af ag ah ai aj ak al am an ao ap aq aqa aqb aqc aqd aqe aqf aqg aqh aqi aqj aqk aql aqm aqn aqo aqp aqq aqr aqs aqt aqu aqv aqw aqx aqy aqya aqyb aqyc aqyd aqye aqyf aqyg aqyh aqyi aqyj aqyk aqyl aqym aqyn aqyna aqynb aqync aqynd aqyne aqynf aqyng aqynh aqyni aqynj aqynk aqynl aqynm aqynn aqyno aqynp aqynq aqynr aqyns aqynt aqynu aqynv aqynva aqynvb aqynvc aqynvd aqynve aqynvf aqynvg aqynvh aqynvi aqynvj aqynvk aqynvl aqynvm aqynvn aqynvo aqynvp aqynvpa aqynvpb aqynvpc aqynvpd aqynvpe aqynvpf aqynvpg aqynvph aqynvpi aqynvpj aqynvpk aqynvpl aqynvpla aqynvplb aqynvplc aqynvpld aqynvple aqynvplf aqynvplg aqynvplh aqynvpli aqynvplj aqynvplk aqynvpll aqynvplm aqynvplma aqynvplmb aqynvplmc 
+
+运行时间: 0.56 ms

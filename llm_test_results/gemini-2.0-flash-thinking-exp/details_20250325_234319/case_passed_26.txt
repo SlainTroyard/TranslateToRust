@@ -1,0 +1,28 @@
+==== 测试用例 26 (passed) ====
+
+输入:
+IT
+8
+IT Z 8.11
+Z I 1.58
+I JH 4.7
+JH RXW 7.52
+RXW XTW 5.93
+XTW JQ 9.21
+JQ TXT 3.84
+TXT SI 2.78
+8
+SI U 8.98
+U KZY 1.36
+KZY NHF 9.68
+NHF TCJ 7.12
+TCJ EI 4.9
+EI NVX 5.03
+NVX U 2.06
+U IT 9.1
+期望输出:
+102689788006.29854
+实际输出:
+102689788006.29854
+
+运行时间: 1.36 ms

@@ -1,0 +1,11 @@
+==== 测试用例 179 (passed) ====
+
+输入:
+drhnsbdwdmotikyjriaztypwiooesmxvf
+13
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 0.73 ms

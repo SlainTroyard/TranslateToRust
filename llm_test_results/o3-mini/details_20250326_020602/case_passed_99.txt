@@ -1,0 +1,12 @@
+==== 测试用例 99 (passed) ====
+
+输入:
+246
+yyyscfkwjoccssokyunmvvjyucubjwqvaszniefatcjxhioxcpawzedcoptllftfswjfwtcpmffmnsyatfqaddwugkohlkejqvwqazvaoptvxxgfgqouqasylkovtfncupekziadcfbqpyqcvqwvjkaknkekurdddsnufwshzqzxacjdpddnmqqsoauqkvlldoyiagwyzsvasxaznupimmvfwqfsvfsdlsgebchlbipezpmpesqasw
+139
+期望输出:
+89
+实际输出:
+89
+
+运行时间: 0.86 ms

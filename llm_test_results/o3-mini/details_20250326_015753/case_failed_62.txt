@@ -1,0 +1,11 @@
+==== 测试用例 62 (failed) ====
+
+输入:
+c7
+f4
+期望输出:
+true
+实际输出:
+ERROR: Process exited with code 1: Error: "Expected at least two coordinates as input."
+
+运行时间: 0.00 ms

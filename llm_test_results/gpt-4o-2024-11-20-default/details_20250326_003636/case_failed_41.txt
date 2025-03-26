@@ -1,0 +1,11 @@
+==== 测试用例 41 (failed) ====
+
+输入:
+g4
+g7
+期望输出:
+false
+实际输出:
+ERROR: Process exited with code 1: Error: Please provide exactly 2 chessboard coordinates.
+
+运行时间: 0.00 ms

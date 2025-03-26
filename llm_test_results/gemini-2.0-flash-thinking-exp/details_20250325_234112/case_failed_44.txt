@@ -1,0 +1,19 @@
+==== 测试用例 44 (failed) ====
+
+输入:
+5 7
+OFFLINE 332 id3
+MESSAGE 372 id3 id4 id0
+MESSAGE 649 HERE
+MESSAGE 234 ALL
+MESSAGE 630 id0 id2 id1 id0 id2
+OFFLINE 165 id4
+MESSAGE 605 id2
+期望输出:
+5 3 5 3 3
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gemini-2.0-flash-thinking-exp/weekly_contest_434_p2_cpp.rs:122:46:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

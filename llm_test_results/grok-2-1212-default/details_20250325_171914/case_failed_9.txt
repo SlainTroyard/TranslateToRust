@@ -1,0 +1,12 @@
+==== 测试用例 9 (failed) ====
+
+输入:
+131
+nylrailkyqiqbgcvgcuqnjamjgqybhzkratrbstpuxakhjncwiuycgnipccplgcbrdvxzqsviosajienkmpwqdevnhqfbviadqqwxopbcrhvvzfbdrbnsswyhawjxaclrne
+62
+期望输出:
+58
+实际输出:
+68
+
+运行时间: 1.25 ms

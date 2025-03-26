@@ -1,0 +1,10 @@
+==== 测试用例 69 (passed) ====
+
+输入:
+qxlrdhkc
+期望输出:
+a b c d e f g h i j k l m n o p q qa qb qc qd qe qf qg qh qi qj qk ql qm qn qo qp qq qr qs qt qu qv qw qx qxa qxb qxc qxd qxe qxf qxg qxh qxi qxj qxk qxl qxla qxlb qxlc qxld qxle qxlf qxlg qxlh qxli qxlj qxlk qxll qxlm qxln qxlo qxlp qxlq qxlr qxlra qxlrb qxlrc qxlrd qxlrda qxlrdb qxlrdc qxlrdd qxlrde qxlrdf qxlrdg qxlrdh qxlrdha qxlrdhb qxlrdhc qxlrdhd qxlrdhe qxlrdhf qxlrdhg qxlrdhh qxlrdhi qxlrdhj qxlrdhk qxlrdhka qxlrdhkb qxlrdhkc
+实际输出:
+a b c d e f g h i j k l m n o p q qa qb qc qd qe qf qg qh qi qj qk ql qm qn qo qp qq qr qs qt qu qv qw qx qxa qxb qxc qxd qxe qxf qxg qxh qxi qxj qxk qxl qxla qxlb qxlc qxld qxle qxlf qxlg qxlh qxli qxlj qxlk qxll qxlm qxln qxlo qxlp qxlq qxlr qxlra qxlrb qxlrc qxlrd qxlrda qxlrdb qxlrdc qxlrdd qxlrde qxlrdf qxlrdg qxlrdh qxlrdha qxlrdhb qxlrdhc qxlrdhd qxlrdhe qxlrdhf qxlrdhg qxlrdhh qxlrdhi qxlrdhj qxlrdhk qxlrdhka qxlrdhkb qxlrdhkc 
+
+运行时间: 1.32 ms

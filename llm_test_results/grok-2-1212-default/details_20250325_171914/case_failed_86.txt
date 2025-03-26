@@ -1,0 +1,12 @@
+==== 测试用例 86 (failed) ====
+
+输入:
+166
+ecijslwzdtznlcmnwxfywiqxmsbnscftzmxwoixazmxzmyzosdlhgclurhrzdyvhgdqcyaexjuokzrrseyqronzjtqbrgpfwhjmtcnzrjaghliqfxyfbzfdnphogrcogavsltcaaiscbkpootkrlrhungyzqyvacgzrftx
+14
+期望输出:
+0
+实际输出:
+8
+
+运行时间: 0.57 ms

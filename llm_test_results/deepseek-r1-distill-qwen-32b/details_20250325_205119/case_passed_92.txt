@@ -1,0 +1,11 @@
+==== 测试用例 92 (passed) ====
+
+输入:
+qstracjatrhplzjrgmikkqhszejzxifnzmwzwufavyqwabngymrsdzehebynfocuuhwykuqykevdjlmkljnbjtpigndtofjcwv
+7
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 0.76 ms

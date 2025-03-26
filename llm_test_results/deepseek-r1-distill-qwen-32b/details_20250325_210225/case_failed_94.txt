@@ -1,0 +1,14 @@
+==== 测试用例 94 (failed) ====
+
+输入:
+45
+-236 -524 -702 -458 -261 -197 193 -918 -201 -61 -790 774 -105 847 -220 -76 -966 558 -612 703 -781 -519 325 559 512 640 438 881 -956 307 317 400 240 680 -802 -311 900 466 919 23 502 142 -912 633 809
+1
+期望输出:
+true
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/deepseek-r1-distill-qwen-32b/weekly_contest_423_p1_c.rs:46:47:
+Invalid number: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

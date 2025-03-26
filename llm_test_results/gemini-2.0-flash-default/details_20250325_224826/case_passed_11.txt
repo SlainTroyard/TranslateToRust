@@ -1,0 +1,10 @@
+==== 测试用例 11 (passed) ====
+
+输入:
+kzbqawuauzauwstanrxufzwyhfbgvwwzjbvflypwjlndgwgufsefktffunwgmysrxofnat
+期望输出:
+3
+实际输出:
+3
+
+运行时间: 0.90 ms

@@ -1,0 +1,14 @@
+==== 测试用例 94 (failed) ====
+
+输入:
+20
+-558 95 860 -896 -808 -923 930 -60 366 128 -135 124 -405 -315 85 134 -494 -991 -504 309
+7 16
+期望输出:
+25
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-thinking/weekly_contest_425_p1_cpp.rs:39:49:
+Failed to parse array element: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

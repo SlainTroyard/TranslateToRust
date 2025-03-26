@@ -1,0 +1,46 @@
+==== 测试用例 90 (passed) ====
+
+输入:
+36
+xy
+oh
+yh
+hy
+ux
+ox
+hh
+uh
+ee
+xx
+eh
+oo
+yo
+yx
+xe
+uo
+yu
+uu
+eo
+xh
+yy
+xu
+ou
+he
+hx
+oe
+uy
+oy
+ye
+ho
+hu
+ex
+ue
+ey
+xo
+eu
+期望输出:
+0 0 0 0 2 0 0 2 0 0 0 0 0 0 2 0 0 0 0 0 2 0 0 2 2 0
+实际输出:
+0 0 0 0 2 0 0 2 0 0 0 0 0 0 2 0 0 0 0 0 2 0 0 2 2 0
+
+运行时间: 0.60 ms

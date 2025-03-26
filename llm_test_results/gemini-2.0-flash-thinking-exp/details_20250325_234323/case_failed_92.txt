@@ -1,0 +1,15 @@
+==== 测试用例 92 (failed) ====
+
+输入:
+21 24
+4
+47 36
+42 17
+0 28
+37 30
+期望输出:
+64
+实际输出:
+ERROR: Process exited with code -6: memory allocation of 27021597764222976 bytes failed
+
+运行时间: 0.00 ms

@@ -1,0 +1,10 @@
+==== 测试用例 61 (failed) ====
+
+输入:
+xuatyahrrfsxiedlvejoutzkylxxxlezvujsjtmotitqemyihsrjyuoyuswyyxewkqtrqltqjrzvbylelsvzdzep
+49
+期望输出:
+0
+实际输出:
+
+运行时间: 1.62 ms

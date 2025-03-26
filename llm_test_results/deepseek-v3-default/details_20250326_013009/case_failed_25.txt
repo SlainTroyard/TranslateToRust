@@ -1,0 +1,13 @@
+==== 测试用例 25 (failed) ====
+
+输入:
+7 3
+MESSAGE 810 ALL
+MESSAGE 385 id5 id4 id2 id6
+MESSAGE 803 ALL
+期望输出:
+Mentions: 1 1 1 1 1 2 1
+实际输出:
+Mentions: 0 0 0 0 0 0 0 
+
+运行时间: 0.58 ms

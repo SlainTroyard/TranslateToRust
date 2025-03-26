@@ -1,0 +1,11 @@
+==== 测试用例 139 (passed) ====
+
+输入:
+fyljskojeyvskwrmhlofnmomrmuwuonlqzpaojypochvewyogkxjtkyugalda
+4
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 0.83 ms

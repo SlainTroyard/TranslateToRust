@@ -1,0 +1,11 @@
+==== 测试用例 47 (failed) ====
+
+输入:
+12 943447796
+783261 113130 748361 707559 345766 411367 37753 938160 527429 424691 235834 20282
+期望输出:
+5248436683506
+实际输出:
+ERROR: Process exited with code 1: Error: Custom { kind: InvalidData, error: "Invalid point at index 0" }
+
+运行时间: 0.00 ms

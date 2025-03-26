@@ -1,0 +1,13 @@
+==== 测试用例 84 (failed) ====
+
+输入:
+266
+FEEEFEFWEEWEFEWFEWEEFEFEEFWEEWWWEFEFWEEWWFFWEEEFFEWFWFEFFWWFWWFEWWFEWWFFEWFEEFWFFFFFEWFFFWEEFEWEEFFEFFFFWFWWEFFWWFWWEWFFEEFFWWEWFWEWWFWEWWFEWEEFFWEFFFEWFEFWEWWFWWEEEEWEEEEEFFEEEWFWEEFEEWWFWEWWFFEFEFEWFEEFFEWFFWEWEWEWEEFFFEFWEEWWEFEEEFEEFFFEFWEWWFFFEWFWEFEWEFFEFFEWWE
+期望输出:
+974176212
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/deepseek-v3-greedy/weekly_contest_419_p3_c.rs:14:17:
+index out of bounds: the len is 3 but the index is 5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

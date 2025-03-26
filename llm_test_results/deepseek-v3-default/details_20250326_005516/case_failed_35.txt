@@ -1,0 +1,22 @@
+==== 测试用例 35 (failed) ====
+
+输入:
+4 10
+OFFLINE 466 id0
+MESSAGE 490 id3 id1 id2 id2
+OFFLINE 426 id2
+MESSAGE 540 HERE
+MESSAGE 883 ALL
+MESSAGE 99 HERE
+MESSAGE 253 HERE
+OFFLINE 954 id1
+OFFLINE 899 id3
+MESSAGE 516 id3
+期望输出:
+4 5 6 6
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/deepseek-v3-default/weekly_contest_434_p2_cpp.rs:100:45:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

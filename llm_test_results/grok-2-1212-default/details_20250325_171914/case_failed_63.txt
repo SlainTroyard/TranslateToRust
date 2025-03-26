@@ -1,0 +1,12 @@
+==== 测试用例 63 (failed) ====
+
+输入:
+90
+ldikwacsdhlfokuxceqsxpfvmyystcxonkczwqvxxkpzhedjzagflzxssuzmmicztuovkxeptyhsyufoepjpfwcnpd
+14
+期望输出:
+3
+实际输出:
+0
+
+运行时间: 0.57 ms

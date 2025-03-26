@@ -1,0 +1,13 @@
+==== 测试用例 51 (failed) ====
+
+输入:
+34
+3 20 13 14 8 4 29 14 21 20 25 19 14 18 29 29 24 18 5 23 1 6 1 1 6 20 26 17 16 22 28 4 30 9
+期望输出:
+776363187600
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/o3-mini/weekly_contest_421_p1_cpp.rs:26:9:
+attempt to multiply with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,11 @@
+==== 测试用例 93 (failed) ====
+
+输入:
+prqnsmpgmbdngnirgtouablhynemeywglgixgcacdswouxekztnbnypohtmibkvullqlxktprueypfmptebspwfnelobzdmbhedy
+80
+期望输出:
+0
+实际输出:
+ERROR: Process exited with code 1: Error: Custom { kind: InvalidInput, error: "Invalid input format" }
+
+运行时间: 0.00 ms

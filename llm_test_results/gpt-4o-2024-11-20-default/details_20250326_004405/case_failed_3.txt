@@ -1,0 +1,14 @@
+==== 测试用例 3 (failed) ====
+
+输入:
+1483
+12
+1 1 1 1 0 0 0 1 0 1 0 0
+期望输出:
+d
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gpt-4o-2024-11-20-default/weekly_contest_417_p4_c.rs:58:46:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,14 @@
+==== 测试用例 23 (failed) ====
+
+输入:
+2
+5 89 33 95 43 40 69
+72 44 92 97 92 32 22
+期望输出:
+192
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/deepseek-v3-default/weekly_contest_413_p3_cpp.rs:15:57:
+Invalid grid column size: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

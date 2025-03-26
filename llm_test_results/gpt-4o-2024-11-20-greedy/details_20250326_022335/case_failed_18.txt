@@ -1,0 +1,13 @@
+==== 测试用例 18 (failed) ====
+
+输入:
+100
+152 128 45 143 113 152 109 196 181 26 148 35 75 78 125 192 136 53 164 20 67 13 177 183 134 8 41 50 172 8 88 128 195 32 18 194 154 192 6 176 31 114 146 29 27 53 187 179 91 38 28 118 141 87 169 97 161 89 97 11 153 176 108 29 162 117 186 23 3 148 44 21 99 72 89 7 186 15 7 69 15 21 20 53 133 188 84 77 194 187 38 45 82 133 134 151 39 173 163 193
+期望输出:
+675985878
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gpt-4o-2024-11-20-greedy/weekly_contest_421_p3_c.rs:38:27:
+attempt to multiply with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

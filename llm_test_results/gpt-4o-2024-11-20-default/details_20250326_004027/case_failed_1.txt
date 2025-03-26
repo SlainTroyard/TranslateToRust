@@ -1,0 +1,14 @@
+==== 测试用例 1 (failed) ====
+
+输入:
+4
+1
+3
+1
+5
+期望输出:
+7
+实际输出:
+ERROR: Process exited with code 1: Error: "The size of the input array doesn't match numsSize."
+
+运行时间: 0.00 ms

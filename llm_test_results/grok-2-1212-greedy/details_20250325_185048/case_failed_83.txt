@@ -1,0 +1,11 @@
+==== 测试用例 83 (failed) ====
+
+输入:
+47 9
+1
+1 34
+期望输出:
+25
+实际输出:
+ERROR: Process exited with code -11
+运行时间: 0.00 ms

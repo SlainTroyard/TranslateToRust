@@ -1,0 +1,14 @@
+==== 测试用例 16 (failed) ====
+
+输入:
+26 10
+41
+12 36 23 46 47 13 4 42 4 14 37 8 41 42 2 27 48 8 43 3 47 5 33 15 21 12 33 7 34 40 37 11 8 31 42 49 29 14 7 29 25
+期望输出:
+441 483 483 483 477 467 467 501 459 501 516 479 471 444 423 423
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gpt-4o-2024-11-20-default/weekly_contest_419_p1_c.rs:60:49:
+Invalid numsSize: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

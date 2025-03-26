@@ -1,0 +1,10 @@
+==== 测试用例 7 (passed) ====
+
+输入:
+uidzvetgha
+期望输出:
+a b c d e f g h i j k l m n o p q r s t u ua ub uc ud ue uf ug uh ui uia uib uic uid uida uidb uidc uidd uide uidf uidg uidh uidi uidj uidk uidl uidm uidn uido uidp uidq uidr uids uidt uidu uidv uidw uidx uidy uidz uidza uidzb uidzc uidzd uidze uidzf uidzg uidzh uidzi uidzj uidzk uidzl uidzm uidzn uidzo uidzp uidzq uidzr uidzs uidzt uidzu uidzv uidzva uidzvb uidzvc uidzvd uidzve uidzvea uidzveb uidzvec uidzved uidzvee uidzvef uidzveg uidzveh uidzvei uidzvej uidzvek uidzvel uidzvem uidzven uidzveo uidzvep uidzveq uidzver uidzves uidzvet uidzveta uidzvetb uidzvetc uidzvetd uidzvete uidzvetf uidzvetg uidzvetga uidzvetgb uidzvetgc uidzvetgd uidzvetge uidzvetgf uidzvetgg uidzvetgh uidzvetgha
+实际输出:
+a b c d e f g h i j k l m n o p q r s t u ua ub uc ud ue uf ug uh ui uia uib uic uid uida uidb uidc uidd uide uidf uidg uidh uidi uidj uidk uidl uidm uidn uido uidp uidq uidr uids uidt uidu uidv uidw uidx uidy uidz uidza uidzb uidzc uidzd uidze uidzf uidzg uidzh uidzi uidzj uidzk uidzl uidzm uidzn uidzo uidzp uidzq uidzr uidzs uidzt uidzu uidzv uidzva uidzvb uidzvc uidzvd uidzve uidzvea uidzveb uidzvec uidzved uidzvee uidzvef uidzveg uidzveh uidzvei uidzvej uidzvek uidzvel uidzvem uidzven uidzveo uidzvep uidzveq uidzver uidzves uidzvet uidzveta uidzvetb uidzvetc uidzvetd uidzvete uidzvetf uidzvetg uidzvetga uidzvetgb uidzvetgc uidzvetgd uidzvetge uidzvetgf uidzvetgg uidzvetgh uidzvetgha 
+
+运行时间: 0.59 ms

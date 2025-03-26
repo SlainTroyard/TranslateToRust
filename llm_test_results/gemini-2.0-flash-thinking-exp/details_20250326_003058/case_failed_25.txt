@@ -1,0 +1,13 @@
+==== 测试用例 25 (failed) ====
+
+输入:
+40
+48 51 5 74 7 59 40 19 82 19 84 83 55 18 26 98 82 84 38 9 44 76 15 31 11 47 23 95 19 41 69 30 31 8 48 98 86 92 55 55
+期望输出:
+0
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gemini-2.0-flash-thinking-exp/weekly_contest_434_p1_c.rs:36:47:
+Invalid input for number: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

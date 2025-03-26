@@ -1,0 +1,44 @@
+==== 测试用例 34 (passed) ====
+
+输入:
+34
+pd
+xs
+dd
+gc
+cp
+dx
+pa
+gs
+dg
+aa
+cx
+gn
+sp
+na
+sx
+sd
+ns
+np
+cg
+nd
+gd
+sn
+gx
+cd
+xa
+an
+dp
+sg
+nn
+da
+pn
+xc
+gg
+dn
+期望输出:
+2 0 1 2 0 0 2 0 0 0 0 0 0 2 0 1 0 0 1 0 0 0 0 2 0 0
+实际输出:
+2 0 1 2 0 0 2 0 0 0 0 0 0 2 0 1 0 0 1 0 0 0 0 2 0 0 
+
+运行时间: 0.77 ms

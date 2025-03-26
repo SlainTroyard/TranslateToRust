@@ -1,0 +1,19 @@
+==== 测试用例 21 (failed) ====
+
+输入:
+4
+-33614 68140 -724 41521
+-29037 86339 43817 35955
+61807 -70843 -94272 28891
+-871 -2144 -60284 -20416
+期望输出:
+86339 28891 -724 41521 
+-29037 -20416 43817 35955 
+61807 -60284 -33614 68140 
+-871 -2144 -70843 -94272
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/grok-2-1212-greedy/weekly_contest_436_p1_c.rs:30:27:
+index out of bounds: the len is 4 but the index is 4
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

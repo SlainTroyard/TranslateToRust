@@ -1,0 +1,11 @@
+==== 测试用例 4 (passed) ====
+
+输入:
+kaoxohegfwoewrqgeguacasbtoznyocrqjgfguuxnyfzrilzsqxmpmmmbxfwrbqkwpbjpiusiquxpxgqicxm
+37
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 0.60 ms

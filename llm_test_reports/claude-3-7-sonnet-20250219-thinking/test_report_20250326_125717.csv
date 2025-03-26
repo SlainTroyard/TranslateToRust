@@ -1,0 +1,398 @@
+总体统计
+指标,数值,百分比
+总文件数,208,100.00%
+测试成功,92,44.23%
+编译成功,144,69.23%
+超时文件,1,0.48%
+超时用例,9,
+
+语言分布
+语言,数量,百分比
+C,104,50.00%
+CPP,104,50.00%
+
+总体难度统计
+难度,总数,成功率,编译成功率,超时率
+Easy,44,52.27%,70.45%,0.00%
+Medium,96,44.79%,75.00%,1.04%
+Hard,68,38.24%,60.29%,0.00%
+
+总体标签统计
+标签,题目数量,总测试数,成功率,编译成功率,超时率,平均运行时间(ms),平均测试通过率
+Array,134,134,47.76%,74.63%,0.75%,70.27,68.83%
+String,66,66,33.33%,57.58%,0.00%,19.06,61.45%
+Math,58,58,31.03%,63.79%,0.00%,22.54,52.92%
+Hash Table,54,54,44.44%,68.52%,0.00%,37.27,69.84%
+Dynamic Programming,50,50,34.00%,64.00%,0.00%,67.96,56.09%
+Binary Search,30,30,46.67%,63.33%,0.00%,67.46,73.68%
+Greedy,28,28,46.43%,75.00%,0.00%,44.00,61.90%
+Sorting,28,28,57.14%,78.57%,0.00%,42.45,75.36%
+Sliding Window,24,24,41.67%,70.83%,0.00%,21.10,58.82%
+Prefix Sum,22,22,54.55%,81.82%,0.00%,44.25,66.67%
+Matrix,20,20,70.00%,80.00%,0.00%,58.93,87.50%
+Enumeration,20,20,60.00%,90.00%,0.00%,20.00,68.89%
+Bit Manipulation,16,16,37.50%,68.75%,0.00%,3.08,58.18%
+Simulation,16,16,75.00%,87.50%,0.00%,1.56,85.71%
+Number Theory,16,16,37.50%,68.75%,0.00%,26.05,54.64%
+Heap (Priority Queue),14,14,50.00%,71.43%,7.14%,297.31,71.00%
+Graph,14,14,28.57%,57.14%,0.00%,72.62,66.88%
+Depth-First Search,14,14,28.57%,57.14%,0.00%,34.24,62.12%
+Counting,14,14,42.86%,57.14%,0.00%,39.57,75.00%
+Combinatorics,14,14,35.71%,57.14%,0.00%,34.26,62.50%
+Segment Tree,10,10,40.00%,70.00%,0.00%,27.56,65.43%
+Tree,10,10,30.00%,50.00%,0.00%,43.48,60.40%
+Breadth-First Search,8,8,37.50%,75.00%,0.00%,29.97,66.17%
+Bitmask,6,6,16.67%,66.67%,0.00%,16.95,25.00%
+Hash Function,6,6,16.67%,33.33%,0.00%,42.04,50.00%
+Shortest Path,6,6,66.67%,66.67%,0.00%,108.50,100.00%
+Stack,6,6,50.00%,66.67%,0.00%,15.58,75.00%
+String Matching,4,4,0.00%,25.00%,0.00%,0.00,0.00%
+Trie,4,4,0.00%,25.00%,0.00%,0.00,0.00%
+Rolling Hash,4,4,0.00%,25.00%,0.00%,0.00,0.00%
+Recursion,4,4,75.00%,75.00%,0.00%,0.77,100.00%
+Breath-First Search,4,4,25.00%,50.00%,0.00%,30.53,50.00%
+Geometry,4,4,75.00%,100.00%,0.00%,25.22,89.50%
+Binary Indexed Tree,4,4,75.00%,100.00%,0.00%,25.22,89.50%
+Monotonic Stack,4,4,25.00%,50.00%,0.00%,36.93,50.00%
+Game Theory,2,2,50.00%,100.00%,0.00%,16.95,50.00%
+Depth-first Search,2,2,0.00%,0.00%,0.00%,0.00,0.00%
+Binary Tree,2,2,0.00%,0.00%,0.00%,0.00,0.00%
+Two Pointers,2,2,100.00%,100.00%,0.00%,1.08,100.00%
+Queue,2,2,50.00%,100.00%,0.00%,36.93,50.00%
+Monotonic Queue,2,2,50.00%,100.00%,0.00%,36.93,50.00%
+Topological Sort,2,2,0.00%,50.00%,0.00%,0.70,40.00%
+Memoization,2,2,100.00%,100.00%,0.00%,60.52,100.00%
+
+按语言分类统计
+C 总体统计
+指标,数值,百分比
+总数,104,100.00%
+成功率,53,50.96%
+编译成功率,83,79.81%
+超时率,1,0.96%
+平均运行时间(ms),62.10,
+平均测试通过率,65.66%,
+
+C 难度统计
+难度,总数,成功率,编译成功率,超时率
+Easy,22,68.18%,100.00%,0.00%
+Medium,48,47.92%,79.17%,2.08%
+Hard,34,44.12%,67.65%,0.00%
+
+C 标签统计
+标签,题目数量,总测试数,成功率,编译成功率,超时率,平均运行时间(ms),平均测试通过率
+Array,67,67,49.25%,79.10%,1.49%,86.52,65.09%
+String,33,33,42.42%,72.73%,0.00%,20.48,60.00%
+Math,29,29,41.38%,82.76%,0.00%,12.45,54.17%
+Hash Table,27,27,51.85%,77.78%,0.00%,29.69,71.38%
+Dynamic Programming,25,25,36.00%,60.00%,0.00%,53.61,60.00%
+Binary Search,15,15,46.67%,66.67%,0.00%,60.49,70.00%
+Greedy,14,14,50.00%,85.71%,0.00%,41.03,58.33%
+Sorting,14,14,57.14%,85.71%,0.00%,45.09,66.67%
+Sliding Window,12,12,41.67%,75.00%,0.00%,4.20,55.56%
+Prefix Sum,11,11,45.45%,81.82%,0.00%,25.66,55.56%
+Matrix,10,10,70.00%,80.00%,0.00%,38.15,87.50%
+Enumeration,10,10,40.00%,90.00%,0.00%,5.79,48.89%
+Bit Manipulation,8,8,50.00%,75.00%,0.00%,4.00,73.33%
+Simulation,8,8,75.00%,100.00%,0.00%,1.64,75.00%
+Number Theory,8,8,50.00%,87.50%,0.00%,17.73,57.29%
+Heap (Priority Queue),7,7,42.86%,71.43%,14.29%,509.85,62.00%
+Graph,7,7,28.57%,71.43%,0.00%,48.84,48.00%
+Depth-First Search,7,7,42.86%,57.14%,0.00%,52.87,75.00%
+Counting,7,7,57.14%,57.14%,0.00%,21.24,100.00%
+Combinatorics,7,7,57.14%,85.71%,0.00%,19.61,66.67%
+Segment Tree,5,5,40.00%,60.00%,0.00%,22.64,66.67%
+Tree,5,5,40.00%,40.00%,0.00%,64.04,100.00%
+Breadth-First Search,4,4,75.00%,75.00%,0.00%,48.34,100.00%
+Bitmask,3,3,33.33%,33.33%,0.00%,16.95,100.00%
+Hash Function,3,3,0.00%,0.00%,0.00%,0.00,0.00%
+Shortest Path,3,3,66.67%,66.67%,0.00%,72.91,100.00%
+Stack,3,3,33.33%,66.67%,0.00%,5.61,50.00%
+String Matching,2,2,0.00%,0.00%,0.00%,0.00,0.00%
+Trie,2,2,0.00%,0.00%,0.00%,0.00,0.00%
+Rolling Hash,2,2,0.00%,0.00%,0.00%,0.00,0.00%
+Recursion,2,2,100.00%,100.00%,0.00%,0.78,100.00%
+Breath-First Search,2,2,50.00%,100.00%,0.00%,30.53,50.00%
+Geometry,2,2,100.00%,100.00%,0.00%,22.64,100.00%
+Binary Indexed Tree,2,2,100.00%,100.00%,0.00%,22.64,100.00%
+Monotonic Stack,2,2,0.00%,50.00%,0.00%,0.00,0.00%
+Game Theory,1,1,100.00%,100.00%,0.00%,16.95,100.00%
+Depth-first Search,1,1,0.00%,0.00%,0.00%,0.00,0.00%
+Binary Tree,1,1,0.00%,0.00%,0.00%,0.00,0.00%
+Two Pointers,1,1,100.00%,100.00%,0.00%,1.08,100.00%
+Queue,1,1,0.00%,100.00%,0.00%,0.00,0.00%
+Monotonic Queue,1,1,0.00%,100.00%,0.00%,0.00,0.00%
+Topological Sort,1,1,0.00%,100.00%,0.00%,0.70,40.00%
+Memoization,1,1,100.00%,100.00%,0.00%,49.94,100.00%
+
+CPP 总体统计
+指标,数值,百分比
+总数,104,100.00%
+成功率,39,37.50%
+编译成功率,61,58.65%
+超时率,0,0.00%
+平均运行时间(ms),44.77,
+平均测试通过率,69.43%,
+
+CPP 难度统计
+难度,总数,成功率,编译成功率,超时率
+Easy,22,36.36%,40.91%,0.00%
+Medium,48,41.67%,70.83%,0.00%
+Hard,34,32.35%,52.94%,0.00%
+
+CPP 标签统计
+标签,题目数量,总测试数,成功率,编译成功率,超时率,平均运行时间(ms),平均测试通过率
+Array,67,67,46.27%,70.15%,0.00%,53.09,73.04%
+String,33,33,24.24%,42.42%,0.00%,16.68,63.93%
+Math,29,29,20.69%,44.83%,0.00%,42.72,50.62%
+Hash Table,27,27,37.04%,59.26%,0.00%,47.60,67.81%
+Dynamic Programming,25,25,32.00%,68.00%,0.00%,82.30,52.65%
+Binary Search,15,15,46.67%,60.00%,0.00%,74.42,77.78%
+Greedy,14,14,42.86%,64.29%,0.00%,47.47,66.67%
+Sorting,14,14,57.14%,71.43%,0.00%,40.10,85.80%
+Sliding Window,12,12,41.67%,66.67%,0.00%,37.99,62.50%
+Prefix Sum,11,11,63.64%,81.82%,0.00%,57.53,77.78%
+Matrix,10,10,70.00%,80.00%,0.00%,79.70,87.50%
+Enumeration,10,10,80.00%,90.00%,0.00%,28.88,88.89%
+Bit Manipulation,8,8,25.00%,62.50%,0.00%,0.78,40.00%
+Simulation,8,8,75.00%,75.00%,0.00%,1.48,100.00%
+Number Theory,8,8,25.00%,50.00%,0.00%,46.86,50.00%
+Heap (Priority Queue),7,7,57.14%,71.43%,0.00%,84.77,80.00%
+Graph,7,7,28.57%,42.86%,0.00%,96.40,98.33%
+Depth-First Search,7,7,14.29%,57.14%,0.00%,15.62,49.25%
+Counting,7,7,28.57%,57.14%,0.00%,76.21,50.00%
+Combinatorics,7,7,14.29%,28.57%,0.00%,92.88,50.00%
+Segment Tree,5,5,40.00%,80.00%,0.00%,30.85,64.50%
+Tree,5,5,20.00%,60.00%,0.00%,22.91,34.00%
+Breadth-First Search,4,4,0.00%,75.00%,0.00%,2.41,32.33%
+Bitmask,3,3,0.00%,100.00%,0.00%,0.00,0.00%
+Hash Function,3,3,33.33%,66.67%,0.00%,42.04,50.00%
+Shortest Path,3,3,66.67%,66.67%,0.00%,144.09,100.00%
+Stack,3,3,66.67%,66.67%,0.00%,20.56,100.00%
+String Matching,2,2,0.00%,50.00%,0.00%,0.00,0.00%
+Trie,2,2,0.00%,50.00%,0.00%,0.00,0.00%
+Rolling Hash,2,2,0.00%,50.00%,0.00%,0.00,0.00%
+Recursion,2,2,50.00%,50.00%,0.00%,0.75,100.00%
+Breath-First Search,2,2,0.00%,0.00%,0.00%,0.00,0.00%
+Geometry,2,2,50.00%,100.00%,0.00%,27.80,79.00%
+Binary Indexed Tree,2,2,50.00%,100.00%,0.00%,27.80,79.00%
+Monotonic Stack,2,2,50.00%,50.00%,0.00%,36.93,100.00%
+Game Theory,1,1,0.00%,100.00%,0.00%,0.00,0.00%
+Depth-first Search,1,1,0.00%,0.00%,0.00%,0.00,0.00%
+Binary Tree,1,1,0.00%,0.00%,0.00%,0.00,0.00%
+Two Pointers,1,1,100.00%,100.00%,0.00%,1.09,100.00%
+Queue,1,1,100.00%,100.00%,0.00%,36.93,100.00%
+Monotonic Queue,1,1,100.00%,100.00%,0.00%,36.93,100.00%
+Topological Sort,1,1,0.00%,0.00%,0.00%,0.00,0.00%
+Memoization,1,1,100.00%,100.00%,0.00%,71.09,100.00%
+
+详细测试结果
+文件名,标题,难度,标签,编译状态,测试用例数,通过数,失败数,成功率,平均运行时间(ms),超时,编译错误
+weekly_contest_413_p1_c.rs,3274. Check if Two Chessboard Squares Have the Same Color,Easy,Math;String,成功,102,0,102,0.00%,0.00,否,
+weekly_contest_413_p1_cpp.rs,3274. Check if Two Chessboard Squares Have the Same Color,Easy,Math;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_413_p2_c.rs,3275. K-th Nearest Obstacle Queries,Medium,Array;Heap (Priority Queue),成功,10,1,9,10.00%,1884.05,是,
+weekly_contest_413_p2_cpp.rs,3275. K-th Nearest Obstacle Queries,Medium,Array;Heap (Priority Queue),失败,,,,,,,Failed to compile Rust solution
+weekly_contest_413_p3_c.rs,3276. Select Cells in Grid With Maximum Score,Hard,Matrix;Array;Bit Manipulation;Dynamic Programming;Bitmask,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_413_p3_cpp.rs,3276. Select Cells in Grid With Maximum Score,Hard,Matrix;Array;Bit Manipulation;Dynamic Programming;Bitmask,成功,102,0,102,0.00%,0.00,否,
+weekly_contest_413_p4_c.rs,3277. Maximum XOR Score Subarray Queries,Hard,Array;Dynamic Programming,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_413_p4_cpp.rs,3277. Maximum XOR Score Subarray Queries,Hard,Array;Dynamic Programming,成功,17,17,0,100.00%,94.58,否,
+weekly_contest_414_p1_c.rs,3280. Convert Date to Binary,Easy,Math;String,成功,102,0,102,0.00%,0.00,否,
+weekly_contest_414_p1_cpp.rs,3280. Convert Date to Binary,Easy,Math;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_414_p2_c.rs,3281. Maximize Score of Numbers in Ranges,Medium,Greedy;Binary Search;Array;Sorting,成功,22,0,22,0.00%,0.00,否,
+weekly_contest_414_p2_cpp.rs,3281. Maximize Score of Numbers in Ranges,Medium,Greedy;Binary Search;Array;Sorting,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_414_p3_c.rs,3282. Reach End of Array With Max Score,Medium,Greedy;Array,成功,22,22,0,100.00%,14.48,否,
+weekly_contest_414_p3_cpp.rs,3282. Reach End of Array With Max Score,Medium,Greedy;Array,成功,22,22,0,100.00%,16.56,否,
+weekly_contest_414_p4_c.rs,3283. Maximum Number of Moves to Kill All Pawns,Hard,Math;Game Theory;Array;Bit Manipulation;Bitmask;Breadth-First Search,成功,103,103,0,100.00%,16.95,否,
+weekly_contest_414_p4_cpp.rs,3283. Maximum Number of Moves to Kill All Pawns,Hard,Math;Game Theory;Array;Bit Manipulation;Bitmask;Breadth-First Search,成功,103,0,103,0.00%,0.00,否,
+weekly_contest_415_p1_c.rs,3289. The Two Sneaky Numbers of Digitville,Easy,Math;Hash Table;Array,成功,102,101,1,99.02%,0.85,否,
+weekly_contest_415_p1_cpp.rs,3289. The Two Sneaky Numbers of Digitville,Easy,Math;Hash Table;Array,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_415_p2_c.rs,3290. Maximum Multiplication Score,Medium,Array;Dynamic Programming,成功,22,0,22,0.00%,0.00,否,
+weekly_contest_415_p2_cpp.rs,3290. Maximum Multiplication Score,Medium,Array;Dynamic Programming,成功,102,0,102,0.00%,0.00,否,
+weekly_contest_415_p3_c.rs,3291. Minimum Number of Valid Strings to Form Target I,Medium,Array;String Matching;Dynamic Programming;String;Binary Search;Hash Function;Segment Tree;Trie;Rolling Hash,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_415_p3_cpp.rs,3291. Minimum Number of Valid Strings to Form Target I,Medium,Array;String Matching;Dynamic Programming;String;Binary Search;Hash Function;Segment Tree;Trie;Rolling Hash,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_415_p4_c.rs,3292. Minimum Number of Valid Strings to Form Target II,Medium,Array;String Matching;Dynamic Programming;String;Binary Search;Hash Function;Segment Tree;Trie;Rolling Hash,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_415_p4_cpp.rs,3292. Minimum Number of Valid Strings to Form Target II,Medium,Array;String Matching;Dynamic Programming;String;Binary Search;Hash Function;Segment Tree;Trie;Rolling Hash,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_416_p1_c.rs,3295. Report Spam Message,Easy,Hash Table;Array;String,成功,20,20,0,100.00%,133.07,否,
+weekly_contest_416_p1_cpp.rs,3295. Report Spam Message,Easy,Hash Table;Array;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_416_p2_c.rs,3296. Minimum Number of Seconds to Make Mountain Height Zero,Medium,Math;Greedy;Array;Heap (Priority Queue);Binary Search,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_416_p2_cpp.rs,3296. Minimum Number of Seconds to Make Mountain Height Zero,Medium,Math;Greedy;Array;Heap (Priority Queue);Binary Search,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_416_p3_c.rs,3297. Count Substrings That Can Be Rearranged to Contain a String I,Medium,Hash Table;Sliding Window;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_416_p3_cpp.rs,3297. Count Substrings That Can Be Rearranged to Contain a String I,Medium,Hash Table;Sliding Window;String,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_416_p4_c.rs,3298. Count Substrings That Can Be Rearranged to Contain a String II,Hard,Hash Table;Sliding Window;String,成功,20,20,0,100.00%,13.27,否,
+weekly_contest_416_p4_cpp.rs,3298. Count Substrings That Can Be Rearranged to Contain a String II,Hard,Hash Table;Sliding Window;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_417_p1_c.rs,3304. Find the K-th Character in String Game I,Easy,Simulation;Math;Recursion;Bit Manipulation,成功,100,100,0,100.00%,0.77,否,
+weekly_contest_417_p1_cpp.rs,3304. Find the K-th Character in String Game I,Easy,Simulation;Math;Recursion;Bit Manipulation,成功,100,100,0,100.00%,0.75,否,
+weekly_contest_417_p2_c.rs,3305. Count of Substrings Containing Every Vowel and K Consonants I,Medium,Hash Table;Sliding Window;String,成功,100,100,0,100.00%,1.19,否,
+weekly_contest_417_p2_cpp.rs,3305. Count of Substrings Containing Every Vowel and K Consonants I,Medium,Hash Table;Sliding Window;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_417_p3_c.rs,3306. Count of Substrings Containing Every Vowel and K Consonants II,Medium,Hash Table;Sliding Window;String,成功,100,100,0,100.00%,4.96,否,
+weekly_contest_417_p3_cpp.rs,3306. Count of Substrings Containing Every Vowel and K Consonants II,Medium,Hash Table;Sliding Window;String,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_417_p4_c.rs,3307. Find the K-th Character in String Game II,Hard,Math;Recursion;Bit Manipulation,成功,20,20,0,100.00%,0.79,否,
+weekly_contest_417_p4_cpp.rs,3307. Find the K-th Character in String Game II,Hard,Math;Recursion;Bit Manipulation,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_418_p1_c.rs,3309. Maximum Possible Number by Binary Concatenation,Medium,Enumeration;Array;Bit Manipulation,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_418_p1_cpp.rs,3309. Maximum Possible Number by Binary Concatenation,Medium,Enumeration;Array;Bit Manipulation,成功,100,100,0,100.00%,0.81,否,
+weekly_contest_418_p2_c.rs,3310. Remove Methods From Project,Medium,Graph;Breath-First Search;Depth-First Search,成功,10,0,10,0.00%,0.00,否,
+weekly_contest_418_p2_cpp.rs,3310. Remove Methods From Project,Medium,Graph;Breath-First Search;Depth-First Search,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_418_p3_c.rs,3311. Construct 2D Grid Matching Graph Layout,Hard,Matrix;Hash Table;Graph;Array,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_418_p3_cpp.rs,3311. Construct 2D Grid Matching Graph Layout,Hard,Matrix;Hash Table;Graph;Array,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_418_p4_c.rs,3312. Sorted GCD Pair Queries,Hard,Math;Hash Table;Array;Counting;Binary Search;Number Theory;Combinatorics;Prefix Sum,成功,20,20,0,100.00%,66.99,否,
+weekly_contest_418_p4_cpp.rs,3312. Sorted GCD Pair Queries,Hard,Math;Hash Table;Array;Counting;Binary Search;Number Theory;Combinatorics;Prefix Sum,成功,20,20,0,100.00%,92.88,否,
+weekly_contest_419_p1_c.rs,3318. Find X-Sum of All K-Long Subarrays I,Easy,Sliding Window;Hash Table;Array;Heap (Priority Queue),成功,100,100,0,100.00%,0.72,否,
+weekly_contest_419_p1_cpp.rs,3318. Find X-Sum of All K-Long Subarrays I,Easy,Sliding Window;Hash Table;Array;Heap (Priority Queue),成功,100,100,0,100.00%,0.83,否,
+weekly_contest_419_p2_c.rs,3319. K-th Largest Perfect Subtree Size in Binary Tree,Medium,Tree;Depth-first Search;Sorting;Binary Tree,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_419_p2_cpp.rs,3319. K-th Largest Perfect Subtree Size in Binary Tree,Medium,Tree;Depth-first Search;Sorting;Binary Tree,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_419_p3_c.rs,3320. Count The Number of Winning Sequences,Hard,Dynamic Programming;String,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_419_p3_cpp.rs,3320. Count The Number of Winning Sequences,Hard,Dynamic Programming;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_419_p4_c.rs,3321. Find X-Sum of All K-Long Subarrays II,Hard,Sliding Window;Hash Table;Array;Heap (Priority Queue),失败,,,,,,,Failed to compile Rust solution
+weekly_contest_419_p4_cpp.rs,3321. Find X-Sum of All K-Long Subarrays II,Hard,Sliding Window;Hash Table;Array;Heap (Priority Queue),失败,,,,,,,Failed to compile Rust solution
+weekly_contest_420_p1_c.rs,3324. Find the Sequence of Strings Appeared on the Screen,Medium,Simulation;String,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_420_p1_cpp.rs,3324. Find the Sequence of Strings Appeared on the Screen,Medium,Simulation;String,成功,100,100,0,100.00%,1.57,否,
+weekly_contest_420_p2_c.rs,3325. Count Substrings With K-Frequency Characters I,Medium,Hash Table;Sliding Window;String,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_420_p2_cpp.rs,3325. Count Substrings With K-Frequency Characters I,Medium,Hash Table;Sliding Window;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_420_p3_c.rs,3326. Minimum Division Operations to Make Array Non Decreasing,Medium,Math;Greedy;Array;Number Theory,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_420_p3_cpp.rs,3326. Minimum Division Operations to Make Array Non Decreasing,Medium,Math;Greedy;Array;Number Theory,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_420_p4_c.rs,3327. Check if DFS Strings Are Palindromes,Hard,Hash Table;Array;String;Tree;Depth-First Search;Hash Function,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_420_p4_cpp.rs,3327. Check if DFS Strings Are Palindromes,Hard,Hash Table;Array;String;Tree;Depth-First Search;Hash Function,成功,20,20,0,100.00%,42.04,否,
+weekly_contest_421_p1_c.rs,3334. Find the Maximum Factor Score of Array,Medium,Math;Array;Number Theory,成功,100,1,99,1.00%,0.57,否,
+weekly_contest_421_p1_cpp.rs,3334. Find the Maximum Factor Score of Array,Medium,Math;Array;Number Theory,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_421_p2_c.rs,3335. Total Characters in String After Transformations I,Medium,Math;Hash Table;Dynamic Programming;Counting;String,成功,20,20,0,100.00%,16.30,否,
+weekly_contest_421_p2_cpp.rs,3335. Total Characters in String After Transformations I,Medium,Math;Hash Table;Dynamic Programming;Counting;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_421_p3_c.rs,3336. Find the Number of Subsequences With Equal GCD,Hard,Math;Array;Number Theory;Dynamic Programming,成功,100,100,0,100.00%,13.56,否,
+weekly_contest_421_p3_cpp.rs,3336. Find the Number of Subsequences With Equal GCD,Hard,Math;Array;Number Theory;Dynamic Programming,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_421_p4_c.rs,3337. Total Characters in String After Transformations II,Hard,Math;Hash Table;Dynamic Programming;Counting;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_421_p4_cpp.rs,3337. Total Characters in String After Transformations II,Hard,Math;Hash Table;Dynamic Programming;Counting;String,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_422_p1_c.rs,3340. Check Balanced String,Easy,String,成功,100,100,0,100.00%,0.81,否,
+weekly_contest_422_p1_cpp.rs,3340. Check Balanced String,Easy,String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_422_p2_c.rs,3341. Find Minimum Time to Reach Last Room I,Medium,Matrix;Shortest Path;Graph;Array;Heap (Priority Queue),失败,,,,,,,Failed to compile Rust solution
+weekly_contest_422_p2_cpp.rs,3341. Find Minimum Time to Reach Last Room I,Medium,Matrix;Shortest Path;Graph;Array;Heap (Priority Queue),成功,100,100,0,100.00%,2.20,否,
+weekly_contest_422_p3_c.rs,3342. Find Minimum Time to Reach Last Room II,Medium,Matrix;Shortest Path;Graph;Array;Heap (Priority Queue),成功,10,10,0,100.00%,115.30,否,
+weekly_contest_422_p3_cpp.rs,3342. Find Minimum Time to Reach Last Room II,Medium,Matrix;Shortest Path;Graph;Array;Heap (Priority Queue),成功,10,10,0,100.00%,285.98,否,
+weekly_contest_422_p4_c.rs,3343. Count Number of Balanced Permutations,Hard,Dynamic Programming;Combinatorics;Math;String,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_422_p4_cpp.rs,3343. Count Number of Balanced Permutations,Hard,Dynamic Programming;Combinatorics;Math;String,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_423_p1_c.rs,3349. Adjacent Increasing Subarrays Detection I,Easy,Array,成功,100,100,0,100.00%,0.83,否,
+weekly_contest_423_p1_cpp.rs,3349. Adjacent Increasing Subarrays Detection I,Easy,Array,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_423_p2_c.rs,3350. Adjacent Increasing Subarrays Detection II,Medium,Binary Search;Array,成功,20,20,0,100.00%,31.59,否,
+weekly_contest_423_p2_cpp.rs,3350. Adjacent Increasing Subarrays Detection II,Medium,Binary Search;Array,成功,20,20,0,100.00%,30.56,否,
+weekly_contest_423_p3_c.rs,3351. Sum of Good Subsequences,Hard,Hash Table;Array;Dynamic Programming,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_423_p3_cpp.rs,3351. Sum of Good Subsequences,Hard,Hash Table;Array;Dynamic Programming,成功,100,100,0,100.00%,114.72,否,
+weekly_contest_423_p4_c.rs,3352. Count K-Reducible Numbers Less Than N,Hard,Dynamic Programming;Combinatorics;Math;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_423_p4_cpp.rs,3352. Count K-Reducible Numbers Less Than N,Hard,Dynamic Programming;Combinatorics;Math;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_424_p1_c.rs,3354. Make Array Elements Equal to Zero,Easy,Simulation;Array;Prefix Sum,成功,100,100,0,100.00%,0.76,否,
+weekly_contest_424_p1_cpp.rs,3354. Make Array Elements Equal to Zero,Easy,Simulation;Array;Prefix Sum,成功,100,100,0,100.00%,0.79,否,
+weekly_contest_424_p2_c.rs,3355. Zero Array Transformation I,Medium,Array;Prefix Sum,成功,20,20,0,100.00%,47.97,否,
+weekly_contest_424_p2_cpp.rs,3355. Zero Array Transformation I,Medium,Array;Prefix Sum,成功,20,20,0,100.00%,72.94,否,
+weekly_contest_424_p3_c.rs,3356. Zero Array Transformation II,Medium,Binary Search;Array;Prefix Sum,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_424_p3_cpp.rs,3356. Zero Array Transformation II,Medium,Binary Search;Array;Prefix Sum,成功,20,20,0,100.00%,83.92,否,
+weekly_contest_424_p4_c.rs,3357. Minimize the Maximum Adjacent Element Difference,Hard,Greedy;Binary Search;Array,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_424_p4_cpp.rs,3357. Minimize the Maximum Adjacent Element Difference,Hard,Greedy;Binary Search;Array,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_425_p1_c.rs,3364. Minimum Positive Sum Subarray ,Easy,Sliding Window;Array;Prefix Sum,成功,100,100,0,100.00%,0.85,否,
+weekly_contest_425_p1_cpp.rs,3364. Minimum Positive Sum Subarray ,Easy,Sliding Window;Array;Prefix Sum,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_425_p2_c.rs,3365. Rearrange K Substrings to Form Target String,Medium,Hash Table;Sorting;String,成功,100,100,0,100.00%,37.68,否,
+weekly_contest_425_p2_cpp.rs,3365. Rearrange K Substrings to Form Target String,Medium,Hash Table;Sorting;String,成功,100,100,0,100.00%,18.31,否,
+weekly_contest_425_p3_c.rs,3366. Minimum Array Sum,Medium,Array;Dynamic Programming,成功,100,100,0,100.00%,20.88,否,
+weekly_contest_425_p3_cpp.rs,3366. Minimum Array Sum,Medium,Array;Dynamic Programming,成功,100,100,0,100.00%,0.84,否,
+weekly_contest_425_p4_c.rs,3367. Maximize Sum of Weights after Edge Removals,Hard,Tree;Depth-First Search;Dynamic Programming,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_425_p4_cpp.rs,3367. Maximize Sum of Weights after Edge Removals,Hard,Tree;Depth-First Search;Dynamic Programming,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_426_p1_c.rs,3370. Smallest Number With All Set Bits,Easy,Math;Bit Manipulation,成功,100,100,0,100.00%,0.78,否,
+weekly_contest_426_p1_cpp.rs,3370. Smallest Number With All Set Bits,Easy,Math;Bit Manipulation,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_426_p2_c.rs,3371. Identify the Largest Outlier in an Array,Medium,Enumeration;Hash Table;Array;Counting,成功,100,100,0,100.00%,0.97,否,
+weekly_contest_426_p2_cpp.rs,3371. Identify the Largest Outlier in an Array,Medium,Enumeration;Hash Table;Array;Counting,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_426_p3_c.rs,3372. Maximize the Number of Target Nodes After Connecting Trees I,Medium,Tree;Depth-First Search;Breadth-First Search,成功,100,100,0,100.00%,18.31,否,
+weekly_contest_426_p3_cpp.rs,3372. Maximize the Number of Target Nodes After Connecting Trees I,Medium,Tree;Depth-First Search;Breadth-First Search,成功,100,2,98,2.00%,3.79,否,
+weekly_contest_426_p4_c.rs,3373. Maximize the Number of Target Nodes After Connecting Trees II,Hard,Tree;Depth-First Search;Breadth-First Search,成功,10,10,0,100.00%,109.77,否,
+weekly_contest_426_p4_cpp.rs,3373. Maximize the Number of Target Nodes After Connecting Trees II,Hard,Tree;Depth-First Search;Breadth-First Search,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_427_p1_c.rs,3379. Transformed Array,Easy,Simulation;Array,成功,100,100,0,100.00%,0.74,否,
+weekly_contest_427_p1_cpp.rs,3379. Transformed Array,Easy,Simulation;Array,成功,100,100,0,100.00%,0.74,否,
+weekly_contest_427_p2_c.rs,3380. Maximum Area Rectangle With Point Constraints I,Medium,Math;Array;Sorting;Geometry;Segment Tree;Enumeration;Binary Indexed Tree,成功,100,100,0,100.00%,0.81,否,
+weekly_contest_427_p2_cpp.rs,3380. Maximum Area Rectangle With Point Constraints I,Medium,Math;Array;Sorting;Geometry;Segment Tree;Enumeration;Binary Indexed Tree,成功,100,100,0,100.00%,0.74,否,
+weekly_contest_427_p3_c.rs,3381. Maximum Subarray Sum With Length Divisible by K,Medium,Hash Table;Array;Prefix Sum,成功,10,0,10,0.00%,0.00,否,
+weekly_contest_427_p3_cpp.rs,3381. Maximum Subarray Sum With Length Divisible by K,Medium,Hash Table;Array;Prefix Sum,成功,10,0,10,0.00%,0.00,否,
+weekly_contest_427_p4_c.rs,3382. Maximum Area Rectangle With Point Constraints II,Hard,Math;Array;Sorting;Geometry;Segment Tree;Binary Indexed Tree,成功,100,100,0,100.00%,44.46,否,
+weekly_contest_427_p4_cpp.rs,3382. Maximum Area Rectangle With Point Constraints II,Hard,Math;Array;Sorting;Geometry;Segment Tree;Binary Indexed Tree,成功,100,58,42,58.00%,54.87,否,
+weekly_contest_428_p1_c.rs,3386. Button with Longest Push Time,Easy,Array,成功,100,100,0,100.00%,2.00,否,
+weekly_contest_428_p1_cpp.rs,3386. Button with Longest Push Time,Easy,Array,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_428_p2_c.rs,3387. Maximize Amount After Two Days of Conversions,Medium,Graph;Array;String;Breadth-First Search;Depth-First Search,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_428_p2_cpp.rs,3387. Maximize Amount After Two Days of Conversions,Medium,Graph;Array;String;Breadth-First Search;Depth-First Search,成功,100,95,5,95.00%,1.03,否,
+weekly_contest_428_p3_c.rs,3388. Count Beautiful Splits in an Array,Medium,Array;Dynamic Programming,成功,100,100,0,100.00%,106.10,否,
+weekly_contest_428_p3_cpp.rs,3388. Count Beautiful Splits in an Array,Medium,Array;Dynamic Programming,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_428_p4_c.rs,3389. Minimum Operations to Make Character Frequencies Equal,Hard,Hash Table;Counting;Dynamic Programming;String;Enumeration,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_428_p4_cpp.rs,3389. Minimum Operations to Make Character Frequencies Equal,Hard,Hash Table;Counting;Dynamic Programming;String;Enumeration,成功,100,100,0,100.00%,59.54,否,
+weekly_contest_429_p1_c.rs,3396. Minimum Number of Operations to Make Elements in Array Distinct,Easy,Hash Table;Array,成功,100,100,0,100.00%,0.77,否,
+weekly_contest_429_p1_cpp.rs,3396. Minimum Number of Operations to Make Elements in Array Distinct,Easy,Hash Table;Array,成功,100,100,0,100.00%,0.81,否,
+weekly_contest_429_p2_c.rs,3397. Maximum Number of Distinct Elements After Operations,Medium,Greedy;Array;Sorting,成功,10,10,0,100.00%,40.23,否,
+weekly_contest_429_p2_cpp.rs,3397. Maximum Number of Distinct Elements After Operations,Medium,Greedy;Array;Sorting,成功,10,0,10,0.00%,0.00,否,
+weekly_contest_429_p3_c.rs,3398. Smallest Substring With Identical Characters I,Hard,Enumeration;Binary Search;Array,成功,100,100,0,100.00%,25.40,否,
+weekly_contest_429_p3_cpp.rs,3398. Smallest Substring With Identical Characters I,Hard,Enumeration;Binary Search;Array,成功,100,100,0,100.00%,1.08,否,
+weekly_contest_429_p4_c.rs,3399. Smallest Substring With Identical Characters II,Hard,Binary Search;String,成功,100,100,0,100.00%,15.28,否,
+weekly_contest_429_p4_cpp.rs,3399. Smallest Substring With Identical Characters II,Hard,Binary Search;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_430_p1_c.rs,3402. Minimum Operations to Make Columns Strictly Increasing,Easy,Greedy;Matrix;Array,成功,102,102,0,100.00%,1.28,否,
+weekly_contest_430_p1_cpp.rs,3402. Minimum Operations to Make Columns Strictly Increasing,Easy,Greedy;Matrix;Array,成功,102,102,0,100.00%,1.49,否,
+weekly_contest_430_p2_c.rs,3403. Find the Lexicographically Largest String From the Box I,Medium,Enumeration;Two Pointers;String,成功,102,102,0,100.00%,1.08,否,
+weekly_contest_430_p2_cpp.rs,3403. Find the Lexicographically Largest String From the Box I,Medium,Enumeration;Two Pointers;String,成功,102,102,0,100.00%,1.09,否,
+weekly_contest_430_p3_c.rs,3404. Count Special Subsequences,Medium,Enumeration;Math;Hash Table;Array,成功,102,0,102,0.00%,0.00,否,
+weekly_contest_430_p3_cpp.rs,3404. Count Special Subsequences,Medium,Enumeration;Math;Hash Table;Array,成功,102,102,0,100.00%,148.11,否,
+weekly_contest_430_p4_c.rs,3405. Count the Number of Arrays with K Matching Adjacent Elements,Hard,Combinatorics;Math,成功,103,103,0,100.00%,3.92,否,
+weekly_contest_430_p4_cpp.rs,3405. Count the Number of Arrays with K Matching Adjacent Elements,Hard,Combinatorics;Math,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_431_p1_c.rs,3411. Maximum Subarray With Equal Products,Easy,Math;Sliding Window;Array;Number Theory;Enumeration,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_431_p1_cpp.rs,3411. Maximum Subarray With Equal Products,Easy,Math;Sliding Window;Array;Number Theory;Enumeration,成功,100,100,0,100.00%,0.84,否,
+weekly_contest_431_p2_c.rs,3412. Find Mirror Score of a String,Medium,Simulation;Stack;Hash Table;String,成功,100,100,0,100.00%,5.61,否,
+weekly_contest_431_p2_cpp.rs,3412. Find Mirror Score of a String,Medium,Simulation;Stack;Hash Table;String,成功,100,100,0,100.00%,4.19,否,
+weekly_contest_431_p3_c.rs,3413. Maximum Coins From K Consecutive Bags,Medium,Sliding Window;Greedy;Array;Sorting;Binary Search;Prefix Sum,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_431_p3_cpp.rs,3413. Maximum Coins From K Consecutive Bags,Medium,Sliding Window;Greedy;Array;Sorting;Binary Search;Prefix Sum,成功,20,20,0,100.00%,132.52,否,
+weekly_contest_431_p4_c.rs,3414. Maximum Score of Non-overlapping Intervals,Hard,Binary Search;Array;Sorting;Dynamic Programming,成功,20,20,0,100.00%,135.53,否,
+weekly_contest_431_p4_cpp.rs,3414. Maximum Score of Non-overlapping Intervals,Hard,Binary Search;Array;Sorting;Dynamic Programming,成功,20,20,0,100.00%,99.26,否,
+weekly_contest_432_p1_c.rs,3417. Zigzag Grid Traversal With Skip,Easy,Simulation;Matrix;Array,成功,100,100,0,100.00%,1.16,否,
+weekly_contest_432_p1_cpp.rs,3417. Zigzag Grid Traversal With Skip,Easy,Simulation;Matrix;Array,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_432_p2_c.rs,3418. Maximum Amount of Money Robot Can Earn,Medium,Matrix;Array;Dynamic Programming,成功,20,20,0,100.00%,59.40,否,
+weekly_contest_432_p2_cpp.rs,3418. Maximum Amount of Money Robot Can Earn,Medium,Matrix;Array;Dynamic Programming,成功,20,20,0,100.00%,146.23,否,
+weekly_contest_432_p3_c.rs,3419. Minimize the Maximum Edge Weight of Graph,Medium,Graph;Shortest Path;Binary Search;Depth-First Search;Breath-First Search,成功,20,20,0,100.00%,30.53,否,
+weekly_contest_432_p3_cpp.rs,3419. Minimize the Maximum Edge Weight of Graph,Medium,Graph;Shortest Path;Binary Search;Depth-First Search;Breath-First Search,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_432_p4_c.rs,3420. Count Non-Decreasing Subarrays After K Operations,Hard,Sliding Window;Array;Queue;Stack;Segment Tree;Monotonic Stack;Monotonic Queue,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_432_p4_cpp.rs,3420. Count Non-Decreasing Subarrays After K Operations,Hard,Sliding Window;Array;Queue;Stack;Segment Tree;Monotonic Stack;Monotonic Queue,成功,20,20,0,100.00%,36.93,否,
+weekly_contest_433_p1_c.rs,3427. Sum of Variable Length Subarrays,Easy,Array;Prefix Sum,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_433_p1_cpp.rs,3427. Sum of Variable Length Subarrays,Easy,Array;Prefix Sum,成功,100,100,0,100.00%,0.78,否,
+weekly_contest_433_p2_c.rs,3428. Maximum and Minimum Sums of at Most Size K Subsequences,Medium,Math;Array;Sorting;Dynamic Programming;Combinatorics,成功,20,0,20,0.00%,0.00,否,
+weekly_contest_433_p2_cpp.rs,3428. Maximum and Minimum Sums of at Most Size K Subsequences,Medium,Math;Array;Sorting;Dynamic Programming;Combinatorics,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_433_p3_c.rs,3429. Paint House IV,Medium,Array;Dynamic Programming,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_433_p3_cpp.rs,3429. Paint House IV,Medium,Array;Dynamic Programming,成功,20,19,1,95.00%,150.94,否,
+weekly_contest_433_p4_c.rs,3430. Maximum and Minimum Sums of at Most Size K Subarrays,Hard,Math;Array;Stack;Monotonic Stack,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_433_p4_cpp.rs,3430. Maximum and Minimum Sums of at Most Size K Subarrays,Hard,Math;Array;Stack;Monotonic Stack,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_434_p1_c.rs,3432. Count Partitions with Even Sum Difference,Easy,Math;Array;Prefix Sum,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_434_p1_cpp.rs,3432. Count Partitions with Even Sum Difference,Easy,Math;Array;Prefix Sum,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_434_p2_c.rs,3433. Count Mentions Per User,Medium,Simulation;Math;Array;Sorting,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_434_p2_cpp.rs,3433. Count Mentions Per User,Medium,Simulation;Math;Array;Sorting,成功,100,100,0,100.00%,0.83,否,
+weekly_contest_434_p3_c.rs,3434. Maximum Frequency After Subarray Operation,Medium,Greedy;Hash Table;Array;Dynamic Programming;Prefix Sum,成功,100,100,0,100.00%,11.75,否,
+weekly_contest_434_p3_cpp.rs,3434. Maximum Frequency After Subarray Operation,Medium,Greedy;Hash Table;Array;Dynamic Programming;Prefix Sum,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_434_p4_c.rs,3435. Frequencies of Shortest Supersequences,Hard,Graph;Array;Bit Manipulation;String;Topological Sort;Enumeration,成功,100,40,60,40.00%,0.70,否,
+weekly_contest_434_p4_cpp.rs,3435. Frequencies of Shortest Supersequences,Hard,Graph;Array;Bit Manipulation;String;Topological Sort;Enumeration,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_435_p1_c.rs,3442. Maximum Difference Between Even and Odd Frequency I,Easy,Counting;Hash Table;String,成功,100,100,0,100.00%,0.72,否,
+weekly_contest_435_p1_cpp.rs,3442. Maximum Difference Between Even and Odd Frequency I,Easy,Counting;Hash Table;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_435_p2_c.rs,3443. Maximum Manhattan Distance After K Changes,Medium,Counting;Math;Hash Table;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_435_p2_cpp.rs,3443. Maximum Manhattan Distance After K Changes,Medium,Counting;Math;Hash Table;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_435_p3_c.rs,3444. Minimum Increments for Target Multiples in an Array,Hard,Math;Array;Bit Manipulation;Dynamic Programming;Bitmask;Number Theory,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_435_p3_cpp.rs,3444. Minimum Increments for Target Multiples in an Array,Hard,Math;Array;Bit Manipulation;Dynamic Programming;Bitmask;Number Theory,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_435_p4_c.rs,3445. Maximum Difference Between Even and Odd Frequency II,Hard,Enumeration;Sliding Window;Prefix Sum;String,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_435_p4_cpp.rs,3445. Maximum Difference Between Even and Odd Frequency II,Hard,Enumeration;Sliding Window;Prefix Sum;String,成功,100,100,0,100.00%,18.85,否,
+weekly_contest_436_p1_c.rs,3446. Sort Matrix by Diagonals,Medium,Matrix;Array;Sorting,成功,100,100,0,100.00%,0.68,否,
+weekly_contest_436_p1_cpp.rs,3446. Sort Matrix by Diagonals,Medium,Matrix;Array;Sorting,成功,100,100,0,100.00%,0.85,否,
+weekly_contest_436_p2_c.rs,3447. Assign Elements to Groups with Constraints,Medium,Hash Table;Array,成功,20,20,0,100.00%,150.46,否,
+weekly_contest_436_p2_cpp.rs,3447. Assign Elements to Groups with Constraints,Medium,Hash Table;Array,成功,20,17,3,85.00%,38.71,否,
+weekly_contest_436_p3_c.rs,3448. Count Substrings Divisible By Last Digit,Hard,Dynamic Programming;String,成功,100,100,0,100.00%,69.07,否,
+weekly_contest_436_p3_cpp.rs,3448. Count Substrings Divisible By Last Digit,Hard,Dynamic Programming;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_436_p4_c.rs,3449. Maximize the Minimum Game Score,Hard,Greedy;Binary Search;Array,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_436_p4_cpp.rs,3449. Maximize the Minimum Game Score,Hard,Greedy;Binary Search;Array,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_437_p1_c.rs,3456. Find Special Substring of Length K,Easy,String,成功,200,0,200,0.00%,0.00,否,
+weekly_contest_437_p1_cpp.rs,3456. Find Special Substring of Length K,Easy,String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_437_p2_c.rs,3457. Eat Pizzas!,Medium,Greedy;Array;Sorting,成功,20,20,0,100.00%,61.99,否,
+weekly_contest_437_p2_cpp.rs,3457. Eat Pizzas!,Medium,Greedy;Array;Sorting,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_437_p3_c.rs,3458. Select K Disjoint Special Substrings,Medium,Greedy;Hash Table;Sorting;Dynamic Programming;String,成功,100,0,100,0.00%,0.00,否,
+weekly_contest_437_p3_cpp.rs,3458. Select K Disjoint Special Substrings,Medium,Greedy;Hash Table;Sorting;Dynamic Programming;String,成功,100,100,0,100.00%,3.50,否,
+weekly_contest_437_p4_c.rs,3459. Length of Longest V-Shaped Diagonal Segment,Hard,Memoization;Matrix;Array;Dynamic Programming,成功,100,100,0,100.00%,49.94,否,
+weekly_contest_437_p4_cpp.rs,3459. Length of Longest V-Shaped Diagonal Segment,Hard,Memoization;Matrix;Array;Dynamic Programming,成功,100,100,0,100.00%,71.09,否,
+weekly_contest_438_p1_c.rs,3461. Check If Digits Are Equal in String After Operations I,Easy,Math;String;Simulation;Number Theory;Combinatorics,成功,100,100,0,100.00%,0.80,否,
+weekly_contest_438_p1_cpp.rs,3461. Check If Digits Are Equal in String After Operations I,Easy,Math;String;Simulation;Number Theory;Combinatorics,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_438_p2_c.rs,3462. Maximum Sum With at Most K Elements,Medium,Greedy;Matrix;Array;Sorting;Heap (Priority Queue),成功,20,20,0,100.00%,39.32,否,
+weekly_contest_438_p2_cpp.rs,3462. Maximum Sum With at Most K Elements,Medium,Greedy;Matrix;Array;Sorting;Heap (Priority Queue),成功,20,20,0,100.00%,50.06,否,
+weekly_contest_438_p3_c.rs,3463. Check If Digits Are Equal in String After Operations II,Hard,Combinatorics;Math;Number Theory;String,成功,100,100,0,100.00%,6.73,否,
+weekly_contest_438_p3_cpp.rs,3463. Check If Digits Are Equal in String After Operations II,Hard,Combinatorics;Math;Number Theory;String,失败,,,,,,,Failed to compile Rust solution
+weekly_contest_438_p4_c.rs,3464. Maximize the Distance Between Points on a Square,Hard,Greedy;Binary Search;Array,成功,100,100,0,100.00%,118.13,否,
+weekly_contest_438_p4_cpp.rs,3464. Maximize the Distance Between Points on a Square,Hard,Greedy;Binary Search;Array,成功,100,100,0,100.00%,80.71,否,

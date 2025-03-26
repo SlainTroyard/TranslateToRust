@@ -1,0 +1,11 @@
+==== 测试用例 26 (passed) ====
+
+输入:
+30
+WEEWWWFEWWFWEEFFEFEFFEFEFEWFFW
+期望输出:
+738971322
+实际输出:
+738971322
+
+运行时间: 12.36 ms

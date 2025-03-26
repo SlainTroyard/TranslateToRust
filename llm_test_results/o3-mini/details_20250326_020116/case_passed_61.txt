@@ -1,0 +1,16 @@
+==== 测试用例 61 (passed) ====
+
+输入:
+9 6
+OFFLINE 734 id1
+MESSAGE 642 id8 id8 id7 id8
+OFFLINE 555 id6
+OFFLINE 539 id0
+MESSAGE 331 id8 id4 id6
+OFFLINE 884 id3
+期望输出:
+Mentions: 0 0 0 0 0 0 0 0 2
+实际输出:
+Mentions: 0 0 0 0 0 0 0 0 2 
+
+运行时间: 1.49 ms

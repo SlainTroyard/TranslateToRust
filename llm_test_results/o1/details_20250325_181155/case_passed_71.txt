@@ -1,0 +1,11 @@
+==== 测试用例 71 (passed) ====
+
+输入:
+dlqxemhyndmivtkilmesylymvfpidsrtrnbwbxjodhprruibfxoqernjxaozixezpbrvizjkpoctmadfuhktsegqnalrptgwvvgafmldviremzp
+2
+期望输出:
+5397
+实际输出:
+5397
+
+运行时间: 0.62 ms

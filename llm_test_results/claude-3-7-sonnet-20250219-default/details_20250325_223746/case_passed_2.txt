@@ -1,0 +1,10 @@
+==== 测试用例 2 (passed) ====
+
+输入:
+sh
+期望输出:
+a b c d e f g h i j k l m n o p q r s sa sb sc sd se sf sg sh
+实际输出:
+a b c d e f g h i j k l m n o p q r s sa sb sc sd se sf sg sh
+
+运行时间: 0.83 ms

@@ -1,0 +1,13 @@
+==== 测试用例 39 (failed) ====
+
+输入:
+60
+81 55 55 0 3 0 29 56 37 33 27 0 15 22 81 25 99 61 12 27 0 26 0 88 62 76 51 89 42 39 0 54 2 43 74 97 51 7 34 37 69 15 97 92 36 31 6 47 0 100 83 73 75 59 36 19 93 26 9 12
+期望输出:
+0
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/grok-2-1212-greedy/weekly_contest_424_p1_cpp.rs:48:50:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

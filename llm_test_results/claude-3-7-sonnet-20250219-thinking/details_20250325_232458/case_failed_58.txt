@@ -1,0 +1,17 @@
+==== 测试用例 58 (failed) ====
+
+输入:
+14 47
+4
+33 33
+29 14
+2 40
+48 32
+期望输出:
+69
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-thinking/weekly_contest_414_p4_cpp.rs:135:19:
+index out of bounds: the len is 2 but the index is 2
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

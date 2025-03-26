@@ -1,0 +1,13 @@
+==== 测试用例 99 (passed) ====
+
+输入:
+7 3
+MESSAGE 812 ALL
+MESSAGE 826 ALL
+MESSAGE 23 HERE
+期望输出:
+3 3 3 3 3 3 3
+实际输出:
+3 3 3 3 3 3 3
+
+运行时间: 0.59 ms

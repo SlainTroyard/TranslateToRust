@@ -1,0 +1,15 @@
+==== 测试用例 50 (passed) ====
+
+输入:
+2 5
+OFFLINE 416 id0
+MESSAGE 685 id1 id1
+MESSAGE 702 HERE
+MESSAGE 50 HERE
+MESSAGE 502 HERE
+期望输出:
+3 5
+实际输出:
+3 5 
+
+运行时间: 0.60 ms

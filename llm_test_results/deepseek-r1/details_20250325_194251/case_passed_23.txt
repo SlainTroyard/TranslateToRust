@@ -1,0 +1,18 @@
+==== 测试用例 23 (passed) ====
+
+输入:
+7 8
+MESSAGE 53 HERE
+MESSAGE 534 ALL
+OFFLINE 74 id2
+MESSAGE 454 id2 id4 id1 id4
+MESSAGE 569 id1 id0 id2 id4 id3
+MESSAGE 145 ALL
+OFFLINE 904 id4
+OFFLINE 3 id1
+期望输出:
+Mentions: 2 3 3 2 2 2 2
+实际输出:
+Mentions: 2 3 3 2 2 2 2
+
+运行时间: 0.59 ms

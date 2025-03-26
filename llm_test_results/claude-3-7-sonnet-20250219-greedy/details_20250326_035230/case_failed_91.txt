@@ -1,0 +1,12 @@
+==== 测试用例 91 (failed) ====
+
+输入:
+4174637492541724641877671734526668621428147450617997471887079940469787
+期望输出:
+670773164
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-greedy/weekly_contest_422_p4_c.rs:70:9:
+attempt to subtract with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,12 @@
+==== 测试用例 40 (passed) ====
+
+输入:
+190
+tbscodbzroelujymdgwkaspbwxxznpdjnfdvpwcscvsdyzsggydpvgklqllmvckfrbiycednxzwygtzinscocqleimfwqhnraffffanwagvcuvpfdaxauvpmbuufwavpornetarezzsdtcctfoyodfsyglsxeeqebntndskfyeicoezkxqxhgbiuqzsqlh
+138
+期望输出:
+28
+实际输出:
+28
+
+运行时间: 0.79 ms

@@ -1,0 +1,12 @@
+==== 测试用例 76 (failed) ====
+
+输入:
+213
+qkqwllngxsdmxmyyqbrlawwuyzzzqjpwrkwpbicjsbgbiskqarmrqluxlzzhsopntdpjnkrtzkqerdxttbljunnucgrzmbpzonxtjtaqvdnbdokwkegiskycmsiwictdmlfacxyrdebkcowjupkllekdnhgnkatjtnlbeffqoafcbxhzftfnbrdcwsmdfzyszihetoydknlhyvyzzaedh
+63
+期望输出:
+159
+实际输出:
+143
+
+运行时间: 0.56 ms

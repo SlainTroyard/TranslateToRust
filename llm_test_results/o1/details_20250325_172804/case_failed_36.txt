@@ -1,0 +1,20 @@
+==== 测试用例 36 (failed) ====
+
+输入:
+5 8
+OFFLINE 355 id4
+MESSAGE 560 id1
+MESSAGE 721 id1 id0 id4
+OFFLINE 281 id2
+MESSAGE 439 ALL
+MESSAGE 756 HERE
+OFFLINE 421 id1
+MESSAGE 741 HERE
+期望输出:
+4 5 3 3 4
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/o1/weekly_contest_434_p2_cpp.rs:233:14:
+Failed to read event type
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

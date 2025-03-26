@@ -1,0 +1,114 @@
+==== Test Results ====
+
+测试文件: weekly_contest_437_p3_c.rs
+编译状态: 成功
+总测试用例: 100
+通过: 0
+失败: 100
+成功率: 0.00%
+平均运行时间: 0.00 ms
+
+失败的测试用例:
+用例 1: 详情见 ./test_results/details_20250326_000930/case_failed_1.txt
+用例 2: 详情见 ./test_results/details_20250326_000930/case_failed_2.txt
+用例 3: 详情见 ./test_results/details_20250326_000930/case_failed_3.txt
+用例 4: 详情见 ./test_results/details_20250326_000930/case_failed_4.txt
+用例 5: 详情见 ./test_results/details_20250326_000930/case_failed_5.txt
+用例 6: 详情见 ./test_results/details_20250326_000930/case_failed_6.txt
+用例 7: 详情见 ./test_results/details_20250326_000930/case_failed_7.txt
+用例 8: 详情见 ./test_results/details_20250326_000930/case_failed_8.txt
+用例 9: 详情见 ./test_results/details_20250326_000930/case_failed_9.txt
+用例 10: 详情见 ./test_results/details_20250326_000930/case_failed_10.txt
+用例 11: 详情见 ./test_results/details_20250326_000930/case_failed_11.txt
+用例 12: 详情见 ./test_results/details_20250326_000930/case_failed_12.txt
+用例 13: 详情见 ./test_results/details_20250326_000930/case_failed_13.txt
+用例 14: 详情见 ./test_results/details_20250326_000930/case_failed_14.txt
+用例 15: 详情见 ./test_results/details_20250326_000930/case_failed_15.txt
+用例 16: 详情见 ./test_results/details_20250326_000930/case_failed_16.txt
+用例 17: 详情见 ./test_results/details_20250326_000930/case_failed_17.txt
+用例 18: 详情见 ./test_results/details_20250326_000930/case_failed_18.txt
+用例 19: 详情见 ./test_results/details_20250326_000930/case_failed_19.txt
+用例 20: 详情见 ./test_results/details_20250326_000930/case_failed_20.txt
+用例 21: 详情见 ./test_results/details_20250326_000930/case_failed_21.txt
+用例 22: 详情见 ./test_results/details_20250326_000930/case_failed_22.txt
+用例 23: 详情见 ./test_results/details_20250326_000930/case_failed_23.txt
+用例 24: 详情见 ./test_results/details_20250326_000930/case_failed_24.txt
+用例 25: 详情见 ./test_results/details_20250326_000930/case_failed_25.txt
+用例 26: 详情见 ./test_results/details_20250326_000930/case_failed_26.txt
+用例 27: 详情见 ./test_results/details_20250326_000930/case_failed_27.txt
+用例 28: 详情见 ./test_results/details_20250326_000930/case_failed_28.txt
+用例 29: 详情见 ./test_results/details_20250326_000930/case_failed_29.txt
+用例 30: 详情见 ./test_results/details_20250326_000930/case_failed_30.txt
+用例 31: 详情见 ./test_results/details_20250326_000930/case_failed_31.txt
+用例 32: 详情见 ./test_results/details_20250326_000930/case_failed_32.txt
+用例 33: 详情见 ./test_results/details_20250326_000930/case_failed_33.txt
+用例 34: 详情见 ./test_results/details_20250326_000930/case_failed_34.txt
+用例 35: 详情见 ./test_results/details_20250326_000930/case_failed_35.txt
+用例 36: 详情见 ./test_results/details_20250326_000930/case_failed_36.txt
+用例 37: 详情见 ./test_results/details_20250326_000930/case_failed_37.txt
+用例 38: 详情见 ./test_results/details_20250326_000930/case_failed_38.txt
+用例 39: 详情见 ./test_results/details_20250326_000930/case_failed_39.txt
+用例 40: 详情见 ./test_results/details_20250326_000930/case_failed_40.txt
+用例 41: 详情见 ./test_results/details_20250326_000930/case_failed_41.txt
+用例 42: 详情见 ./test_results/details_20250326_000930/case_failed_42.txt
+用例 43: 详情见 ./test_results/details_20250326_000930/case_failed_43.txt
+用例 44: 详情见 ./test_results/details_20250326_000930/case_failed_44.txt
+用例 45: 详情见 ./test_results/details_20250326_000930/case_failed_45.txt
+用例 46: 详情见 ./test_results/details_20250326_000930/case_failed_46.txt
+用例 47: 详情见 ./test_results/details_20250326_000930/case_failed_47.txt
+用例 48: 详情见 ./test_results/details_20250326_000930/case_failed_48.txt
+用例 49: 详情见 ./test_results/details_20250326_000930/case_failed_49.txt
+用例 50: 详情见 ./test_results/details_20250326_000930/case_failed_50.txt
+用例 51: 详情见 ./test_results/details_20250326_000930/case_failed_51.txt
+用例 52: 详情见 ./test_results/details_20250326_000930/case_failed_52.txt
+用例 53: 详情见 ./test_results/details_20250326_000930/case_failed_53.txt
+用例 54: 详情见 ./test_results/details_20250326_000930/case_failed_54.txt
+用例 55: 详情见 ./test_results/details_20250326_000930/case_failed_55.txt
+用例 56: 详情见 ./test_results/details_20250326_000930/case_failed_56.txt
+用例 57: 详情见 ./test_results/details_20250326_000930/case_failed_57.txt
+用例 58: 详情见 ./test_results/details_20250326_000930/case_failed_58.txt
+用例 59: 详情见 ./test_results/details_20250326_000930/case_failed_59.txt
+用例 60: 详情见 ./test_results/details_20250326_000930/case_failed_60.txt
+用例 61: 详情见 ./test_results/details_20250326_000930/case_failed_61.txt
+用例 62: 详情见 ./test_results/details_20250326_000930/case_failed_62.txt
+用例 63: 详情见 ./test_results/details_20250326_000930/case_failed_63.txt
+用例 64: 详情见 ./test_results/details_20250326_000930/case_failed_64.txt
+用例 65: 详情见 ./test_results/details_20250326_000930/case_failed_65.txt
+用例 66: 详情见 ./test_results/details_20250326_000930/case_failed_66.txt
+用例 67: 详情见 ./test_results/details_20250326_000930/case_failed_67.txt
+用例 68: 详情见 ./test_results/details_20250326_000930/case_failed_68.txt
+用例 69: 详情见 ./test_results/details_20250326_000930/case_failed_69.txt
+用例 70: 详情见 ./test_results/details_20250326_000930/case_failed_70.txt
+用例 71: 详情见 ./test_results/details_20250326_000930/case_failed_71.txt
+用例 72: 详情见 ./test_results/details_20250326_000930/case_failed_72.txt
+用例 73: 详情见 ./test_results/details_20250326_000930/case_failed_73.txt
+用例 74: 详情见 ./test_results/details_20250326_000930/case_failed_74.txt
+用例 75: 详情见 ./test_results/details_20250326_000930/case_failed_75.txt
+用例 76: 详情见 ./test_results/details_20250326_000930/case_failed_76.txt
+用例 77: 详情见 ./test_results/details_20250326_000930/case_failed_77.txt
+用例 78: 详情见 ./test_results/details_20250326_000930/case_failed_78.txt
+用例 79: 详情见 ./test_results/details_20250326_000930/case_failed_79.txt
+用例 80: 详情见 ./test_results/details_20250326_000930/case_failed_80.txt
+用例 81: 详情见 ./test_results/details_20250326_000930/case_failed_81.txt
+用例 82: 详情见 ./test_results/details_20250326_000930/case_failed_82.txt
+用例 83: 详情见 ./test_results/details_20250326_000930/case_failed_83.txt
+用例 84: 详情见 ./test_results/details_20250326_000930/case_failed_84.txt
+用例 85: 详情见 ./test_results/details_20250326_000930/case_failed_85.txt
+用例 86: 详情见 ./test_results/details_20250326_000930/case_failed_86.txt
+用例 87: 详情见 ./test_results/details_20250326_000930/case_failed_87.txt
+用例 88: 详情见 ./test_results/details_20250326_000930/case_failed_88.txt
+用例 89: 详情见 ./test_results/details_20250326_000930/case_failed_89.txt
+用例 90: 详情见 ./test_results/details_20250326_000930/case_failed_90.txt
+用例 91: 详情见 ./test_results/details_20250326_000930/case_failed_91.txt
+用例 92: 详情见 ./test_results/details_20250326_000930/case_failed_92.txt
+用例 93: 详情见 ./test_results/details_20250326_000930/case_failed_93.txt
+用例 94: 详情见 ./test_results/details_20250326_000930/case_failed_94.txt
+用例 95: 详情见 ./test_results/details_20250326_000930/case_failed_95.txt
+用例 96: 详情见 ./test_results/details_20250326_000930/case_failed_96.txt
+用例 97: 详情见 ./test_results/details_20250326_000930/case_failed_97.txt
+用例 98: 详情见 ./test_results/details_20250326_000930/case_failed_98.txt
+用例 99: 详情见 ./test_results/details_20250326_000930/case_failed_99.txt
+用例 100: 详情见 ./test_results/details_20250326_000930/case_failed_100.txt
+
+详细测试信息目录: ./test_results/details_20250326_000930
+结果保存时间: 2025-03-26 00:09:30

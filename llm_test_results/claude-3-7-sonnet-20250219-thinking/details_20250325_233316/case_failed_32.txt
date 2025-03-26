@@ -1,0 +1,20 @@
+==== 测试用例 32 (failed) ====
+
+输入:
+8
+32 4 32 51 99 98 53 91 30 94
+82 76 41 51 49 90 67 57 80 70
+72 61 85 28 6 40 14 79 72 36
+5 53 100 26 24 81 39 6 23 10
+10 68 40 53 20 76 21 32 71 74
+50 67 78 65 41 70 26 99 83 10
+55 69 25 63 86 91 34 82 38 21
+84 23 82 93 4 94 55 54 10 2
+期望输出:
+293
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-thinking/weekly_contest_413_p3_cpp.rs:90:14:
+Failed to parse grid column size: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,16 @@
+==== 测试用例 19 (timeout) ====
+
+输入:
+6
+42 22
+84 9
+43 28
+57 31
+50 90
+55 31
+期望输出:
+90
+实际输出:
+ERROR: Process timed out after 10 seconds (TIMEOUT)
+运行时间: 0.00 ms
+状态: 超时

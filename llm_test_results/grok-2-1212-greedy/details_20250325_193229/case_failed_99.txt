@@ -1,0 +1,17 @@
+==== 测试用例 99 (failed) ====
+
+输入:
+3
+-66563 56588 -57484
+6738 -44930 56639
+53344 93118 59259
+期望输出:
+59259 56588 -57484 
+93118 -44930 56639 
+53344 6738 -66563
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/grok-2-1212-greedy/weekly_contest_436_p1_c.rs:30:27:
+index out of bounds: the len is 3 but the index is 3
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,11 @@
+==== 测试用例 76 (failed) ====
+
+输入:
+29
+657 426 473 577 627 608 49 146 234 103 393 126 630 153 709 733 519 972 427 107 290 658 370 156 710 166 185 858 20
+期望输出:
+182644
+实际输出:
+Placeholder implementation. To get a proper translation, configure LLM API.
+
+运行时间: 0.70 ms

@@ -1,0 +1,12 @@
+==== 测试用例 29 (failed) ====
+
+输入:
+112
+rotohfnuzdfcinlejnhpngadwxiqajqnbtiiibcvhmzoomiziklronyxtnzcqcdswnfphwgekgwjyvtwasxhyfsjqmvzpsedbirjdimcvnkjlzwz
+91
+期望输出:
+1
+实际输出:
+5
+
+运行时间: 0.69 ms

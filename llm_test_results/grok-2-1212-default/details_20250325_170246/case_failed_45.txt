@@ -1,0 +1,13 @@
+==== 测试用例 45 (failed) ====
+
+输入:
+55
+70 7 29 -82 -43 -12 -50 -14 88 40 81 -88 -1 -53 5 35 85 23 -55 -9 -77 -55 44 76 70 47 68 86 9 18 -27 -60 3 39 50 4 71 -72 -67 13 47 -27 91 66 54 -55 31 -35 -37 35 75 -96 -54 71 -21
+期望输出:
+35 88 -60 -60 85 -37 -88 -37 -27 35 71 39 -88 35 -9 75 31 47 -55 81 71 -55 -88 54 13 23 13 -82 -72 -35 -82 68 4 23 18 13 -54 -77 68 -54 3 5 76 -21 66 -55 44 -1 -88 18 35 81 71 5 39
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/grok-2-1212-default/weekly_contest_427_p1_cpp.rs:10:25:
+attempt to add with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

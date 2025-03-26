@@ -1,0 +1,16 @@
+==== 测试用例 63 (failed) ====
+
+输入:
+9 6
+MESSAGE 776 HERE
+MESSAGE 767 ALL
+MESSAGE 264 HERE
+MESSAGE 710 ALL
+MESSAGE 912 id3 id4 id0 id2 id0
+MESSAGE 203 HERE
+期望输出:
+Mentions: 4 4 4 5 4 4 4 4 4
+实际输出:
+Mentions: 5 5 5 6 5 5 5 5 5
+
+运行时间: 0.57 ms

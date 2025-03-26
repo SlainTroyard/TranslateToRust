@@ -1,0 +1,14 @@
+==== 测试用例 1 (failed) ====
+
+输入:
+4 2
+3 2
+1 3
+3 4
+0 1
+期望输出:
+15
+实际输出:
+Placeholder implementation. To get a proper translation, configure LLM API.
+
+运行时间: 0.59 ms

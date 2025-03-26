@@ -1,0 +1,18 @@
+==== 测试用例 2 (failed) ====
+
+输入:
+4 5
+-1 4 5 -2
+-5
+-1
+-3
+-2
+-4
+期望输出:
+-1
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gemini-2.0-flash-default/weekly_contest_415_p2_c.rs:13:40:
+attempt to add with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

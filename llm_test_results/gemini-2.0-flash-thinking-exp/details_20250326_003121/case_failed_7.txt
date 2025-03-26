@@ -1,0 +1,13 @@
+==== 测试用例 7 (failed) ====
+
+输入:
+50
+65 53 5 9 13 44 6 9 43 99 88 55 8 47 99 91 86 97 100 73 7 45 46 33 75 47 56 86 63 36 31 78 29 32 81 27 93 30 68 78 39 70 56 36 84 92 75 89 83 64
+期望输出:
+0
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gemini-2.0-flash-thinking-exp/weekly_contest_434_p1_cpp.rs:34:47:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

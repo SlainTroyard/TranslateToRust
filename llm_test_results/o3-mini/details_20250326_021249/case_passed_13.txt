@@ -1,0 +1,48 @@
+==== 测试用例 13 (passed) ====
+
+输入:
+38
+vq
+ed
+ue
+av
+dk
+ee
+qe
+kv
+ad
+vu
+vd
+qk
+ek
+du
+kq
+eu
+vv
+ka
+uq
+da
+vk
+ae
+uu
+qa
+aq
+qd
+ev
+ea
+ve
+au
+aa
+qv
+dq
+qq
+kk
+de
+va
+dv
+期望输出:
+2 0 0 1 2 0 0 0 0 0 2 0 0 0 0 0 2 0 0 0 2 2 0 0 0 0
+实际输出:
+2 0 0 1 2 0 0 0 0 0 2 0 0 0 0 0 2 0 0 0 2 2 0 0 0 0 
+
+运行时间: 0.58 ms

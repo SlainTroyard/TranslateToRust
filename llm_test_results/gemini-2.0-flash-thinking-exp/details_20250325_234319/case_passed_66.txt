@@ -1,0 +1,25 @@
+==== 测试用例 66 (passed) ====
+
+输入:
+U
+9
+U MSW 4.01
+MSW LI 1.74
+LI ZAG 8.22
+ZAG FIH 8.81
+FIH RRH 9.36
+RRH GLC 7.22
+GLC H 3.37
+H NSP 7.47
+NSP XT 3.59
+4
+XT IGY 2.33
+IGY TR 3.12
+TR ZR 5.5
+ZR U 6.47
+期望输出:
+798319669.15584
+实际输出:
+798319669.15584
+
+运行时间: 0.65 ms

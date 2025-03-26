@@ -1,0 +1,15 @@
+==== 测试用例 17 (failed) ====
+
+输入:
+5
+63 3 47 66 12 43
+1 73 28 20 26 30
+12 6 54 42 60 90
+100 87 84 2 85 60
+71 89 96 41 5 93
+期望输出:
+100
+实际输出:
+ERROR: Process exited with code 1: Error: ParseIntError { kind: InvalidDigit }
+
+运行时间: 0.00 ms

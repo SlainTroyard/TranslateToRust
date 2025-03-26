@@ -1,0 +1,14 @@
+==== 测试用例 46 (failed) ====
+
+输入:
+40 11
+1
+20 20
+期望输出:
+11
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-greedy/weekly_contest_414_p4_cpp.rs:113:32:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

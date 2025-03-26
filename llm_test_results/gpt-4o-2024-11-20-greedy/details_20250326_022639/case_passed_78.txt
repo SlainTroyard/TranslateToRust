@@ -1,0 +1,10 @@
+==== 测试用例 78 (passed) ====
+
+输入:
+jn
+期望输出:
+a b c d e f g h i j ja jb jc jd je jf jg jh ji jj jk jl jm jn
+实际输出:
+a b c d e f g h i j ja jb jc jd je jf jg jh ji jj jk jl jm jn 
+
+运行时间: 0.61 ms

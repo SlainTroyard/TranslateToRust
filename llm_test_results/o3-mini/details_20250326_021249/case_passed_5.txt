@@ -1,0 +1,46 @@
+==== 测试用例 5 (passed) ====
+
+输入:
+36
+iz
+iy
+od
+yz
+dy
+yd
+si
+yy
+os
+dz
+oz
+zs
+oy
+so
+do
+sy
+sz
+ds
+oo
+zi
+ys
+zy
+zz
+zo
+id
+yi
+sd
+di
+dd
+zd
+yo
+is
+ii
+ss
+oi
+io
+期望输出:
+0 0 0 2 0 0 0 0 2 0 0 0 0 0 2 0 0 0 2 0 0 0 0 0 2 2
+实际输出:
+0 0 0 2 0 0 0 0 2 0 0 0 0 0 2 0 0 0 2 0 0 0 0 0 2 2 
+
+运行时间: 0.61 ms

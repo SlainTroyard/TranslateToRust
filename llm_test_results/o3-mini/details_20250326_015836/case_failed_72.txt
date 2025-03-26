@@ -1,0 +1,19 @@
+==== 测试用例 72 (failed) ====
+
+输入:
+31 39
+8
+45 35
+16 21
+16 33
+26 16
+44 39
+18 5
+46 20
+36 37
+期望输出:
+87
+实际输出:
+ERROR: Process exited with code 1: Error: Custom { kind: Other, error: "Missing n" }
+
+运行时间: 0.00 ms

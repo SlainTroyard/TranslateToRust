@@ -1,0 +1,13 @@
+==== 测试用例 23 (failed) ====
+
+输入:
+19
+31 692 -155 56 -45 -4 51 -27 -10 -43 -45 18 -32 -38 -29 7 -33 0 -12
+期望输出:
+692
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/grok-2-1212-default/weekly_contest_426_p2_c.rs:41:50:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

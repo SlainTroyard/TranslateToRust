@@ -1,0 +1,40 @@
+==== 测试用例 61 (passed) ====
+
+输入:
+30
+gn
+rq
+nr
+cg
+nc
+en
+lq
+ul
+uc
+gq
+cc
+gg
+nn
+rn
+qe
+el
+rl
+gl
+cl
+ec
+gu
+ln
+cq
+nu
+eq
+qg
+ru
+gc
+qr
+ug
+期望输出:
+0 0 2 0 1 0 2 0 0 0 0 1 0 2 0 0 2 1 0 0 1 0 0 0 0 0
+实际输出:
+0 0 2 0 1 0 2 0 0 0 0 1 0 2 0 0 2 1 0 0 1 0 0 0 0 0
+
+运行时间: 0.75 ms

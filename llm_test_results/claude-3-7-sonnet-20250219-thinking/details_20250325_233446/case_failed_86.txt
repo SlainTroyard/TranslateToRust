@@ -1,0 +1,14 @@
+==== 测试用例 86 (failed) ====
+
+输入:
+52
+-225 193 -690 742 -521 -3 52 565 -288 -110 836 251 441 755 -680 255 208 430 804 -545 -999 712 -223 203 861 1 -451 566 -718 395 -568 -721 -886 560 86 310 121 812 -709 903 982 775 666 -33 -896 290 124 673 -342 -469 138 580
+51 51
+期望输出:
+4633
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-thinking/weekly_contest_425_p1_cpp.rs:39:49:
+Failed to parse array element: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

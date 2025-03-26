@@ -1,0 +1,11 @@
+==== 测试用例 57 (failed) ====
+
+输入:
+jwmtcmkhjcdvdr
+9
+期望输出:
+0
+实际输出:
+ERROR: Process exited with code 1: Invalid input format
+
+运行时间: 0.00 ms

@@ -1,0 +1,12 @@
+==== 测试用例 71 (failed) ====
+
+输入:
+143
+trwmwawypezteazmtrbqbjucobmgxzwtpbpziugdhjzaiyxjtyloyfhycuwpmqqfaxezpvlqhhgaiqsksawyeesnpqyizxyglemxusndghqpizugowatiwgkxqdikxchgxybjmcirmvgere
+74
+期望输出:
+61
+实际输出:
+54
+
+运行时间: 0.55 ms

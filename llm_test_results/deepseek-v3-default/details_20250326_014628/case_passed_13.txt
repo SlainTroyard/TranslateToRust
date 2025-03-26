@@ -1,0 +1,10 @@
+==== 测试用例 13 (passed) ====
+
+输入:
+vzwrciorgunphrferpkheqqsgdwmisjyt
+期望输出:
+-1
+实际输出:
+-1
+
+运行时间: 0.54 ms

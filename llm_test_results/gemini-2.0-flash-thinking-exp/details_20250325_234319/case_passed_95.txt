@@ -1,0 +1,23 @@
+==== 测试用例 95 (passed) ====
+
+输入:
+BP
+9
+BP JH 3.26
+JH GSD 2.23
+GSD JA 4.99
+JA ASG 4.32
+ASG SUB 1.08
+SUB VK 4.14
+VK IP 2.54
+IP OZE 5.0
+OZE TD 3.36
+2
+TD VWG 4.89
+VWG BP 2.29
+期望输出:
+334825.24244
+实际输出:
+334825.24244
+
+运行时间: 0.64 ms

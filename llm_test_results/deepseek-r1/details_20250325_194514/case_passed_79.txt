@@ -1,0 +1,10 @@
+==== 测试用例 79 (passed) ====
+
+输入:
+laqngnskg
+期望输出:
+a b c d e f g h i j k l la laa lab lac lad lae laf lag lah lai laj lak lal lam lan lao lap laq laqa laqb laqc laqd laqe laqf laqg laqh laqi laqj laqk laql laqm laqn laqna laqnb laqnc laqnd laqne laqnf laqng laqnga laqngb laqngc laqngd laqnge laqngf laqngg laqngh laqngi laqngj laqngk laqngl laqngm laqngn laqngna laqngnb laqngnc laqngnd laqngne laqngnf laqngng laqngnh laqngni laqngnj laqngnk laqngnl laqngnm laqngnn laqngno laqngnp laqngnq laqngnr laqngns laqngnsa laqngnsb laqngnsc laqngnsd laqngnse laqngnsf laqngnsg laqngnsh laqngnsi laqngnsj laqngnsk laqngnska laqngnskb laqngnskc laqngnskd laqngnske laqngnskf laqngnskg
+实际输出:
+a b c d e f g h i j k l la laa lab lac lad lae laf lag lah lai laj lak lal lam lan lao lap laq laqa laqb laqc laqd laqe laqf laqg laqh laqi laqj laqk laql laqm laqn laqna laqnb laqnc laqnd laqne laqnf laqng laqnga laqngb laqngc laqngd laqnge laqngf laqngg laqngh laqngi laqngj laqngk laqngl laqngm laqngn laqngna laqngnb laqngnc laqngnd laqngne laqngnf laqngng laqngnh laqngni laqngnj laqngnk laqngnl laqngnm laqngnn laqngno laqngnp laqngnq laqngnr laqngns laqngnsa laqngnsb laqngnsc laqngnsd laqngnse laqngnsf laqngnsg laqngnsh laqngnsi laqngnsj laqngnsk laqngnska laqngnskb laqngnskc laqngnskd laqngnske laqngnskf laqngnskg 
+
+运行时间: 0.94 ms

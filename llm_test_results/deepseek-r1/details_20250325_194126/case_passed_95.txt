@@ -1,0 +1,11 @@
+==== 测试用例 95 (passed) ====
+
+输入:
+41
+WFEWWEEWEWFEEFWEFEEWFWFFWFEFEFWWWWFWEFWFF
+期望输出:
+9428052
+实际输出:
+9428052
+
+运行时间: 1.61 ms

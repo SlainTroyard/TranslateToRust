@@ -1,0 +1,11 @@
+==== 测试用例 184 (passed) ====
+
+输入:
+rozsfxergdlfyfzzgsduiunmvcjnqwbiztraoc
+15
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 0.55 ms

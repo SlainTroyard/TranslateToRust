@@ -1,0 +1,46 @@
+==== 测试用例 7 (passed) ====
+
+输入:
+36
+oz
+wz
+zz
+ol
+lm
+zm
+mw
+ou
+zl
+wo
+lo
+zw
+ml
+wu
+uz
+mu
+oo
+zo
+lu
+mz
+uu
+ul
+mo
+mm
+ow
+lw
+ww
+wm
+lz
+om
+zu
+ll
+wl
+uo
+uw
+um
+期望输出:
+0 0 0 0 0 0 0 0 0 0 0 2 2 0 2 0 0 0 0 0 2 0 2 0 0 2
+实际输出:
+0 0 0 0 0 0 0 0 0 0 0 2 2 0 2 0 0 0 0 0 2 0 2 0 0 2
+
+运行时间: 1.35 ms

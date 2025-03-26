@@ -1,0 +1,15 @@
+==== 测试用例 100 (failed) ====
+
+输入:
+9 5
+MESSAGE 245 ALL
+MESSAGE 17 id7
+MESSAGE 544 id7 id6 id7 id2 id0
+MESSAGE 677 ALL
+MESSAGE 611 HERE
+期望输出:
+Mentions: 1 1 1 1 1 1 1 3 1
+实际输出:
+Mentions: 0 0 0 0 0 0 0 0 0 
+
+运行时间: 0.56 ms

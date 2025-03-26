@@ -1,0 +1,10 @@
+==== 测试用例 92 (passed) ====
+
+输入:
+sdllqdd
+期望输出:
+a b c d e f g h i j k l m n o p q r s sa sb sc sd sda sdb sdc sdd sde sdf sdg sdh sdi sdj sdk sdl sdla sdlb sdlc sdld sdle sdlf sdlg sdlh sdli sdlj sdlk sdll sdlla sdllb sdllc sdlld sdlle sdllf sdllg sdllh sdlli sdllj sdllk sdlll sdllm sdlln sdllo sdllp sdllq sdllqa sdllqb sdllqc sdllqd sdllqda sdllqdb sdllqdc sdllqdd
+实际输出:
+a b c d e f g h i j k l m n o p q r s sa sb sc sd sda sdb sdc sdd sde sdf sdg sdh sdi sdj sdk sdl sdla sdlb sdlc sdld sdle sdlf sdlg sdlh sdli sdlj sdlk sdll sdlla sdllb sdllc sdlld sdlle sdllf sdllg sdllh sdlli sdllj sdllk sdlll sdllm sdlln sdllo sdllp sdllq sdllqa sdllqb sdllqc sdllqd sdllqda sdllqdb sdllqdc sdllqdd 
+
+运行时间: 0.97 ms

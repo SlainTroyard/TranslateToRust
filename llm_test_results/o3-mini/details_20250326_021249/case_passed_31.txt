@@ -1,0 +1,43 @@
+==== 测试用例 31 (passed) ====
+
+输入:
+33
+qi
+ym
+im
+mm
+qq
+qy
+me
+ma
+ia
+ya
+am
+iq
+ay
+qe
+ae
+ii
+my
+yy
+ee
+mi
+em
+ea
+eq
+qm
+yi
+qa
+ei
+iy
+aa
+ey
+aq
+mq
+yq
+期望输出:
+2 0 0 0 2 0 0 0 2 0 0 0 2 0 0 0 2 0 0 0 0 0 0 0 2 0
+实际输出:
+2 0 0 0 2 0 0 0 2 0 0 0 2 0 0 0 2 0 0 0 0 0 0 0 2 0 
+
+运行时间: 0.59 ms

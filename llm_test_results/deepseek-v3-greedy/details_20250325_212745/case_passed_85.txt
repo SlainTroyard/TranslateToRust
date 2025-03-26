@@ -1,0 +1,10 @@
+==== 测试用例 85 (passed) ====
+
+输入:
+gihiaycsmnfczffokbobctypjkgdxosgxjbwvpssmbtpkljlakqs
+期望输出:
+3
+实际输出:
+3
+
+运行时间: 1.29 ms

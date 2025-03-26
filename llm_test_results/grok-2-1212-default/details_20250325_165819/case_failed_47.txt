@@ -1,0 +1,19 @@
+==== 测试用例 47 (failed) ====
+
+输入:
+7
+35 9
+35 94
+42 9
+42 94
+35 63
+42 36
+28 89
+期望输出:
+-1
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/grok-2-1212-default/weekly_contest_427_p2_c.rs:16:32:
+index out of bounds: the len is 4 but the index is 4
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

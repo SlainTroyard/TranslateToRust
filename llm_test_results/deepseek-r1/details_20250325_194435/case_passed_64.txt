@@ -1,0 +1,49 @@
+==== 测试用例 64 (passed) ====
+
+输入:
+39
+xp
+pz
+pj
+yy
+jy
+kp
+wa
+aa
+wz
+ak
+yz
+kk
+wx
+yk
+zp
+jw
+jx
+kj
+zz
+az
+zj
+yj
+yw
+wp
+jp
+zw
+pp
+xw
+xx
+xk
+ww
+ax
+ja
+zk
+kx
+pw
+jk
+pa
+aw
+期望输出:
+2 0 0 0 0 0 0 0 0 1 2 0 0 0 0 2 0 0 0 0 0 0 2 2 2 2
+实际输出:
+2 0 0 0 0 0 0 0 0 1 2 0 0 0 0 2 0 0 0 0 0 0 2 2 2 2 
+
+运行时间: 0.59 ms

@@ -1,0 +1,14 @@
+==== 测试用例 77 (passed) ====
+
+输入:
+1 4
+MESSAGE 704 HERE
+MESSAGE 701 id0
+OFFLINE 921 id0
+MESSAGE 648 HERE
+期望输出:
+3
+实际输出:
+3 
+
+运行时间: 0.58 ms

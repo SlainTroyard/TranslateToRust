@@ -1,0 +1,11 @@
+==== 测试用例 59 (passed) ====
+
+输入:
+ketucszqloraiwydzuoybyigkqbzollbttdvotmegqmqrvlkfvizkxrjwhcxoqcdnvtpnupbagpnlepemmafcpeor
+24
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 0.90 ms

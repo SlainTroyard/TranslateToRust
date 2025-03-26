@@ -1,0 +1,12 @@
+==== 测试用例 49 (failed) ====
+
+输入:
+134
+asesnnzgkyqmvioldydveubrxlnmgjwnqkkkzkconndgqzfayaopgmpivpynlifamonsoddmdlntuafeijncimjvuhwbcxnjgbkjzarnwrczbqzkghmeftqrepvsuafixkytmp
+79
+期望输出:
+42
+实际输出:
+41
+
+运行时间: 0.72 ms

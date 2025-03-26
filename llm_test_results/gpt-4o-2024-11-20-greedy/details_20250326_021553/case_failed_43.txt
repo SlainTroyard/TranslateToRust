@@ -1,0 +1,36 @@
+==== 测试用例 43 (failed) ====
+
+输入:
+20
+14
+8
+10
+0
+5
+0
+15
+19
+7
+2
+18
+17
+16
+13
+1
+6
+4
+3
+11
+15
+9
+12
+期望输出:
+0 15
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gpt-4o-2024-11-20-greedy/weekly_contest_415_p1_c.rs:45:5:
+assertion `left == right` failed: Input size does not match expected size
+  left: 1
+ right: 22
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,10 @@
+==== 测试用例 5 (passed) ====
+
+输入:
+qfowbtqolilaxrpterkrqtmswoajazcunicqwljsowkpakqcgztyptyqxpbgwmrosxljjcfbamkrhubbycowgdiq
+期望输出:
+5
+实际输出:
+5
+
+运行时间: 0.84 ms

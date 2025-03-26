@@ -1,0 +1,13 @@
+==== 测试用例 59 (failed) ====
+
+输入:
+44
+585 994 126 847 813 658 371 206 346 351 858 576 993 266 928 377 377 683 290 17 721 940 845 983 188 185 59 781 691 817 916 573 816 149 315 938 900 899 48 127 85 323 598 116
+期望输出:
+558917
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/grok-2-1212-greedy/weekly_contest_433_p1_c.rs:24:50:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

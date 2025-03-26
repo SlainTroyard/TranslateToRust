@@ -1,0 +1,13 @@
+==== 测试用例 82 (failed) ====
+
+输入:
+43
+300 313 731 942 722 833 757 356 665 273 267 66 522 443 881 143 764 562 568 24 798 270 556 351 273 355 705 611 429 378 327 551 260 30 717 48 672 659 489 692 682 574 320
+期望输出:
+471811
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/o1/weekly_contest_433_p1_cpp.rs:31:32:
+index out of bounds: the len is 44 but the index is 18446744073709551316
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

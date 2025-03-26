@@ -1,0 +1,21 @@
+==== 测试用例 37 (failed) ====
+
+输入:
+9
+16 85 18 64 99 3 21
+35 34 100 83 74 38 51
+14 41 27 18 97 23 95
+30 56 2 100 55 98 48
+65 58 65 91 77 17 21
+26 51 34 44 55 88 77
+78 38 97 89 90 3 58
+22 85 46 79 88 62 9
+62 9 72 43 22 92 2
+期望输出:
+296
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-default/weekly_contest_413_p3_cpp.rs:78:88:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

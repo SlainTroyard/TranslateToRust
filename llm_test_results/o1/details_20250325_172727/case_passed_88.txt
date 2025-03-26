@@ -1,0 +1,10 @@
+==== 测试用例 88 (passed) ====
+
+输入:
+ovbmisafslhwpurfntvikndrqqvqgfbyrfdljjuaqzn
+期望输出:
+1
+实际输出:
+1
+
+运行时间: 0.97 ms

@@ -1,0 +1,94 @@
+==== 测试用例 62 (failed) ====
+
+输入:
+78
+30
+18
+7
+53
+44
+17
+47
+33
+75
+46
+73
+69
+13
+28
+19
+15
+10
+38
+41
+4
+59
+45
+37
+43
+34
+26
+16
+74
+39
+55
+0
+14
+27
+56
+60
+35
+28
+57
+3
+32
+9
+63
+25
+8
+68
+61
+66
+31
+48
+54
+76
+24
+65
+6
+72
+50
+21
+51
+64
+67
+7
+49
+23
+20
+1
+29
+62
+2
+71
+58
+42
+70
+11
+40
+12
+52
+77
+5
+36
+22
+期望输出:
+28 7
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/deepseek-v3-greedy/weekly_contest_415_p1_cpp.rs:18:5:
+assertion `left == right` failed
+  left: 1
+ right: 80
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

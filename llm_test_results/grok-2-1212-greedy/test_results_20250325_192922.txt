@@ -1,0 +1,34 @@
+==== Test Results ====
+
+测试文件: weekly_contest_432_p3_cpp.rs
+编译状态: 成功
+总测试用例: 20
+通过: 0
+失败: 20
+成功率: 0.00%
+平均运行时间: 0.00 ms
+
+失败的测试用例:
+用例 1: 详情见 ./test_results/details_20250325_192922/case_failed_1.txt
+用例 2: 详情见 ./test_results/details_20250325_192922/case_failed_2.txt
+用例 3: 详情见 ./test_results/details_20250325_192922/case_failed_3.txt
+用例 4: 详情见 ./test_results/details_20250325_192922/case_failed_4.txt
+用例 5: 详情见 ./test_results/details_20250325_192922/case_failed_5.txt
+用例 6: 详情见 ./test_results/details_20250325_192922/case_failed_6.txt
+用例 7: 详情见 ./test_results/details_20250325_192922/case_failed_7.txt
+用例 8: 详情见 ./test_results/details_20250325_192922/case_failed_8.txt
+用例 9: 详情见 ./test_results/details_20250325_192922/case_failed_9.txt
+用例 10: 详情见 ./test_results/details_20250325_192922/case_failed_10.txt
+用例 11: 详情见 ./test_results/details_20250325_192922/case_failed_11.txt
+用例 12: 详情见 ./test_results/details_20250325_192922/case_failed_12.txt
+用例 13: 详情见 ./test_results/details_20250325_192922/case_failed_13.txt
+用例 14: 详情见 ./test_results/details_20250325_192922/case_failed_14.txt
+用例 15: 详情见 ./test_results/details_20250325_192922/case_failed_15.txt
+用例 16: 详情见 ./test_results/details_20250325_192922/case_failed_16.txt
+用例 17: 详情见 ./test_results/details_20250325_192922/case_failed_17.txt
+用例 18: 详情见 ./test_results/details_20250325_192922/case_failed_18.txt
+用例 19: 详情见 ./test_results/details_20250325_192922/case_failed_19.txt
+用例 20: 详情见 ./test_results/details_20250325_192922/case_failed_20.txt
+
+详细测试信息目录: ./test_results/details_20250325_192922
+结果保存时间: 2025-03-25 19:29:22

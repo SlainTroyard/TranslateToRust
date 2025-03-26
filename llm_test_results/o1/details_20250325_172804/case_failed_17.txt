@@ -1,0 +1,20 @@
+==== 测试用例 17 (failed) ====
+
+输入:
+3 8
+OFFLINE 901 id2
+MESSAGE 158 HERE
+OFFLINE 341 id0
+MESSAGE 503 id2 id2 id0
+MESSAGE 506 id0
+MESSAGE 512 ALL
+OFFLINE 923 id1
+MESSAGE 228 id1
+期望输出:
+4 3 4
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/o1/weekly_contest_434_p2_cpp.rs:101:42:
+Invalid time in event[1]: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,21 @@
+==== 测试用例 68 (failed) ====
+
+输入:
+15 18
+8
+24 3
+40 16
+24 10
+31 34
+41 19
+32 19
+24 9
+7 8
+期望输出:
+76
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-default/weekly_contest_414_p4_cpp.rs:109:25:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

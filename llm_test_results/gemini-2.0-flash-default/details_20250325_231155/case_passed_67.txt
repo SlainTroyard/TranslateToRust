@@ -1,0 +1,42 @@
+==== 测试用例 67 (passed) ====
+
+输入:
+32
+nv
+nn
+sd
+nu
+vc
+dd
+sn
+dh
+hc
+us
+hn
+uu
+du
+nd
+dc
+nc
+vu
+cv
+ns
+sv
+hd
+vv
+ch
+cn
+hv
+cs
+cc
+hh
+sc
+ud
+dn
+uc
+期望输出:
+0 0 2 2 0 0 0 2 0 0 0 0 0 2 0 0 0 0 1 0 2 2 0 0 0 0
+实际输出:
+0 0 2 2 0 0 0 2 0 0 0 0 0 2 0 0 0 0 1 0 2 2 0 0 0 0 
+
+运行时间: 0.77 ms

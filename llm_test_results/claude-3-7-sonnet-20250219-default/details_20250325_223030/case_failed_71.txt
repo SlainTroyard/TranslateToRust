@@ -1,0 +1,41 @@
+==== 测试用例 71 (failed) ====
+
+输入:
+27
+24
+17
+6
+9
+25
+15
+13
+26
+0
+7
+18
+3
+5
+2
+10
+11
+23
+19
+16
+1
+8
+9
+21
+22
+12
+20
+4
+15
+14
+期望输出:
+9 15
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-default/weekly_contest_415_p1_c.rs:48:42:
+range end index 29 out of range for slice of length 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

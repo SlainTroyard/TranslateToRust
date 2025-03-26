@@ -1,0 +1,17 @@
+==== 测试用例 92 (failed) ====
+
+输入:
+8 5
+MESSAGE 467 id4 id0 id4
+MESSAGE 351 HERE
+OFFLINE 903 id3
+OFFLINE 683 id7
+OFFLINE 193 id2
+期望输出:
+Mentions: 0 0 0 0 1 0 0 0
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-greedy/weekly_contest_434_p2_c.rs:106:37:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

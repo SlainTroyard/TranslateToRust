@@ -1,0 +1,29 @@
+==== 测试用例 15 (failed) ====
+
+输入:
+TZN
+9
+TZN X 8.32
+X OJ 6.08
+OJ SBF 9.66
+SBF AR 7.39
+AR UPA 5.55
+UPA QOM 3.27
+QOM D 1.98
+D EN 3.42
+EN LP 2.9
+8
+LP SPL 6.44
+SPL HCF 3.53
+HCF GUD 3.52
+GUD MP 4.94
+MP GQ 8.06
+GQ NC 9.31
+NC Y 9.89
+Y TZN 1.29
+期望输出:
+487056574712.97223
+实际输出:
+Placeholder implementation. To get a proper translation, configure LLM API.
+
+运行时间: 1.56 ms

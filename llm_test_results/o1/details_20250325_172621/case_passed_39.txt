@@ -1,0 +1,12 @@
+==== 测试用例 39 (passed) ====
+
+输入:
+81
+drfefxnqwnpxkkdwrihvkefmwywnxirhplpqwxskhnpxlssxklozglwnbypsrratbwowchzloivpyvipw
+32
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 1.88 ms

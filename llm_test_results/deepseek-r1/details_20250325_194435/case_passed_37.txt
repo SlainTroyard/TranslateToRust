@@ -1,0 +1,46 @@
+==== 测试用例 37 (passed) ====
+
+输入:
+36
+qy
+aa
+vq
+cv
+tc
+yc
+ay
+tt
+yv
+yy
+ty
+qq
+vy
+va
+qv
+qa
+vv
+av
+qc
+at
+ca
+qt
+tq
+ya
+ac
+ta
+yt
+vt
+cy
+tv
+yq
+ct
+vc
+cq
+cc
+aq
+期望输出:
+2 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 2 0 2 0 0 2 0
+实际输出:
+2 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 2 0 2 0 0 2 0 
+
+运行时间: 1.14 ms

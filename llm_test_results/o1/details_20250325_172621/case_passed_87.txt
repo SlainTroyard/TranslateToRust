@@ -1,0 +1,12 @@
+==== 测试用例 87 (passed) ====
+
+输入:
+223
+ktgmkbabczurdmegutcoaosbtdernamzgmzzlgmvvexmdfxlwqsrjyakfyphjywtulxasjmhoqeqvclyajhxymtfjdiubhzabimkfqpgmsnsuqryuypjzspvrlxzqzbnhqygnjmfkigeagylxmugznhklnrffptfrqrokexiisxdwqteevxjohyuqmlqehuchzepwbhwopqqbjnbmdeonrcefijoarv
+168
+期望输出:
+22
+实际输出:
+22
+
+运行时间: 1.27 ms

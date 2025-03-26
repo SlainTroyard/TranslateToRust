@@ -1,0 +1,46 @@
+==== 测试用例 22 (passed) ====
+
+输入:
+36
+nd
+tw
+dt
+tt
+dy
+kk
+tn
+ky
+td
+yd
+yn
+wn
+nk
+nt
+wt
+kt
+dd
+ty
+kw
+tk
+ny
+nw
+dw
+wk
+nn
+kn
+wd
+yt
+ww
+yy
+dn
+yk
+dk
+wy
+kd
+yw
+期望输出:
+0 0 0 2 0 0 0 0 0 0 2 0 0 2 0 0 0 0 0 2 0 0 2 0 2 0
+实际输出:
+0 0 0 2 0 0 0 0 0 0 2 0 0 2 0 0 0 0 0 2 0 0 2 0 2 0
+
+运行时间: 1.66 ms

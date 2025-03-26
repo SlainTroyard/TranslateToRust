@@ -1,0 +1,14 @@
+==== 测试用例 62 (failed) ====
+
+输入:
+2 8
+913 2000 2091 63 817 1998 897 1002
+1654 1552 502 1862 150 1489 274 877
+期望输出:
+913 2091 817 897 877 1489 1862 1552
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/grok-2-1212-greedy/weekly_contest_432_p1_c.rs:14:17:
+attempt to subtract with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

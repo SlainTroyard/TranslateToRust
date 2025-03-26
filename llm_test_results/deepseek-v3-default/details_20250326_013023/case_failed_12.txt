@@ -1,0 +1,12 @@
+==== 测试用例 12 (failed) ====
+
+输入:
+55177692856532366877408131924083006662757147805217113714836615996076
+期望输出:
+278008852
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/deepseek-v3-default/weekly_contest_422_p4_c.rs:110:9:
+attempt to subtract with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

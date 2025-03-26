@@ -1,0 +1,46 @@
+==== 测试用例 68 (passed) ====
+
+输入:
+36
+ju
+ej
+cu
+ub
+bm
+je
+ee
+bj
+ce
+jc
+eu
+ec
+mc
+jb
+cm
+cc
+cj
+mj
+jj
+mu
+mm
+eb
+bc
+uj
+uc
+ue
+jm
+uu
+me
+mb
+cb
+bb
+be
+um
+em
+bu
+期望输出:
+0 2 2 0 2 0 0 0 0 2 0 0 2 0 0 0 0 0 0 0 2 0 0 0 0 0
+实际输出:
+0 2 2 0 2 0 0 0 0 2 0 0 2 0 0 0 0 0 0 0 2 0 0 0 0 0 
+
+运行时间: 1.58 ms

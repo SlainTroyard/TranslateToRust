@@ -1,0 +1,15 @@
+==== 测试用例 21 (failed) ====
+
+输入:
+5
+84
+69
+2
+59
+13
+期望输出:
+69
+实际输出:
+ERROR: Process exited with code 1: Error: "Missing grid value"
+
+运行时间: 0.00 ms

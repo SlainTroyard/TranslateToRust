@@ -1,0 +1,12 @@
+==== 测试用例 45 (passed) ====
+
+输入:
+223
+djrzngtmeuxcrzwdrncngzvgcrqbhhkvcgggsrnzaqejhlnsqonbohyykwfterjtmrapsnvvbacwquvevtrucruxjwudbqjzzwdxgykurpcyziqnrmymnvmidnvsqjiypembylxacicraslhguhtbcnisdjrggwmaczwqowufkowfmeykcenuxbeohautrjsuptycaxpismhmokjgiwxttwlrvegfep
+201
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 0.91 ms

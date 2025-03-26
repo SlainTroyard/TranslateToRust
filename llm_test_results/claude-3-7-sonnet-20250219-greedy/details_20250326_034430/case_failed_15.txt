@@ -1,0 +1,47 @@
+==== 测试用例 15 (failed) ====
+
+输入:
+31
+24
+5
+23
+22
+5
+4
+28
+12
+27
+2
+30
+9
+26
+8
+21
+13
+6
+19
+20
+18
+1
+10
+16
+25
+10
+3
+0
+17
+11
+14
+29
+15
+7
+期望输出:
+10 5
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-greedy/weekly_contest_415_p1_cpp.rs:56:5:
+assertion `left == right` failed: Input size mismatch
+  left: 1
+ right: 33
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

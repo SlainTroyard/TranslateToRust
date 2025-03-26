@@ -1,0 +1,32 @@
+==== 测试用例 52 (failed) ====
+
+输入:
+20
+wi
+ei
+sw
+ze
+re
+nz
+lw
+sn
+es
+rz
+wr
+nw
+sl
+zi
+ir
+se
+rr
+ee
+ln
+ie
+期望输出:
+0 0 0 0 2 0 0 0 1 0 0 1 0 1 0 0 0 2 1 0 0 0 1 0 0 1
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-default/weekly_contest_434_p4_c.rs:39:17:
+attempt to subtract with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

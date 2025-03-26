@@ -1,0 +1,13 @@
+==== 测试用例 56 (failed) ====
+
+输入:
+30
+138 461 25 483 415 613 723 937 491 494 908 86 723 287 477 815 871 760 175 423 309 904 404 697 469 906 382 941 139 426
+期望输出:
+235551
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/deepseek-v3-greedy/weekly_contest_433_p1_c.rs:32:45:
+Please enter a valid number: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,12 @@
+==== 测试用例 48 (passed) ====
+
+输入:
+152
+mkjkbinayhqfeldgyrcconnkvghgehkcgfkbggfbccabzrucfowhmjfpqxmnhyorulxapguywqmbbwxqkqhipufumctishnssweoagntaxwwrpiqyurgvdfnxmvrawhhkktlcyfwalygikmvaiekzvgx
+103
+期望输出:
+32
+实际输出:
+32
+
+运行时间: 0.68 ms

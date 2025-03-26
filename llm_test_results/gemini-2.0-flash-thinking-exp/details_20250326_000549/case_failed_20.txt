@@ -1,0 +1,13 @@
+==== 测试用例 20 (failed) ====
+
+输入:
+jegdmkquedbumtmpxmewlsikntigtsnqpnfp
+15
+期望输出:
+0
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/gemini-2.0-flash-thinking-exp/weekly_contest_437_p1_c.rs:41:23:
+index out of bounds: the len is 1 but the index is 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

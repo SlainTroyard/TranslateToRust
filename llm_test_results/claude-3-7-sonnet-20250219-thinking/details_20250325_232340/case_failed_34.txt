@@ -1,0 +1,13 @@
+==== 测试用例 34 (failed) ====
+
+输入:
+84
+464 793 343 11 830 333 317 495 106 225 734 755 880 188 237 191 680 695 366 757 618 598 807 971 572 59 228 169 348 801 739 15 564 229 59 488 818 699 705 917 697 215 747 332 898 443 412 180 545 582 19 620 140 626 345 168 815 917 201 558 891 535 27 956 494 237 512 738 818 975 993 471 929 18 869 665 317 800 733 446 274 931 357 901
+期望输出:
+1708347
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/claude-3-7-sonnet-20250219-thinking/weekly_contest_433_p1_c.rs:30:45:
+Please enter a valid number: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

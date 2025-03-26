@@ -1,0 +1,12 @@
+==== 测试用例 4 (passed) ====
+
+输入:
+69
+xvkqtnaoolqsxvohoozbivvukjehjazcwksrkrhxkquplzpncmsxcunorftpgkroosaux
+26
+期望输出:
+22
+实际输出:
+22
+
+运行时间: 0.90 ms

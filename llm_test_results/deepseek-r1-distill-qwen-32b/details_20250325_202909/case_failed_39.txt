@@ -1,0 +1,13 @@
+==== 测试用例 39 (failed) ====
+
+输入:
+20
+21 26 6 1 24 18 15 23 27 15 24 23 10 20 14 4 25 21 18 17
+期望输出:
+192137400
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/deepseek-r1-distill-qwen-32b/weekly_contest_421_p1_c.rs:64:47:
+Invalid number: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms
