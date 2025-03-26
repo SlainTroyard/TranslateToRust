@@ -1,0 +1,10 @@
+==== 测试用例 14 (passed) ====
+
+输入:
+lvkskitmwnyxmxnzruzckouccmdghugdvxjknkjanlgwvzmycexoiuwqpfabfarluwwr
+期望输出:
+3
+实际输出:
+3
+
+运行时间: 0.77 ms

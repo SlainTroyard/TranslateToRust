@@ -1,0 +1,10 @@
+==== 测试用例 166 (failed) ====
+
+输入:
+rempedplamyaiomfkhfozxykanufrlwkscgqmabyfyj
+11
+期望输出:
+0
+实际输出:
+
+运行时间: 1.26 ms

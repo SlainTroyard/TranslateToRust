@@ -1,0 +1,13 @@
+==== 测试用例 61 (failed) ====
+
+输入:
+d6
+e6
+期望输出:
+false
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/qwq-plus/weekly_contest_413_p1_c.rs:15:32:
+index out of bounds: the len is 0 but the index is 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

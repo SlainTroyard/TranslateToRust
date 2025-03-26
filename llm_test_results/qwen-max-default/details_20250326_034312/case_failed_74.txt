@@ -1,0 +1,13 @@
+==== 测试用例 74 (failed) ====
+
+输入:
+29
+25 47 52 39 14 56 13 23 8 17 42 86 47 33 77 28 2 68 40 89 8 19 55 42 43 91 64 46 51
+期望输出:
+0
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/qwen-max-default/weekly_contest_434_p1_cpp.rs:25:45:
+Please type a number!: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

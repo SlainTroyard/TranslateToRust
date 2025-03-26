@@ -1,0 +1,38 @@
+use std::io::{self, Write};
+
+fn main() {
+    // Read the size of the array from stdin
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+    let n: usize = input.trim().parse().expect("Please type a number!");
+
+    // Read the elements of the array from stdin
+    let mut a = Vec::with_capacity(n);
+    for _ in 0..n {
+        input.clear();
+        io::stdin().read_line(&mut input).expect("Failed to read line");
+        let num: i32 = input.trim().parse().expect("Please type a number!");
+        a.push(num);
+    }
+
+    // Call the construct_transformed_array function
+    let transformed_array = construct_transformed_array(&a);
+
+    // Output the transformed array
+    for num in transformed_array {
+        print!("{} ", num);
+    }
+    println!();
+}
+
+fn construct_transformed_array(a: &[i32]) -> Vec<i32> {
+    let n = a.len();
+    let mut res = vec![0; n];
+
+    for i in 0..n {
+        let index = (i as i32 + a[i] % n as i32 + n as i32) % n as i32;
+        res[i] = a[index as usize];
+    }
+
+    res
+}

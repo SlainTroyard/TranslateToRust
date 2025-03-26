@@ -1,0 +1,27 @@
+use std::io;
+
+struct Solution;
+
+impl Solution {
+    pub fn smallest_number(n: i32) -> i32 {
+        let b = (n as f64).log2() as i32 + 1;  // Calculate the number of bits
+        (1 << b) - 1                          // Return 2^b - 1
+    }
+}
+
+fn main() {
+    let mut input = String::new();
+    
+    // Input
+    io::stdin().read_line(&mut input)
+        .expect("Failed to read input");
+    
+    let n: i32 = input.trim().parse()
+        .expect("Failed to parse input as integer");
+    
+    // Calculate the smallest number
+    let result = Solution::smallest_number(n);
+    
+    // Output
+    println!("{}", result);
+}

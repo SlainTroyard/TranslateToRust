@@ -1,0 +1,13 @@
+==== 测试用例 93 (failed) ====
+
+输入:
+9
+-529 116 831 -408 -204 -588 35 -174 -640
+2
+期望输出:
+true
+实际输出:
+Enter the size of the array:
+Enter the elements of the array:
+
+运行时间: 0.97 ms

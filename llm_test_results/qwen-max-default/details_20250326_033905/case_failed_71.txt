@@ -1,0 +1,13 @@
+==== 测试用例 71 (failed) ====
+
+输入:
+20
+18 884 802 358 -877 595 -147 -900 -953 -135 -207 4 -139 -851 342 -811 -206 -217 -549 302
+6
+期望输出:
+false
+实际输出:
+Enter the size of the array:
+Enter the elements of the array:
+
+运行时间: 0.59 ms

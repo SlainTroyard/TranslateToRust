@@ -1,0 +1,13 @@
+==== 测试用例 91 (failed) ====
+
+输入:
+21 88742 12 6
+30485 97054 59649 49528 17712 83210 50631 63712 3862 77129 49827 96049 12816 2590 73278 24869 73159 44447 895 87302 11664
+期望输出:
+461209
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/qwen-max-default/weekly_contest_425_p3_c.rs:91:45:
+Failed to parse num: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,17 @@
+==== 测试用例 97 (failed) ====
+
+输入:
+9 7
+MESSAGE 243 id7 id3 id0 id6 id2
+MESSAGE 507 id4 id2 id6 id8 id1
+MESSAGE 922 HERE
+MESSAGE 219 HERE
+MESSAGE 929 id2 id1
+MESSAGE 3 id3 id0
+OFFLINE 225 id5
+期望输出:
+Mentions: 0 0 0 0 0 0 0 1 0
+实际输出:
+Mentions: 2 2 3 3 3 2 2 3 2 
+
+运行时间: 0.59 ms

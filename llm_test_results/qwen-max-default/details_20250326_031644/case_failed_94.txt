@@ -1,0 +1,13 @@
+==== 测试用例 94 (failed) ====
+
+输入:
+10 1
+MESSAGE 39 id2 id6 id4 id3
+期望输出:
+0 0 1 1 1 0 1 0 0 0
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/qwen-max-default/weekly_contest_434_p2_cpp.rs:71:49:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: Empty }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

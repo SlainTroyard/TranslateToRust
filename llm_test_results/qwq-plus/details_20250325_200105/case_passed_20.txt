@@ -1,0 +1,16 @@
+==== 测试用例 20 (passed) ====
+
+输入:
+7 6
+MESSAGE 857 ALL
+MESSAGE 481 ALL
+OFFLINE 793 id6
+OFFLINE 668 id1
+OFFLINE 154 id3
+MESSAGE 349 ALL
+期望输出:
+Mentions: 3 3 3 3 3 3 3
+实际输出:
+Mentions: 3 3 3 3 3 3 3 
+
+运行时间: 1.01 ms

@@ -1,0 +1,10 @@
+==== 测试用例 1 (failed) ====
+
+输入:
+29766140390
+期望输出:
+0
+实际输出:
+Enter a string of digits: false
+
+运行时间: 0.64 ms

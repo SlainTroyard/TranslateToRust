@@ -1,0 +1,13 @@
+==== 测试用例 95 (failed) ====
+
+输入:
+wcrzqilkabqrdmrusfpmqexiwvzebkhvarwtftyjckhtffsrnbnzeywuftxfpuvltzzqsnlppotxpqlzkszeuzyjthdaedaujefhfaecmgtotbnzxgvvmggpmcqwhgucrcjhxqgnqkomyxlzlqobmoxpovdnbtaidolmidxatxexibonchjxxfctrebgdsunlgdefafktxnclelohgztpxaqtwpcsbomsefrmdmbhenoqehiektkgvuogvhvcyazwjdhctclqnzojolkuuctwtpyzrtuvmbvcdhsbqgeyeurdcpftcnwnyyczyionwckzurwesdputhydjfxfmemjihgcxjigrnuwrtuvkiahrukyiskpqsfdbawoymcikxculsrqpamzgloylzqtbovdfydpnkgqkgqyxahsfm
+413
+期望输出:
+zzqsnlppotx
+实际输出:
+Enter the word:
+Enter the number of friends:
+zzqsnlppotx
+
+运行时间: 0.58 ms

@@ -1,0 +1,13 @@
+==== 测试用例 93 (failed) ====
+
+输入:
+btzksnkpztwefivbvguppphfoqtrmdfpzwfasrpeormcxotxbuabzfgkbsggczjegxsybptqkgrawi
+1
+期望输出:
+3081
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/qwq-plus/weekly_contest_420_p2_c.rs:60:9:
+Input must be a string followed by an integer
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,16 @@
+==== 测试用例 11 (failed) ====
+
+输入:
+6 5
+MESSAGE 6 HERE
+MESSAGE 743 HERE
+MESSAGE 94 HERE
+OFFLINE 969 id3
+MESSAGE 147 HERE
+期望输出:
+Mentions: 4 4 4 4 4 4
+实际输出:
+Mentions: 
+4 4 4 4 4 4 
+
+运行时间: 0.58 ms

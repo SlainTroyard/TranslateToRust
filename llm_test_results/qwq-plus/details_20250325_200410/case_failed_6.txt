@@ -1,0 +1,13 @@
+==== 测试用例 6 (failed) ====
+
+输入:
+10010111111101001111101101010010101100101110010111011101011000001101110011000101011000010111111011010111001001010
+25
+期望输出:
+2
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/qwq-plus/weekly_contest_429_p3_c.rs:116:9:
+Input must have exactly two parts
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,20 @@
+==== 测试用例 42 (failed) ====
+
+输入:
+9 10
+MESSAGE 22 HERE
+MESSAGE 326 ALL
+MESSAGE 935 HERE
+MESSAGE 668 id1 id4 id4 id3
+MESSAGE 167 id0 id6
+MESSAGE 215 ALL
+MESSAGE 963 HERE
+MESSAGE 954 ALL
+OFFLINE 134 id0
+OFFLINE 262 id3
+期望输出:
+Mentions: 4 4 3 3 3 3 3 3 3
+实际输出:
+Mentions: 7 7 6 6 6 6 6 6 6 
+
+运行时间: 0.75 ms

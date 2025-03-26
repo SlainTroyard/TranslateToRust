@@ -1,0 +1,16 @@
+==== 测试用例 26 (failed) ====
+
+输入:
+10 4
+MESSAGE 56 id9 id8 id1 id5
+OFFLINE 928 id4
+MESSAGE 105 id3 id5 id9
+MESSAGE 369 id1 id1 id6 id4 id6
+期望输出:
+0 3 0 1 1 2 2 0 1 2
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/qwen-max-default/weekly_contest_434_p2_cpp.rs:106:39:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

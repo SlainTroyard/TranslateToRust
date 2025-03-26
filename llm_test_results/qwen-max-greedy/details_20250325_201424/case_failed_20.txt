@@ -1,0 +1,11 @@
+==== 测试用例 20 (failed) ====
+
+输入:
+6
+956 278 947 272 528 571
+期望输出:
+13357
+实际输出:
+ERROR: Process exited with code 1: Error: ParseIntError { kind: InvalidDigit }
+
+运行时间: 0.00 ms

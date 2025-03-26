@@ -1,0 +1,16 @@
+==== 测试用例 78 (failed) ====
+
+输入:
+39 12
+3
+0 21
+49 16
+43 6
+期望输出:
+48
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/qwen-max-greedy/weekly_contest_414_p4_cpp.rs:72:32:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms

@@ -1,0 +1,117 @@
+use std::cmp::Ordering;
+use std::collections::BinaryHeap;
+use std::fmt::Write;
+use std::io::{self, BufRead};
+
+#[derive(Copy, Clone, Eq, PartialEq)]
+struct HeapNode {
+    time: i32,
+    x: i32,
+    y: i32,
+}
+
+// Implement Ord for HeapNode to make it work with BinaryHeap
+impl Ord for HeapNode {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other.time.cmp(&self.time) // Reverse order for min-heap
+    }
+}
+
+impl PartialOrd for HeapNode {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+fn min_time_to_reach(move_time: Vec<Vec<i32>>) -> i32 {
+    let rows = move_time.len();
+    if rows == 0 {
+        return 0;
+    }
+    let cols = move_time[0].len();
+    if cols == 0 {
+        return 0;
+    }
+
+    let mut min_heap = BinaryHeap::new();
+    let mut time = vec![vec![i32::MAX; cols]; rows];
+
+    // Insert the starting point
+    min_heap.push(HeapNode {
+        time: 0,
+        x: 0,
+        y: 0,
+    });
+    time[0][0] = 0;
+
+    // Directions: up, right, down, left
+    let dx = [-1, 0, 1, 0];
+    let dy = [0, 1, 0, -1];
+
+    while let Some(current_node) = min_heap.pop() {
+        let current_time = current_node.time;
+        let x = current_node.x;
+        let y = current_node.y;
+
+        // If destination is reached
+        if x == (rows - 1) as i32 && y == (cols - 1) as i32 {
+            return current_time;
+        }
+
+        // Check all four directions
+        for i in 0..4 {
+            let new_x = x + dx[i];
+            let new_y = y + dy[i];
+
+            if new_x >= 0 && new_x < rows as i32 && new_y >= 0 && new_y < cols as i32 {
+                let new_x = new_x as usize;
+                let new_y = new_y as usize;
+
+                // Calculate wait time if needed
+                let wait_time = if move_time[new_x][new_y] > current_time {
+                    move_time[new_x][new_y] - current_time
+                } else {
+                    0
+                };
+                let new_time = current_time + 1 + wait_time;
+
+                if new_time < time[new_x][new_y] {
+                    time[new_x][new_y] = new_time;
+                    min_heap.push(HeapNode {
+                        time: new_time,
+                        x: new_x as i32,
+                        y: new_y as i32,
+                    });
+                }
+            }
+        }
+    }
+
+    -1 // Unreachable
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut lines = stdin.lock().lines();
+
+    // Read the number of rows and columns
+    let first_line = lines.next().unwrap().unwrap();
+    let mut parts = first_line.split_whitespace();
+    let rows: usize = parts.next().unwrap().parse().unwrap();
+    let cols: usize = parts.next().unwrap().parse().unwrap();
+
+    // Read the grid values
+    let mut move_time = Vec::with_capacity(rows);
+    for _ in 0..rows {
+        let line = lines.next().unwrap().unwrap();
+        let row: Vec<i32> = line
+            .split_whitespace()
+            .map(|s| s.parse().unwrap())
+            .collect();
+        move_time.push(row);
+    }
+
+    // Call the function and output the result
+    let result = min_time_to_reach(move_time);
+    println!("{}", result);
+}

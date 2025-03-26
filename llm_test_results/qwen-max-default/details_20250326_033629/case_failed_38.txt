@@ -1,0 +1,13 @@
+==== 测试用例 38 (failed) ====
+
+输入:
+91
+362 802 374 1000 203 719 5 268 490 29 403 765 546 674 633 274 519 579 162 84 214 600 399 822 51 546 697 969 4 934 222 759 381 431 570 443 203 25 536 319 395 449 159 99 950 276 74 985 854 25 309 628 866 643 901 492 912 1 233 143 895 34 343 780 43 946 997 580 373 35 100 291 991 8 505 961 536 780 988 423 44 356 506 294 56 964 234 340 246 818 192
+期望输出:
+1779593
+实际输出:
+ERROR: Process exited with code 101: thread 'main' panicked at /home/xiaofan/dev_25/transproj/TranslateToRust/llm_translated/qwen-max-default/weekly_contest_433_p1_cpp.rs:29:45:
+Please type a number!: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+运行时间: 0.00 ms
