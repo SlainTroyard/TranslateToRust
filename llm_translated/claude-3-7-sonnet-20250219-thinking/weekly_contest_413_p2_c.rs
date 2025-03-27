@@ -1,51 +1,46 @@
-use std::io::{self, BufRead};
+// Problem: Weekly Contest 413 Problem 2
+use std::io;
+use std::collections::BinaryHeap;
 
+// Implement resultsArray function
 fn results_array(queries: &Vec<Vec<i32>>, k: i32) -> Vec<i32> {
-    let queries_size = queries.len();
-    let mut result = vec![-1; queries_size];
+    let mut result = Vec::with_capacity(queries.len());
     
-    // Array to store the k largest distances
-    let mut distance_arr = vec![0; (k + 1) as usize];
-    let mut distance_size = 0;
+    // Using BinaryHeap as a max heap
+    let mut heap = BinaryHeap::new();
     
-    for i in 0..queries_size {
+    for query in queries {
         // Calculate Manhattan distance
-        let distance = queries[i][0].abs() + queries[i][1].abs();
+        let distance = query[0].abs() + query[1].abs();
         
-        // Find the correct insertion position
-        let mut j = distance_size;
-        while j > 0 && distance_arr[j - 1] < distance {
-            if j < k as usize {
-                distance_arr[j] = distance_arr[j - 1];
-            }
-            j -= 1;
+        // Insert the current distance into the heap
+        heap.push(distance);
+        
+        // If the heap size exceeds k, remove the largest element
+        if heap.len() > k as usize {
+            heap.pop();
         }
         
-        // Insert the new distance if it's among the k largest
-        if j < k as usize {
-            distance_arr[j] = distance;
-            if distance_size < k as usize {
-                distance_size += 1;
-            }
-        }
-        
-        // Set the result if we have k distances
-        if distance_size == k as usize {
-            result[i] = distance_arr[k as usize - 1];
+        // If the heap size equals k, return the top element (k-th smallest distance)
+        if heap.len() == k as usize {
+            result.push(*heap.peek().unwrap());
+        } else {
+            result.push(-1);  // Heap has fewer than k elements
         }
     }
     
     result
 }
 
-fn main() {
-    let stdin = io::stdin();
-    let mut lines = stdin.lock().lines();
+fn main() -> io::Result<()> {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input)?;
     
-    // Read queries_size and k
-    let first_line = lines.next().unwrap().unwrap();
-    let parts: Vec<i32> = first_line.split_whitespace()
-        .map(|s| s.parse().expect("Failed to parse input"))
+    // Parse queriesSize and k
+    let parts: Vec<i32> = input
+        .trim()
+        .split_whitespace()
+        .map(|s| s.parse::<i32>().unwrap())
         .collect();
     
     let queries_size = parts[0] as usize;
@@ -54,9 +49,13 @@ fn main() {
     // Read queries
     let mut queries = Vec::with_capacity(queries_size);
     for _ in 0..queries_size {
-        let line = lines.next().unwrap().unwrap();
-        let coords: Vec<i32> = line.split_whitespace()
-            .map(|s| s.parse().expect("Failed to parse coordinate"))
+        input.clear();
+        io::stdin().read_line(&mut input)?;
+        
+        let coords: Vec<i32> = input
+            .trim()
+            .split_whitespace()
+            .map(|s| s.parse::<i32>().unwrap())
             .collect();
         
         queries.push(vec![coords[0], coords[1]]);
@@ -65,8 +64,13 @@ fn main() {
     // Process queries and get results
     let result = results_array(&queries, k);
     
-    // Print results with exact same format as the C code
-    for val in result {
-        print!("{} ", val);
+    // Print results with spaces in between
+    for (i, val) in result.iter().enumerate() {
+        print!("{}", val);
+        if i < result.len() - 1 {
+            print!(" ");
+        }
     }
+    
+    Ok(())
 }

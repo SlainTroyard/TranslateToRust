@@ -1,82 +1,117 @@
-use std::error::Error;
-use std::io;
+// Problem: Weekly Contest 413 Problem 2
+use std::cmp::Ordering;
+use std::io::{self, Write};
 
-/// Translates the C function "resultsArray" to Rust.
-/// This function processes queries of (x, y) coordinates, computing the Manhattan distance of each.
-/// It keeps track of the top k largest distances so far in a descending order array.
-/// Once k distances have been tracked, it outputs the k-th largest distance at each step.
-/// If fewer than k distances are available, it outputs -1.
-fn results_array(queries: &[[i32; 2]], k: usize) -> Vec<i32> {
-    let qsize = queries.len();
-    // Prepare the result vector, initialized to -1.
-    let mut result = vec![-1; qsize];
-    // This will store the top k distances so far, in descending order.
-    // The array is k+1 in size to allow room for shifting elements.
-    let mut distance_arr = vec![0; k + 1];
-    let mut distance_size = 0;
+// Function to swap two integers in-place (similar to the C version)
+fn swap(a: &mut i32, b: &mut i32) {
+    let temp = *a;
+    *a = *b;
+    *b = temp;
+}
 
-    for (i, &coords) in queries.iter().enumerate() {
-        // Compute Manhattan distance.
-        let distance = coords[0].abs() + coords[1].abs();
+// Function to heapify down (adjust the heap from the given index downwards)
+fn heapify_down(heap: &mut Vec<i32>, size: usize, idx: usize) {
+    let mut largest = idx;
+    let left = 2 * idx + 1;
+    let right = 2 * idx + 2;
 
-        // Insert the new distance into the correct position in distance_arr, descending order.
-        let mut j = distance_size;
-        while j > 0 && distance_arr[j - 1] < distance {
-            if j < k {
-                distance_arr[j] = distance_arr[j - 1];
-            }
-            j -= 1;
+    if left < size && heap[left] > heap[largest] {
+        largest = left;
+    }
+    if right < size && heap[right] > heap[largest] {
+        largest = right;
+    }
+
+    if largest != idx {
+        swap(&mut heap[idx], &mut heap[largest]);
+        heapify_down(heap, size, largest);
+    }
+}
+
+// Function to heapify up (adjust the heap upwards from the given index)
+fn heapify_up(heap: &mut Vec<i32>, idx: usize) {
+    let mut idx = idx;
+    while idx > 0 {
+        let parent = (idx - 1) / 2;
+        if heap[parent] < heap[idx] {
+            swap(&mut heap[parent], &mut heap[idx]);
+            idx = parent;
+        } else {
+            break;
         }
-        if j < k {
-            distance_arr[j] = distance;
-            if distance_size < k {
-                distance_size += 1;
-            }
+    }
+}
+
+// Function to insert a new element into the heap
+fn heap_insert(heap: &mut Vec<i32>, size: &mut usize, val: i32) {
+    heap.push(val); // Insert value at the end
+    heapify_up(heap, *size);
+    *size += 1;
+}
+
+// Function to remove the top element from the heap
+fn heap_remove_top(heap: &mut Vec<i32>, size: &mut usize) {
+    if *size <= 1 {
+        *size = 0;
+        return;
+    }
+    heap[0] = heap[*size - 1]; // Move the last element to the top
+    *size -= 1;
+    heapify_down(heap, *size, 0);
+}
+
+// Main function to process queries and return results
+fn results_array(queries: &Vec<Vec<i32>>, k: usize) -> Vec<i32> {
+    let mut result = vec![-1; queries.len()];
+    let mut heap = Vec::with_capacity(k + 1);
+    let mut heap_size = 0;
+
+    for (i, query) in queries.iter().enumerate() {
+        // Calculate the Manhattan distance (absolute sum of coordinates)
+        let distance = query[0].abs() + query[1].abs();
+
+        // Insert the new distance into the heap
+        heap_insert(&mut heap, &mut heap_size, distance);
+
+        // If the heap size exceeds k, remove the largest element
+        if heap_size > k {
+            heap_remove_top(&mut heap, &mut heap_size);
         }
 
-        // If we have k distances, record the k-th largest in result.
-        if distance_size == k {
-            result[i] = distance_arr[k - 1];
+        // If the heap has exactly k elements, the top element is the k-th largest
+        if heap_size == k {
+            result[i] = heap[0];
         }
     }
 
     result
 }
 
-/// Main function reproducing the C-style I/O format exactly:
-/// 1) Reads "queriesSize" and "k" from stdin
-/// 2) Reads each query (two integers) from stdin
-/// 3) Processes them with "results_array"
-/// 4) Prints each result followed by a space
-fn main() -> Result<(), Box<dyn Error>> {
-    // Read the first line to get queriesSize and k
-    let mut line = String::new();
-    io::stdin().read_line(&mut line)?;
-    let mut parts = line.split_whitespace();
-    let queries_size = parts
-        .next()
-        .ok_or("Missing queriesSize")?
-        .parse::<usize>()?;
-    let k = parts.next().ok_or("Missing k")?.parse::<usize>()?;
+fn main() {
+    // Read inputs from stdin
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+    let mut parts = input.split_whitespace();
+    let queries_size: usize = parts.next().unwrap().parse().unwrap();
+    let k: usize = parts.next().unwrap().parse().unwrap();
 
-    // Read "queriesSize" lines, each containing two integers
     let mut queries = Vec::with_capacity(queries_size);
     for _ in 0..queries_size {
-        line.clear();
-        io::stdin().read_line(&mut line)?;
-        let mut parts = line.split_whitespace();
-        let x = parts.next().ok_or("Missing x")?.parse::<i32>()?;
-        let y = parts.next().ok_or("Missing y")?.parse::<i32>()?;
-        queries.push([x, y]);
+        input.clear();
+        io::stdin().read_line(&mut input).expect("Failed to read line");
+        let query: Vec<i32> = input
+            .split_whitespace()
+            .map(|x| x.parse().unwrap())
+            .collect();
+        queries.push(query);
     }
 
-    // Process queries and get results
+    // Process the queries
     let result = results_array(&queries, k);
 
-    // Print results (C code prints each result followed by a space, no newline at the end)
-    for val in result {
-        print!("{} ", val);
+    // Print the result in the expected format
+    for &value in &result {
+        print!("{} ", value);
     }
-
-    Ok(())
+    println!();
 }
