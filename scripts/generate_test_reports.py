@@ -412,18 +412,34 @@ def generate_language_specific_statistics(results, problem_info):
     
     return lang_stats
 
-def generate_markdown_report(results, problem_info, output_path):
+def generate_markdown_report(results, problem_info, output_path, total_files):
     """生成Markdown格式的测试报告"""
     try:
         # 按照文件名排序结果
         results.sort(key=lambda x: x['filename'])
         
         # 统计结果
-        total_files = len(results)
         success_files = sum(1 for result in results if result.get('success', False))
         compilation_success = sum(1 for result in results if result.get('compilation_success', False))
         timed_out_files = sum(1 for result in results if result.get('timed_out', False))
         timed_out_cases = sum(result.get('timeout_cases', 0) for result in results)
+        
+        # 计算成功率和失败率
+        success_rate = success_files/total_files if total_files > 0 else 0
+        failure_rate = 1 - success_rate
+        
+        # 生成报告
+        report = [
+            "# 测试报告",
+            f"\n生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+            "\n## 总体统计",
+            f"- 总文件数: {total_files}",
+            f"- 测试成功: {success_files} ({success_rate*100:.2f}%)",
+            f"- 测试失败: {total_files - success_files} ({failure_rate*100:.2f}%)",
+            f"- 编译成功: {compilation_success} ({compilation_success/total_files*100:.2f}%)",
+            f"- 超时文件: {timed_out_files} ({timed_out_files/total_files*100:.2f}%)",
+            f"- 超时用例: {timed_out_cases}"
+        ]
         
         # 语言统计
         language_stats = Counter(result['language'] for result in results)
@@ -448,107 +464,28 @@ def generate_markdown_report(results, problem_info, output_path):
                 if result.get('timed_out', False):
                     difficulty_stats[difficulty]['timeout'] += 1
         
-        # 如果没有测试结果，返回错误
-        if total_files == 0:
-            log_with_flush("错误: 没有测试结果可用于生成报告")
-            return None
-        
-        # 添加标签统计
-        tag_stats = generate_tag_statistics(results, problem_info)
-        
-        # 添加语言特定统计
-        lang_stats = generate_language_specific_statistics(results, problem_info)
-        
-        # 生成报告内容
-        report = [
-            "# TranslateToRust 测试报告",
-            f"\n生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-            "\n## 总体统计",
-            f"- 总文件数: {total_files}",
-            f"- 测试成功: {success_files} ({success_files/total_files*100:.2f}%)",
-            f"- 编译成功: {compilation_success} ({compilation_success/total_files*100:.2f}%)",
-            f"- 超时文件: {timed_out_files} ({timed_out_files/total_files*100:.2f}%)",
-            f"- 超时用例: {timed_out_cases}",
-        ]
-        
-        # 添加总体难度统计
-        report.append("\n### 总体难度统计")
+        # 添加难度统计
+        report.append("\n## 难度统计")
         for difficulty, stats in difficulty_stats.items():
             total = stats['total']
             if total > 0:
+                success_rate = stats['success']/total
+                failure_rate = 1 - success_rate
                 report.extend([
-                    f"\n#### {difficulty}",
+                    f"\n### {difficulty}",
                     f"- 总数: {total}",
-                    f"- 成功率: {stats['success']/total*100:.2f}%",
-                    f"- 编译成功率: {stats['compilation']/total*100:.2f}%",
-                    f"- 超时率: {stats['timeout']/total*100:.2f}%"
-                ])
-        
-        # 添加总体标签统计
-        report.append("\n### 总体标签统计")
-        sorted_tags = sorted(tag_stats.items(), key=lambda x: x[1]['total'], reverse=True)
-        for tag, stats in sorted_tags:
-            total = stats['total']
-            if total > 0:
-                report.extend([
-                    f"\n#### {tag}",
-                    f"- 题目数量: {stats['unique_problems']}",
-                    f"- 总测试数: {total}",
-                    f"- 成功率: {stats['success']/total*100:.2f}%",
-                    f"- 编译成功率: {stats['compilation']/total*100:.2f}%",
-                    f"- 超时率: {stats['timeout']/total*100:.2f}%",
-                    f"- 平均运行时间: {stats['avg_runtime']:.2f} ms",
-                    f"- 平均测试通过率: {stats['success_rate']:.2f}%"
+                    f"- 成功: {stats['success']} ({success_rate*100:.2f}%)",
+                    f"- 失败: {total - stats['success']} ({failure_rate*100:.2f}%)",
+                    f"- 编译成功: {stats['compilation']} ({stats['compilation']/total*100:.2f}%)",
+                    f"- 超时: {stats['timeout']} ({stats['timeout']/total*100:.2f}%)"
                 ])
         
         # 添加语言分布
-        report.append("\n### 语言分布")
+        report.append("\n## 语言分布")
         for lang, count in language_stats.items():
             report.append(f"- {lang}: {count} ({count/total_files*100:.2f}%)")
         
-        # 添加按语言分类的统计
-        report.append("\n## 按语言分类统计")
-        for lang, stats in lang_stats.items():
-            total = stats['total']
-            if total > 0:
-                report.extend([
-                    f"\n### {lang}",
-                    f"- 总数: {total}",
-                    f"- 成功率: {stats['success']/total*100:.2f}%",
-                    f"- 编译成功率: {stats['compilation']/total*100:.2f}%",
-                    f"- 超时率: {stats['timeout']/total*100:.2f}%",
-                    f"- 平均运行时间: {stats['avg_runtime']:.2f} ms",
-                    f"- 平均测试通过率: {stats['success_rate']:.2f}%",
-                    f"\n#### {lang} 难度统计"
-                ])
-                
-                for difficulty, diff_stats in stats['difficulty_stats'].items():
-                    diff_total = diff_stats['total']
-                    if diff_total > 0:
-                        report.extend([
-                            f"\n##### {difficulty}",
-                            f"- 总数: {diff_total}",
-                            f"- 成功率: {diff_stats['success']/diff_total*100:.2f}%",
-                            f"- 编译成功率: {diff_stats['compilation']/diff_total*100:.2f}%",
-                            f"- 超时率: {diff_stats['timeout']/diff_total*100:.2f}%"
-                        ])
-                
-                report.append(f"\n#### {lang} 标签统计")
-                sorted_tags = sorted(stats['tag_stats'].items(), key=lambda x: x[1]['total'], reverse=True)
-                for tag, tag_stats in sorted_tags:
-                    tag_total = tag_stats['total']
-                    if tag_total > 0:
-                        report.extend([
-                            f"\n##### {tag}",
-                            f"- 题目数量: {tag_stats['unique_problems']}",
-                            f"- 总测试数: {tag_total}",
-                            f"- 成功率: {tag_stats['success']/tag_total*100:.2f}%",
-                            f"- 编译成功率: {tag_stats['compilation']/tag_total*100:.2f}%",
-                            f"- 超时率: {tag_stats['timeout']/tag_total*100:.2f}%",
-                            f"- 平均运行时间: {tag_stats['avg_runtime']:.2f} ms",
-                            f"- 平均测试通过率: {tag_stats['success_rate']:.2f}%"
-                        ])
-        
+        # 添加详细测试结果
         report.append("\n## 详细测试结果")
         for result in results:
             filename = result['filename']
@@ -589,21 +526,33 @@ def generate_markdown_report(results, problem_info, output_path):
         log_with_flush(f"生成Markdown报告时出错: {e}")
         return False
 
-def generate_json_report(results, problem_info, output_path=None):
+def generate_json_report(results, problem_info, output_path, total_files):
     """生成JSON格式的测试报告"""
     try:
-        # 基本统计
-        total_files = len(results)
+        # 按照文件名排序结果
+        results.sort(key=lambda x: x['filename'])
+        
+        # 统计结果
         success_files = sum(1 for result in results if result.get('success', False))
         compilation_success = sum(1 for result in results if result.get('compilation_success', False))
         timed_out_files = sum(1 for result in results if result.get('timed_out', False))
-        timed_out_cases = sum(result.get('timeout_cases', 0) for result in results)
         
-        # 语言统计
-        language_stats = dict(Counter(result['language'] for result in results))
+        # 计算成功率和失败率
+        success_rate = success_files/total_files if total_files > 0 else 0
+        failure_rate = 1 - success_rate
         
-        # 难度统计
+        # 准备语言统计
+        language_stats = Counter(result['language'] for result in results)
+        language_data = {}
+        for lang, count in language_stats.items():
+            language_data[lang] = {
+                'count': count,
+                'percentage': count/total_files*100
+            }
+        
+        # 准备难度统计
         difficulty_stats = defaultdict(lambda: {'total': 0, 'success': 0, 'compilation': 0, 'timeout': 0})
+        
         for result in results:
             contest = result.get('contest')
             problem = result.get('problem')
@@ -621,75 +570,93 @@ def generate_json_report(results, problem_info, output_path=None):
                 if result.get('timed_out', False):
                     difficulty_stats[difficulty]['timeout'] += 1
         
-        # 标签统计
-        tag_stats = generate_tag_statistics(results, problem_info)
+        # 格式化难度统计数据
+        difficulty_data = {}
+        for difficulty, stats in difficulty_stats.items():
+            total = stats['total']
+            if total > 0:
+                difficulty_data[difficulty] = {
+                    'total': total,
+                    'success': stats['success'],
+                    'success_rate': stats['success']/total*100,
+                    'failure_rate': (total - stats['success'])/total*100,
+                    'compilation': stats['compilation'],
+                    'compilation_rate': stats['compilation']/total*100,
+                    'timeout': stats['timeout'],
+                    'timeout_rate': stats['timeout']/total*100
+                }
         
-        # 添加语言特定统计
-        lang_stats = generate_language_specific_statistics(results, problem_info)
-        
-        # 生成报告数据
-        report_data = {
+        # 生成最终报告
+        report = {
             'generated_at': datetime.now().isoformat(),
-            'overall_statistics': {
+            'summary': {
                 'total_files': total_files,
-                'success_files': success_files,
-                'compilation_success': compilation_success,
-                'timed_out_files': timed_out_files,
-                'timed_out_cases': timed_out_cases,
-                'success_rate': success_files/total_files if total_files > 0 else 0,
-                'compilation_rate': compilation_success/total_files if total_files > 0 else 0
+                'successful_tests': success_files,
+                'success_rate': success_rate*100,
+                'failure_rate': failure_rate*100,
+                'compilation_successful': compilation_success,
+                'compilation_rate': compilation_success/total_files*100,
+                'timed_out_tests': timed_out_files,
+                'timeout_rate': timed_out_files/total_files*100
             },
-            'language_statistics': language_stats,
-            'language_specific_statistics': lang_stats,
-            'difficulty_statistics': difficulty_stats,
-            'tag_statistics': tag_stats,
-            'detailed_results': results
+            'language_stats': language_data,
+            'difficulty_stats': difficulty_data,
+            'results': results
         }
         
-        # 如果指定了输出路径，写入文件
-        if output_path:
-            with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump(report_data, f, indent=2, ensure_ascii=False)
+        # 写入JSON文件
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(report, f, indent=2, ensure_ascii=False)
         
-        return report_data
+        return True
     except Exception as e:
         log_with_flush(f"生成JSON报告时出错: {e}")
-        return None
+        return False
 
-def generate_csv_report(results, problem_info, output_path):
+def generate_csv_report(results, problem_info, output_path, total_files):
     """生成CSV格式的测试报告"""
     try:
-        import csv
+        # 按照文件名排序结果
+        results.sort(key=lambda x: x['filename'])
+        
+        # 统计结果
+        success_files = sum(1 for result in results if result.get('success', False))
+        compilation_success = sum(1 for result in results if result.get('compilation_success', False))
+        timed_out_files = sum(1 for result in results if result.get('timed_out', False))
+        timed_out_cases = sum(result.get('timeout_cases', 0) for result in results)
+        
+        # 计算成功率和失败率
+        success_rate = success_files/total_files if total_files > 0 else 0
+        failure_rate = 1 - success_rate
         
         # 准备CSV数据
         csv_data = []
         
         # 添加总体统计
-        total_files = len(results)
-        success_files = sum(1 for result in results if result.get('success', False))
-        compilation_success = sum(1 for result in results if result.get('compilation_success', False))
-        timed_out_files = sum(1 for result in results if result.get('timed_out', False))
-        timed_out_cases = sum(result.get('timeout_cases', 0) for result in results)
+        csv_data.extend([
+            ['总体统计'],
+            ['总文件数', total_files],
+            ['测试成功', success_files, f'{success_rate*100:.2f}%'],
+            ['测试失败', total_files - success_files, f'{failure_rate*100:.2f}%'],
+            ['编译成功', compilation_success, f'{compilation_success/total_files*100:.2f}%'],
+            ['超时文件', timed_out_files, f'{timed_out_files/total_files*100:.2f}%'],
+            ['超时用例', timed_out_cases],
+            ['']  # 空行分隔
+        ])
         
-        csv_data.append(['总体统计'])
-        csv_data.append(['指标', '数值', '百分比'])
-        csv_data.append(['总文件数', total_files, '100.00%'])
-        csv_data.append(['测试成功', success_files, f'{success_files/total_files*100:.2f}%'])
-        csv_data.append(['编译成功', compilation_success, f'{compilation_success/total_files*100:.2f}%'])
-        csv_data.append(['超时文件', timed_out_files, f'{timed_out_files/total_files*100:.2f}%'])
-        csv_data.append(['超时用例', timed_out_cases, ''])
-        csv_data.append([])  # 空行分隔
-        
-        # 添加语言分布
+        # 语言统计
         language_stats = Counter(result['language'] for result in results)
-        csv_data.append(['语言分布'])
-        csv_data.append(['语言', '数量', '百分比'])
+        csv_data.extend([
+            ['语言分布'],
+            ['语言', '数量', '百分比']
+        ])
         for lang, count in language_stats.items():
             csv_data.append([lang, count, f'{count/total_files*100:.2f}%'])
-        csv_data.append([])  # 空行分隔
+        csv_data.append([''])  # 空行分隔
         
-        # 添加总体难度统计
+        # 难度统计
         difficulty_stats = defaultdict(lambda: {'total': 0, 'success': 0, 'compilation': 0, 'timeout': 0})
+        
         for result in results:
             contest = result.get('contest')
             problem = result.get('problem')
@@ -707,93 +674,35 @@ def generate_csv_report(results, problem_info, output_path):
                 if result.get('timed_out', False):
                     difficulty_stats[difficulty]['timeout'] += 1
         
-        csv_data.append(['总体难度统计'])
-        csv_data.append(['难度', '总数', '成功率', '编译成功率', '超时率'])
+        # 添加难度统计
+        csv_data.extend([
+            ['难度统计'],
+            ['难度', '总数', '成功', '成功率', '失败', '失败率', '编译成功', '编译成功率', '超时', '超时率']
+        ])
         for difficulty, stats in difficulty_stats.items():
             total = stats['total']
             if total > 0:
+                success_rate = stats['success']/total
+                failure_rate = 1 - success_rate
                 csv_data.append([
                     difficulty,
                     total,
-                    f'{stats["success"]/total*100:.2f}%',
+                    stats['success'],
+                    f'{success_rate*100:.2f}%',
+                    total - stats['success'],
+                    f'{failure_rate*100:.2f}%',
+                    stats['compilation'],
                     f'{stats["compilation"]/total*100:.2f}%',
+                    stats['timeout'],
                     f'{stats["timeout"]/total*100:.2f}%'
                 ])
-        csv_data.append([])  # 空行分隔
-        
-        # 添加总体标签统计
-        tag_stats = generate_tag_statistics(results, problem_info)
-        csv_data.append(['总体标签统计'])
-        csv_data.append(['标签', '题目数量', '总测试数', '成功率', '编译成功率', '超时率', '平均运行时间(ms)', '平均测试通过率'])
-        for tag, stats in sorted(tag_stats.items(), key=lambda x: x[1]['total'], reverse=True):
-            total = stats['total']
-            if total > 0:
-                csv_data.append([
-                    tag,
-                    stats['unique_problems'],
-                    total,
-                    f'{stats["success"]/total*100:.2f}%',
-                    f'{stats["compilation"]/total*100:.2f}%',
-                    f'{stats["timeout"]/total*100:.2f}%',
-                    f'{stats["avg_runtime"]:.2f}',
-                    f'{stats["success_rate"]:.2f}%'
-                ])
-        csv_data.append([])  # 空行分隔
-        
-        # 添加按语言分类的统计
-        lang_stats = generate_language_specific_statistics(results, problem_info)
-        csv_data.append(['按语言分类统计'])
-        
-        for lang, stats in lang_stats.items():
-            total = stats['total']
-            if total > 0:
-                csv_data.append([f'{lang} 总体统计'])
-                csv_data.append(['指标', '数值', '百分比'])
-                csv_data.append(['总数', total, '100.00%'])
-                csv_data.append(['成功率', stats['success'], f'{stats["success"]/total*100:.2f}%'])
-                csv_data.append(['编译成功率', stats['compilation'], f'{stats["compilation"]/total*100:.2f}%'])
-                csv_data.append(['超时率', stats['timeout'], f'{stats["timeout"]/total*100:.2f}%'])
-                csv_data.append(['平均运行时间(ms)', f'{stats["avg_runtime"]:.2f}', ''])
-                csv_data.append(['平均测试通过率', f'{stats["success_rate"]:.2f}%', ''])
-                csv_data.append([])  # 空行分隔
-                
-                # 添加语言特定的难度统计
-                csv_data.append([f'{lang} 难度统计'])
-                csv_data.append(['难度', '总数', '成功率', '编译成功率', '超时率'])
-                for difficulty, diff_stats in stats['difficulty_stats'].items():
-                    diff_total = diff_stats['total']
-                    if diff_total > 0:
-                        csv_data.append([
-                            difficulty,
-                            diff_total,
-                            f'{diff_stats["success"]/diff_total*100:.2f}%',
-                            f'{diff_stats["compilation"]/diff_total*100:.2f}%',
-                            f'{diff_stats["timeout"]/diff_total*100:.2f}%'
-                        ])
-                csv_data.append([])  # 空行分隔
-                
-                # 添加语言特定的标签统计
-                csv_data.append([f'{lang} 标签统计'])
-                csv_data.append(['标签', '题目数量', '总测试数', '成功率', '编译成功率', '超时率', '平均运行时间(ms)', '平均测试通过率'])
-                sorted_tags = sorted(stats['tag_stats'].items(), key=lambda x: x[1]['total'], reverse=True)
-                for tag, tag_stats in sorted_tags:
-                    tag_total = tag_stats['total']
-                    if tag_total > 0:
-                        csv_data.append([
-                            tag,
-                            tag_stats['unique_problems'],
-                            tag_total,
-                            f'{tag_stats["success"]/tag_total*100:.2f}%',
-                            f'{tag_stats["compilation"]/tag_total*100:.2f}%',
-                            f'{tag_stats["timeout"]/tag_total*100:.2f}%',
-                            f'{tag_stats["avg_runtime"]:.2f}',
-                            f'{tag_stats["success_rate"]:.2f}%'
-                        ])
-                csv_data.append([])  # 空行分隔
+        csv_data.append([''])  # 空行分隔
         
         # 添加详细测试结果
-        csv_data.append(['详细测试结果'])
-        csv_data.append(['文件名', '标题', '难度', '标签', '编译状态', '测试用例数', '通过数', '失败数', '成功率', '平均运行时间(ms)', '超时', '编译错误'])
+        csv_data.extend([
+            ['详细测试结果'],
+            ['文件名', '标题', '难度', '标签', '编译状态', '测试用例', '通过数量', '失败数量', '成功率', '平均运行时间', '超时']
+        ])
         for result in results:
             filename = result['filename']
             contest = result.get('contest')
@@ -808,7 +717,7 @@ def generate_csv_report(results, problem_info, output_path):
                     filename,
                     problem_data.get('title', '未知'),
                     problem_data.get('difficulty', '未知'),
-                    ';'.join(problem_data.get('tags', ['未知'])),
+                    ', '.join(problem_data.get('tags', ['未知'])),
                     '成功' if result.get('compilation_success') else '失败'
                 ]
                 
@@ -818,20 +727,16 @@ def generate_csv_report(results, problem_info, output_path):
                         result.get('passed_cases', 0),
                         result.get('failed_cases', 0),
                         f'{result.get("success_rate", 0):.2f}%',
-                        f'{result.get("average_runtime", 0):.2f}',
-                        '是' if result.get('timed_out') else '否',
-                        ''
+                        f'{result.get("average_runtime", 0):.2f} ms',
+                        '是' if result.get('timed_out') else '否'
                     ])
                 else:
-                    row.extend([
-                        '', '', '', '', '', '',
-                        result.get('compilation_error', '未知错误')
-                    ])
+                    row.extend(['N/A'] * 6)  # 填充未知值
                 
                 csv_data.append(row)
         
         # 写入CSV文件
-        with open(output_path, 'w', encoding='utf-8', newline='') as f:
+        with open(output_path, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerows(csv_data)
         
@@ -898,23 +803,26 @@ def main():
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     success = True
     
+    # 设置固定的总文件数
+    total_files = 208
+    
     if args.format in ['markdown', 'all']:
         markdown_path = os.path.join(args.output_dir, f'test_report_{timestamp}.md')
-        if not generate_markdown_report(results, problem_info, markdown_path):
+        if not generate_markdown_report(results, problem_info, markdown_path, total_files=total_files):
             success = False
         else:
             log_with_flush(f"已生成Markdown报告: {markdown_path}")
     
     if args.format in ['json', 'all']:
         json_path = os.path.join(args.output_dir, f'test_report_{timestamp}.json')
-        if not generate_json_report(results, problem_info, json_path):
+        if not generate_json_report(results, problem_info, json_path, total_files=total_files):
             success = False
         else:
             log_with_flush(f"已生成JSON报告: {json_path}")
     
     if args.format in ['csv', 'all']:
         csv_path = os.path.join(args.output_dir, f'test_report_{timestamp}.csv')
-        if not generate_csv_report(results, problem_info, csv_path):
+        if not generate_csv_report(results, problem_info, csv_path, total_files=total_files):
             success = False
         else:
             log_with_flush(f"已生成CSV报告: {csv_path}")
