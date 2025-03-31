@@ -1,70 +1,110 @@
 // Problem: Weekly Contest 413 Problem 2
+// Weekly Contest 413 Problem 2 in Rust
+// Implements a max-heap to track top k Manhattan distances
+
 use std::io;
+use std::cmp;
 
-fn process_queries(queries: Vec<Vec<i32>>, k: i32) -> Vec<i32> {
-    let mut result = vec![-1; queries.len()];
-    let mut distances = Vec::with_capacity(k as usize);
-    let k = k as usize;
-
-    for (i, query) in queries.iter().enumerate() {
-        let distance = query[0].abs() + query[1].abs();
-
-        let mut j = distances.len();
-        while j > 0 && distances[j - 1] < distance {
-            if j < k {
-                distances[j] = distances[j - 1];
-            }
-            j -= 1;
-        }
-
-        if j < k {
-            if j < distances.len() {
-                distances[j] = distance;
-            } else {
-                distances.push(distance);
-            }
-            if distances.len() < k {
-                // Ensure the vector doesn't exceed capacity
-                while distances.len() < k {
-                    distances.push(0);
-                }
-            }
-        }
-
-        if distances.len() == k {
-            result[i] = distances[k - 1];
-        }
-    }
-
-    result
+/// Swaps two elements in the heap
+fn swap(heap: &mut Vec<i32>, a: usize, b: usize) {
+    let temp = heap[a];
+    heap[a] = heap[b];
+    heap[b] = temp;
 }
 
-fn main() -> io::Result<()> {
-    let mut input = String::new();
-    io::stdin().read_line(&mut input)?;
-    let mut parts = input.trim().split_whitespace();
-    let queries_size: usize = parts.next().unwrap().parse().unwrap();
-    let k: i32 = parts.next().unwrap().parse().unwrap();
+/// Adjusts the heap by moving down from the given index
+fn heapify_down(heap: &mut Vec<i32>, size: usize, mut idx: usize) {
+    while idx < size {
+        let left = 2 * idx + 1;
+        let right = 2 * idx + 2;
+        let mut largest = idx;
 
-    let mut queries = Vec::with_capacity(queries_size);
-    for _ in 0..queries_size {
-        let mut line = String::new();
-        io::stdin().read_line(&mut line)?;
-        let mut nums = line.trim().split_whitespace();
-        let x: i32 = nums.next().unwrap().parse().unwrap();
-        let y: i32 = nums.next().unwrap().parse().unwrap();
-        queries.push(vec![x, y]);
+        if left < size && heap[left] > heap[largest] {
+            largest = left;
+        }
+        if right < size && heap[right] > heap[largest] {
+            largest = right;
+        }
+
+        if largest == idx {
+            break;
+        }
+
+        swap(heap, idx, largest);
+        idx = largest;
     }
+}
 
-    let result = process_queries(queries, k);
+/// Adjusts the heap by moving up from the given index
+fn heapify_up(heap: &mut Vec<i32>, mut idx: usize) {
+    while idx > 0 {
+        let parent = (idx - 1) / 2;
+        if heap[parent] < heap[idx] {
+            swap(heap, parent, idx);
+            idx = parent;
+        } else {
+            break;
+        }
+    }
+}
+
+/// Inserts a new value into the heap
+fn heap_insert(heap: &mut Vec<i32>, size: &mut usize, val: i32) {
+    heap.push(val);
+    heapify_up(heap, *size);
+    *size += 1;
+}
+
+/// Removes the top element from the heap
+fn heap_remove_top(heap: &mut Vec<i32>, size: &mut usize) {
+    if *size <= 1 {
+        *size = 0;
+        return;
+    }
+    
+    *size -= 1;
+    heap[0] = heap[*size];
+    heapify_down(heap, *size, 0);
+}
+
+fn main() {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).unwrap();
+    let mut iter = input.split_whitespace();
+    
+    let queries_size: usize = iter.next().unwrap().parse().unwrap();
+    let k: usize = iter.next().unwrap().parse().unwrap();
+    
+    let mut queries = Vec::with_capacity(queries_size);
+    let mut distance_heap = Vec::new();
+    let mut heap_size = 0;
+    let mut results = Vec::with_capacity(queries_size);
+    
+    for _ in 0..queries_size {
+        let x: i32 = iter.next().unwrap().parse().unwrap();
+        let y: i32 = iter.next().unwrap().parse().unwrap();
+        
+        let distance = (x.abs() + y.abs()) as i32;
+        
+        heap_insert(&mut distance_heap, &mut heap_size, distance);
+        
+        if heap_size > k {
+            heap_remove_top(&mut distance_heap, &mut heap_size);
+        }
+        
+        if heap_size == k {
+            results.push(distance_heap[0]);
+        } else {
+            results.push(-1);
+        }
+    }
+    
     println!(
         "{}",
-        result
+        results
             .iter()
-            .map(|x| x.to_string())
+            .map(|num| num.to_string())
             .collect::<Vec<String>>()
             .join(" ")
     );
-
-    Ok(())
 }

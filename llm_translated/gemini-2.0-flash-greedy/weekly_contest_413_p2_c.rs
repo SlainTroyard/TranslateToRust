@@ -1,32 +1,36 @@
+// Problem: Weekly Contest 413 Problem 2
+use std::cmp::Reverse;
+use std::collections::BinaryHeap;
 use std::io;
-use std::io::Read;
-use std::cmp::max;
+
+// Function to calculate the absolute distance
+fn absolute_distance(x: i32, y: i32) -> i32 {
+    x.abs() + y.abs()
+}
 
 fn results_array(queries: &Vec<Vec<i32>>, k: i32) -> Vec<i32> {
-    let queries_size = queries.len();
-    let mut result = vec![-1; queries_size];
-    let mut distance_arr = vec![0; (k + 1) as usize];
-    let mut distance_size = 0;
+    let mut result = Vec::new();
 
-    for i in 0..queries_size {
-        let distance = queries[i][0].abs() + queries[i][1].abs();
+    // Use BinaryHeap as a max-heap to store the distances
+    let mut heap: BinaryHeap<i32> = BinaryHeap::new();
 
-        let mut j = distance_size;
-        while j > 0 && distance_arr[(j - 1) as usize] < distance {
-            if j < k {
-                distance_arr[j as usize] = distance_arr[(j - 1) as usize];
-            }
-            j -= 1;
-        }
-        if j < k {
-            distance_arr[j as usize] = distance;
-            if distance_size < k {
-                distance_size += 1;
-            }
+    for query in queries {
+        // Calculate the distance
+        let distance = absolute_distance(query[0], query[1]);
+
+        // Insert the current distance into the max-heap
+        heap.push(distance);
+
+        // If the heap size exceeds k, remove the largest element
+        if heap.len() > k as usize {
+            heap.pop();
         }
 
-        if distance_size == k {
-            result[i] = distance_arr[(k - 1) as usize];
+        // If the heap size equals k, return the top element (k-th largest distance)
+        if heap.len() == k as usize {
+            result.push(*heap.peek().unwrap());
+        } else {
+            result.push(-1); // Less than k elements in the heap
         }
     }
 
@@ -35,19 +39,16 @@ fn results_array(queries: &Vec<Vec<i32>>, k: i32) -> Vec<i32> {
 
 fn main() {
     let mut input = String::new();
-    io::stdin().read_to_string(&mut input).unwrap();
-
-    let mut lines = input.lines();
-
-    let first_line = lines.next().unwrap();
-    let mut first_line_iter = first_line.split_whitespace();
-    let queries_size: usize = first_line_iter.next().unwrap().parse().unwrap();
-    let k: i32 = first_line_iter.next().unwrap().parse().unwrap();
+    io::stdin().read_line(&mut input).unwrap();
+    let mut iter = input.trim().split_whitespace();
+    let queries_size: i32 = iter.next().unwrap().parse().unwrap();
+    let k: i32 = iter.next().unwrap().parse().unwrap();
 
     let mut queries: Vec<Vec<i32>> = Vec::new();
     for _ in 0..queries_size {
-        let line = lines.next().unwrap();
-        let mut iter = line.split_whitespace();
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+        let mut iter = input.trim().split_whitespace();
         let x: i32 = iter.next().unwrap().parse().unwrap();
         let y: i32 = iter.next().unwrap().parse().unwrap();
         queries.push(vec![x, y]);

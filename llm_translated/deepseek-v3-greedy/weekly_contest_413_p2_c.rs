@@ -1,30 +1,94 @@
-use std::io::{self, BufRead};
+// Problem: Weekly Contest 413 Problem 2
+use std::cmp;
 
-fn results_array(queries: &Vec<Vec<i32>>, k: usize) -> Vec<i32> {
-    let queries_size = queries.len();
-    let mut result = vec![-1; queries_size];
-    let mut distance_arr = vec![0; k + 1];
-    let mut distance_size = 0;
+// Max-heap implementation
+struct MaxHeap {
+    data: Vec<i32>,
+}
 
-    for i in 0..queries_size {
-        let distance = queries[i][0].abs() + queries[i][1].abs();
+impl MaxHeap {
+    fn new() -> Self {
+        MaxHeap { data: Vec::new() }
+    }
 
-        let mut j = distance_size;
-        while j > 0 && distance_arr[j - 1] < distance {
-            if j < k {
-                distance_arr[j] = distance_arr[j - 1];
-            }
-            j -= 1;
+    fn size(&self) -> usize {
+        self.data.len()
+    }
+
+    fn insert(&mut self, val: i32) {
+        self.data.push(val);
+        self.heapify_up(self.size() - 1);
+    }
+
+    fn remove_top(&mut self) {
+        if self.size() <= 1 {
+            self.data.clear();
+            return;
         }
-        if j < k {
-            distance_arr[j] = distance;
-            if distance_size < k {
-                distance_size += 1;
+        self.data[0] = self.data.pop().unwrap();
+        self.heapify_down(0);
+    }
+
+    fn heapify_up(&mut self, mut idx: usize) {
+        while idx > 0 {
+            let parent = (idx - 1) / 2;
+            if self.data[parent] < self.data[idx] {
+                self.data.swap(parent, idx);
+                idx = parent;
+            } else {
+                break;
             }
         }
+    }
 
-        if distance_size == k {
-            result[i] = distance_arr[k - 1];
+    fn heapify_down(&mut self, mut idx: usize) {
+        loop {
+            let left = 2 * idx + 1;
+            let right = 2 * idx + 2;
+            let mut largest = idx;
+
+            if left < self.size() && self.data[left] > self.data[largest] {
+                largest = left;
+            }
+            if right < self.size() && self.data[right] > self.data[largest] {
+                largest = right;
+            }
+
+            if largest != idx {
+                self.data.swap(idx, largest);
+                idx = largest;
+            } else {
+                break;
+            }
+        }
+    }
+
+    fn peek(&self) -> Option<i32> {
+        self.data.first().copied()
+    }
+}
+
+fn results_array(queries: &[Vec<i32>], k: usize) -> Vec<i32> {
+    let mut result = Vec::with_capacity(queries.len());
+    let mut heap = MaxHeap::new();
+
+    for query in queries {
+        // Calculate Manhattan distance
+        let distance = query[0].abs() + query[1].abs();
+
+        // Insert into max heap
+        heap.insert(distance);
+
+        // If heap size exceeds k, remove the largest element
+        if heap.size() > k {
+            heap.remove_top();
+        }
+
+        // If we have exactly k elements, return the largest (k-th smallest)
+        if heap.size() == k {
+            result.push(heap.peek().unwrap());
+        } else {
+            result.push(-1); // Not enough elements yet
         }
     }
 
@@ -32,31 +96,29 @@ fn results_array(queries: &Vec<Vec<i32>>, k: usize) -> Vec<i32> {
 }
 
 fn main() {
-    let stdin = io::stdin();
-    let mut lines = stdin.lock().lines();
+    // Read input
+    let mut input = String::new();
+    std::io::stdin().read_line(&mut input).unwrap();
+    let mut parts = input.split_whitespace();
+    let queries_size = parts.next().unwrap().parse::<usize>().unwrap();
+    let k = parts.next().unwrap().parse::<usize>().unwrap();
 
-    // Read the first line for queriesSize and k
-    let first_line = lines.next().unwrap().unwrap();
-    let mut parts = first_line.split_whitespace();
-    let queries_size: usize = parts.next().unwrap().parse().unwrap();
-    let k: usize = parts.next().unwrap().parse().unwrap();
-
-    // Read the queries
     let mut queries = Vec::with_capacity(queries_size);
     for _ in 0..queries_size {
-        let line = lines.next().unwrap().unwrap();
-        let mut parts = line.split_whitespace();
-        let x: i32 = parts.next().unwrap().parse().unwrap();
-        let y: i32 = parts.next().unwrap().parse().unwrap();
+        let mut input = String::new();
+        std::io::stdin().read_line(&mut input).unwrap();
+        let mut parts = input.split_whitespace();
+        let x = parts.next().unwrap().parse::<i32>().unwrap();
+        let y = parts.next().unwrap().parse::<i32>().unwrap();
         queries.push(vec![x, y]);
     }
 
-    // Compute the results
+    // Process queries
     let result = results_array(&queries, k);
 
-    // Print the results
-    for res in result {
-        print!("{} ", res);
+    // Print output
+    for num in result {
+        print!("{} ", num);
     }
     println!();
 }
