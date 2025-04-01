@@ -13,6 +13,10 @@ Cargo.lock
 !test_results/.gitkeep
 /test_reports/
 !test_reports/.gitkeep
+/llm_test_results_old/
+!llm_test_results_old/.gitkeep
+/llm_test_reports_old/
+!llm_test_reports_old/.gitkeep
 
 # Python cache files
 __pycache__/
