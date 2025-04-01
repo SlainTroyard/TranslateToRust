@@ -13,6 +13,7 @@ import json
 import re
 import argparse
 import glob
+import csv
 from datetime import datetime
 from pathlib import Path
 from collections import defaultdict, Counter
@@ -441,49 +442,61 @@ def generate_markdown_report(results, problem_info, output_path, total_files):
             f"- 超时用例: {timed_out_cases}"
         ]
         
-        # 语言统计
-        language_stats = Counter(result['language'] for result in results)
+        # 生成标签统计
+        tag_stats = generate_tag_statistics(results, problem_info)
+        report.append("\n## 标签统计")
+        for tag, stats in tag_stats.items():
+            report.extend([
+                f"\n### {tag}",
+                f"- 总数: {stats['total']}",
+                f"- 成功: {stats['success']} ({stats['success']/stats['total']*100:.2f}%)",
+                f"- 编译成功: {stats['compilation']} ({stats['compilation']/stats['total']*100:.2f}%)",
+                f"- 超时: {stats['timeout']} ({stats['timeout']/stats['total']*100:.2f}%)",
+                f"- 平均运行时间: {stats['avg_runtime']:.2f} ms",
+                f"- 平均成功率: {stats['success_rate']:.2f}%",
+                f"- 唯一题目数: {stats['unique_problems']}"
+            ])
         
-        # 难度统计
-        difficulty_stats = defaultdict(lambda: {'total': 0, 'success': 0, 'compilation': 0, 'timeout': 0})
-        
-        for result in results:
-            contest = result.get('contest')
-            problem = result.get('problem')
-            language = result.get('language')
+        # 生成语言特定统计
+        lang_stats = generate_language_specific_statistics(results, problem_info)
+        report.append("\n## 语言特定统计")
+        for lang, stats in lang_stats.items():
+            report.extend([
+                f"\n### {lang}",
+                f"- 总数: {stats['total']}",
+                f"- 成功: {stats['success']} ({stats['success']/stats['total']*100:.2f}%)",
+                f"- 编译成功: {stats['compilation']} ({stats['compilation']/stats['total']*100:.2f}%)",
+                f"- 超时: {stats['timeout']} ({stats['timeout']/stats['total']*100:.2f}%)",
+                f"- 平均运行时间: {stats['avg_runtime']:.2f} ms",
+                f"- 平均成功率: {stats['success_rate']:.2f}%",
+                "\n#### 难度分布"
+            ])
             
-            if contest and problem and language:
-                key = f"{contest}_{problem}_{language}"
-                difficulty = problem_info.get(key, {}).get('difficulty', 'Unknown')
-                
-                difficulty_stats[difficulty]['total'] += 1
-                if result.get('success', False):
-                    difficulty_stats[difficulty]['success'] += 1
-                if result.get('compilation_success', False):
-                    difficulty_stats[difficulty]['compilation'] += 1
-                if result.get('timed_out', False):
-                    difficulty_stats[difficulty]['timeout'] += 1
-        
-        # 添加难度统计
-        report.append("\n## 难度统计")
-        for difficulty, stats in difficulty_stats.items():
-            total = stats['total']
-            if total > 0:
-                success_rate = stats['success']/total
-                failure_rate = 1 - success_rate
-                report.extend([
-                    f"\n### {difficulty}",
-                    f"- 总数: {total}",
-                    f"- 成功: {stats['success']} ({success_rate*100:.2f}%)",
-                    f"- 失败: {total - stats['success']} ({failure_rate*100:.2f}%)",
-                    f"- 编译成功: {stats['compilation']} ({stats['compilation']/total*100:.2f}%)",
-                    f"- 超时: {stats['timeout']} ({stats['timeout']/total*100:.2f}%)"
-                ])
-        
-        # 添加语言分布
-        report.append("\n## 语言分布")
-        for lang, count in language_stats.items():
-            report.append(f"- {lang}: {count} ({count/total_files*100:.2f}%)")
+            # 添加难度统计
+            for difficulty, diff_stats in stats['difficulty_stats'].items():
+                if diff_stats['total'] > 0:
+                    report.extend([
+                        f"\n##### {difficulty}",
+                        f"- 总数: {diff_stats['total']}",
+                        f"- 成功: {diff_stats['success']} ({diff_stats['success']/diff_stats['total']*100:.2f}%)",
+                        f"- 编译成功: {diff_stats['compilation']} ({diff_stats['compilation']/diff_stats['total']*100:.2f}%)",
+                        f"- 超时: {diff_stats['timeout']} ({diff_stats['timeout']/diff_stats['total']*100:.2f}%)"
+                    ])
+            
+            # 添加标签统计
+            report.append("\n#### 标签统计")
+            for tag, tag_stats in stats['tag_stats'].items():
+                if tag_stats['total'] > 0:
+                    report.extend([
+                        f"\n##### {tag}",
+                        f"- 总数: {tag_stats['total']}",
+                        f"- 成功: {tag_stats['success']} ({tag_stats['success']/tag_stats['total']*100:.2f}%)",
+                        f"- 编译成功: {tag_stats['compilation']} ({tag_stats['compilation']/tag_stats['total']*100:.2f}%)",
+                        f"- 超时: {tag_stats['timeout']} ({tag_stats['timeout']/tag_stats['total']*100:.2f}%)",
+                        f"- 平均运行时间: {tag_stats['avg_runtime']:.2f} ms",
+                        f"- 平均成功率: {tag_stats['success_rate']:.2f}%",
+                        f"- 唯一题目数: {tag_stats['unique_problems']}"
+                    ])
         
         # 添加详细测试结果
         report.append("\n## 详细测试结果")
@@ -586,6 +599,12 @@ def generate_json_report(results, problem_info, output_path, total_files):
                     'timeout_rate': stats['timeout']/total*100
                 }
         
+        # 生成标签统计
+        tag_stats = generate_tag_statistics(results, problem_info)
+        
+        # 生成语言特定统计
+        lang_stats = generate_language_specific_statistics(results, problem_info)
+        
         # 生成最终报告
         report = {
             'generated_at': datetime.now().isoformat(),
@@ -601,6 +620,8 @@ def generate_json_report(results, problem_info, output_path, total_files):
             },
             'language_stats': language_data,
             'difficulty_stats': difficulty_data,
+            'tag_statistics': tag_stats,
+            'language_statistics': lang_stats,
             'results': results
         }
         
@@ -698,6 +719,88 @@ def generate_csv_report(results, problem_info, output_path, total_files):
                 ])
         csv_data.append([''])  # 空行分隔
         
+        # 添加标签统计
+        tag_stats = generate_tag_statistics(results, problem_info)
+        csv_data.extend([
+            ['标签统计'],
+            ['标签', '总数', '成功', '成功率', '编译成功', '编译成功率', '超时', '超时率', '平均运行时间', '平均成功率', '唯一题目数']
+        ])
+        for tag, stats in tag_stats.items():
+            csv_data.append([
+                tag,
+                stats['total'],
+                stats['success'],
+                f'{stats["success"]/stats["total"]*100:.2f}%',
+                stats['compilation'],
+                f'{stats["compilation"]/stats["total"]*100:.2f}%',
+                stats['timeout'],
+                f'{stats["timeout"]/stats["total"]*100:.2f}%',
+                f'{stats["avg_runtime"]:.2f} ms',
+                f'{stats["success_rate"]:.2f}%',
+                stats['unique_problems']
+            ])
+        csv_data.append([''])  # 空行分隔
+        
+        # 添加语言特定统计
+        lang_stats = generate_language_specific_statistics(results, problem_info)
+        csv_data.extend([
+            ['语言特定统计'],
+            ['语言', '总数', '成功', '成功率', '编译成功', '编译成功率', '超时', '超时率', '平均运行时间', '平均成功率']
+        ])
+        for lang, stats in lang_stats.items():
+            csv_data.append([
+                lang,
+                stats['total'],
+                stats['success'],
+                f'{stats["success"]/stats["total"]*100:.2f}%',
+                stats['compilation'],
+                f'{stats["compilation"]/stats["total"]*100:.2f}%',
+                stats['timeout'],
+                f'{stats["timeout"]/stats["total"]*100:.2f}%',
+                f'{stats["avg_runtime"]:.2f} ms',
+                f'{stats["success_rate"]:.2f}%'
+            ])
+            
+            # 添加该语言的难度统计
+            csv_data.extend([
+                ['', f'{lang}难度分布'],
+                ['难度', '总数', '成功', '成功率', '编译成功', '编译成功率', '超时', '超时率']
+            ])
+            for difficulty, diff_stats in stats['difficulty_stats'].items():
+                if diff_stats['total'] > 0:
+                    csv_data.append([
+                        difficulty,
+                        diff_stats['total'],
+                        diff_stats['success'],
+                        f'{diff_stats["success"]/diff_stats["total"]*100:.2f}%',
+                        diff_stats['compilation'],
+                        f'{diff_stats["compilation"]/diff_stats["total"]*100:.2f}%',
+                        diff_stats['timeout'],
+                        f'{diff_stats["timeout"]/diff_stats["total"]*100:.2f}%'
+                    ])
+            
+            # 添加该语言的标签统计
+            csv_data.extend([
+                ['', f'{lang}标签统计'],
+                ['标签', '总数', '成功', '成功率', '编译成功', '编译成功率', '超时', '超时率', '平均运行时间', '平均成功率', '唯一题目数']
+            ])
+            for tag, tag_stats in stats['tag_stats'].items():
+                if tag_stats['total'] > 0:
+                    csv_data.append([
+                        tag,
+                        tag_stats['total'],
+                        tag_stats['success'],
+                        f'{tag_stats["success"]/tag_stats["total"]*100:.2f}%',
+                        tag_stats['compilation'],
+                        f'{tag_stats["compilation"]/tag_stats["total"]*100:.2f}%',
+                        tag_stats['timeout'],
+                        f'{tag_stats["timeout"]/tag_stats["total"]*100:.2f}%',
+                        f'{tag_stats["avg_runtime"]:.2f} ms',
+                        f'{tag_stats["success_rate"]:.2f}%',
+                        tag_stats['unique_problems']
+                    ])
+            csv_data.append([''])  # 空行分隔
+        
         # 添加详细测试结果
         csv_data.extend([
             ['详细测试结果'],
@@ -751,9 +854,9 @@ def main():
     global TEST_RESULTS_DIR, REPORTS_DIR
     
     parser = argparse.ArgumentParser(description='生成测试报告')
-    parser.add_argument('--days', type=int, default=7, help='包含最近几天的测试结果（默认：7）')
-    parser.add_argument('--format', choices=['markdown', 'json', 'csv', 'all'], default='markdown',
-                      help='输出格式（默认：markdown）')
+    parser.add_argument('--days', type=int, default=30, help='包含最近几天的测试结果（默认：30）')
+    parser.add_argument('--format', choices=['markdown', 'json', 'csv', 'all'], default='all',
+                      help='输出格式（默认：all）')
     parser.add_argument('--output-dir', default=REPORTS_DIR,
                       help='报告输出目录（默认：test_reports/）')
     parser.add_argument('--include-details', action='store_true',
