@@ -57,7 +57,8 @@ def generate_model_report(model_name):
         "--format", "all",
         "--output-dir", model_reports_dir,
         "--days", "30",
-        "--llm"
+        "--llm",
+        "--include-details"
     ]
     
     # 设置环境变量以指向模型特定的测试结果目录
