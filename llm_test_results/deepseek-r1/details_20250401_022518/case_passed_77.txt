@@ -1,0 +1,28 @@
+==== 测试用例 77 (passed) ====
+
+输入:
+V
+8
+V GMK 5.64
+GMK G 5.5
+G B 4.85
+B KDU 7.05
+KDU LY 2.72
+LY WK 5.83
+WK ATA 7.54
+ATA H 4.77
+8
+H BF 1.79
+BF CYU 3.06
+CYU HKM 6.77
+HKM BWD 3.52
+BWD Q 8.99
+Q KHM 7.87
+KHM GL 7.71
+GL V 1.98
+期望输出:
+85282439494.37213
+实际输出:
+85282439494.37213
+
+运行时间: 1.10 ms

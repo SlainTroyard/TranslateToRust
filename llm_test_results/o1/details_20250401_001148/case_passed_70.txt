@@ -1,0 +1,11 @@
+==== 测试用例 70 (passed) ====
+
+输入:
+dnfifqwmzwykxieorxpfwofmyvopgewvnngewmfahdmfnujdfkgfodxwevoltnpqltx
+1
+期望输出:
+2278
+实际输出:
+2278
+
+运行时间: 0.72 ms

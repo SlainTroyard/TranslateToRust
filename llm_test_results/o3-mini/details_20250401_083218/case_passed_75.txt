@@ -1,0 +1,12 @@
+==== 测试用例 75 (passed) ====
+
+输入:
+105
+utuljfjszlyaupvlyebyiisvxudeqmxqjaizvquzssyoiouuffqmewrknkzbevrikpimqibvekhgqbhnvpxkfdffzvdersnivltbetzxt
+75
+期望输出:
+9
+实际输出:
+9
+
+运行时间: 0.61 ms

@@ -1,0 +1,10 @@
+==== 测试用例 36 (failed) ====
+
+输入:
+1925-10-22
+期望输出:
+11110000101-1010-10110
+实际输出:
+Placeholder implementation. To get a proper translation, configure LLM API.
+
+运行时间: 0.54 ms

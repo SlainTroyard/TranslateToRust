@@ -1,0 +1,11 @@
+==== 测试用例 82 (failed) ====
+
+输入:
+bajobujefiqyqrssianxsdvakrfjxhenamtpdvwmcgdrmbukedxcrezceyhiupscybxjwfzqwvgcxahrhncygsoqrhxlehdzcoofdjkatpwlzprcovscgglcpvrstjeypbupwxpfd
+83
+期望输出:
+zqwvgcxahrhncygsoqrhxlehdzcoofdjkatpwlzprcovscgglcpvrst
+实际输出:
+bajobujefiqyqrssianxsdvakrfjxhenamtpdvwmcgdrmbukedxcrez
+
+运行时间: 0.78 ms

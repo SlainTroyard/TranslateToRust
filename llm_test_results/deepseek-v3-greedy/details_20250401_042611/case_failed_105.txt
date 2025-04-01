@@ -1,0 +1,10 @@
+==== 测试用例 105 (failed) ====
+
+输入:
+wixrqddlmcgofjjaoafudmyntofuftkglpacgcafcfmqrzhtawlsvssrlbbuipqhdibpxtuvnsolsrqnysvawusx
+46
+期望输出:
+0
+实际输出:
+
+运行时间: 0.63 ms

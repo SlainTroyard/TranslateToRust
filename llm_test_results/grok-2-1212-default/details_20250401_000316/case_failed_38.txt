@@ -1,0 +1,12 @@
+==== 测试用例 38 (failed) ====
+
+输入:
+119
+dzxtqsajbbukmulqweiajzebndclakoiqfeybuljopzggvlfvtbnatpgilfvgqwbzgttiduzpnkhzwreldwwxuirlsqehxetwwfgljoymvxduygswttnewt
+88
+期望输出:
+9
+实际输出:
+27
+
+运行时间: 0.73 ms

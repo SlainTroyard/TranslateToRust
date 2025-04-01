@@ -1,0 +1,10 @@
+==== 测试用例 91 (failed) ====
+
+输入:
+kfjcstjcqprjvycbbelpdkvxjxpgptfwbhtnydnvhuj
+28
+期望输出:
+0
+实际输出:
+
+运行时间: 0.71 ms

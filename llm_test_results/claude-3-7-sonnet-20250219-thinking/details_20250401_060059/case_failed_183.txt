@@ -1,0 +1,11 @@
+==== 测试用例 183 (failed) ====
+
+输入:
+ukcbuxbzjrzzaipxdsvloyrhsgcqnndtobuqddkvnsdqdsjrohcaiuxvmwlkkflleqgwflhegjyvcrmukuw
+47
+期望输出:
+0
+实际输出:
+Placeholder implementation. To get a proper translation, configure LLM API.
+
+运行时间: 0.58 ms

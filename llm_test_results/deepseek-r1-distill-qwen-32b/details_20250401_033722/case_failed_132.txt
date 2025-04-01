@@ -1,0 +1,10 @@
+==== 测试用例 132 (failed) ====
+
+输入:
+inrxzrcatvyroxjhehklgylnqsflmlbbuoqjkjhqkwfkyxgy
+21
+期望输出:
+0
+实际输出:
+
+运行时间: 0.66 ms

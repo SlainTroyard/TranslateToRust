@@ -1,0 +1,17 @@
+==== 测试用例 46 (passed) ====
+
+输入:
+4 7
+MESSAGE 214 ALL
+MESSAGE 749 ALL
+MESSAGE 314 HERE
+OFFLINE 961 id1
+OFFLINE 589 id0
+MESSAGE 728 id2 id3 id3 id3
+MESSAGE 848 HERE
+期望输出:
+Mentions: 3 3 4 3
+实际输出:
+Mentions: 3 3 4 3 
+
+运行时间: 0.87 ms

@@ -1,0 +1,10 @@
+==== 测试用例 59 (passed) ====
+
+输入:
+ivvbibfijgkv
+期望输出:
+a b c d e f g h i ia ib ic id ie if ig ih ii ij ik il im in io ip iq ir is it iu iv iva ivb ivc ivd ive ivf ivg ivh ivi ivj ivk ivl ivm ivn ivo ivp ivq ivr ivs ivt ivu ivv ivva ivvb ivvba ivvbb ivvbc ivvbd ivvbe ivvbf ivvbg ivvbh ivvbi ivvbia ivvbib ivvbiba ivvbibb ivvbibc ivvbibd ivvbibe ivvbibf ivvbibfa ivvbibfb ivvbibfc ivvbibfd ivvbibfe ivvbibff ivvbibfg ivvbibfh ivvbibfi ivvbibfia ivvbibfib ivvbibfic ivvbibfid ivvbibfie ivvbibfif ivvbibfig ivvbibfih ivvbibfii ivvbibfij ivvbibfija ivvbibfijb ivvbibfijc ivvbibfijd ivvbibfije ivvbibfijf ivvbibfijg ivvbibfijga ivvbibfijgb ivvbibfijgc ivvbibfijgd ivvbibfijge ivvbibfijgf ivvbibfijgg ivvbibfijgh ivvbibfijgi ivvbibfijgj ivvbibfijgk ivvbibfijgka ivvbibfijgkb ivvbibfijgkc ivvbibfijgkd ivvbibfijgke ivvbibfijgkf ivvbibfijgkg ivvbibfijgkh ivvbibfijgki ivvbibfijgkj ivvbibfijgkk ivvbibfijgkl ivvbibfijgkm ivvbibfijgkn ivvbibfijgko ivvbibfijgkp ivvbibfijgkq ivvbibfijgkr ivvbibfijgks ivvbibfijgkt ivvbibfijgku ivvbibfijgkv
+实际输出:
+a b c d e f g h i ia ib ic id ie if ig ih ii ij ik il im in io ip iq ir is it iu iv iva ivb ivc ivd ive ivf ivg ivh ivi ivj ivk ivl ivm ivn ivo ivp ivq ivr ivs ivt ivu ivv ivva ivvb ivvba ivvbb ivvbc ivvbd ivvbe ivvbf ivvbg ivvbh ivvbi ivvbia ivvbib ivvbiba ivvbibb ivvbibc ivvbibd ivvbibe ivvbibf ivvbibfa ivvbibfb ivvbibfc ivvbibfd ivvbibfe ivvbibff ivvbibfg ivvbibfh ivvbibfi ivvbibfia ivvbibfib ivvbibfic ivvbibfid ivvbibfie ivvbibfif ivvbibfig ivvbibfih ivvbibfii ivvbibfij ivvbibfija ivvbibfijb ivvbibfijc ivvbibfijd ivvbibfije ivvbibfijf ivvbibfijg ivvbibfijga ivvbibfijgb ivvbibfijgc ivvbibfijgd ivvbibfijge ivvbibfijgf ivvbibfijgg ivvbibfijgh ivvbibfijgi ivvbibfijgj ivvbibfijgk ivvbibfijgka ivvbibfijgkb ivvbibfijgkc ivvbibfijgkd ivvbibfijgke ivvbibfijgkf ivvbibfijgkg ivvbibfijgkh ivvbibfijgki ivvbibfijgkj ivvbibfijgkk ivvbibfijgkl ivvbibfijgkm ivvbibfijgkn ivvbibfijgko ivvbibfijgkp ivvbibfijgkq ivvbibfijgkr ivvbibfijgks ivvbibfijgkt ivvbibfijgku ivvbibfijgkv
+
+运行时间: 1.80 ms

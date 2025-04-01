@@ -1,0 +1,12 @@
+==== 测试用例 37 (failed) ====
+
+输入:
+19
+722 -188 836 -932 -57 472 -940 812 865 -460 815 -824 -724 -747 643 -974 425 -488 -870
+19 19
+期望输出:
+-1
+实际输出:
+Placeholder implementation. To get a proper translation, configure LLM API.
+
+运行时间: 0.90 ms

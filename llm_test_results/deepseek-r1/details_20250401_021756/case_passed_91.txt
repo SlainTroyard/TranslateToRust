@@ -1,0 +1,20 @@
+==== 测试用例 91 (passed) ====
+
+输入:
+9 10
+OFFLINE 231 id8
+MESSAGE 824 ALL
+MESSAGE 925 id1
+OFFLINE 438 id6
+MESSAGE 106 ALL
+MESSAGE 709 id0 id0 id2 id3
+MESSAGE 806 id1 id4 id5 id4
+OFFLINE 468 id0
+MESSAGE 249 HERE
+MESSAGE 700 ALL
+期望输出:
+6 6 5 5 6 5 4 4 3
+实际输出:
+6 6 5 5 6 5 4 4 3 
+
+运行时间: 0.68 ms

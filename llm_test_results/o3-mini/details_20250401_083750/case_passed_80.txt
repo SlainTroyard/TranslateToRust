@@ -1,0 +1,46 @@
+==== 测试用例 80 (passed) ====
+
+输入:
+36
+ir
+lb
+kx
+rr
+lr
+ib
+bi
+kl
+br
+bb
+ri
+xl
+lx
+xr
+ki
+xb
+bx
+xi
+ll
+kb
+ix
+xk
+ik
+rb
+bl
+rl
+kk
+lk
+kr
+ii
+il
+rk
+rx
+xx
+bk
+li
+期望输出:
+0 2 0 0 0 0 0 0 2 0 2 2 0 0 0 0 0 2 0 0 0 0 0 2 0 0
+实际输出:
+0 2 0 0 0 0 0 0 2 0 2 2 0 0 0 0 0 2 0 0 0 0 0 2 0 0 
+
+运行时间: 0.59 ms

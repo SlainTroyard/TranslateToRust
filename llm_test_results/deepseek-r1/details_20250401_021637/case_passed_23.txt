@@ -1,0 +1,12 @@
+==== 测试用例 23 (passed) ====
+
+输入:
+92
+yqhcmecmytqntrewpuujkdbwwucuuscwdelhconimxxotvujiadvhpuokfqvycsyzfhjlsdalfouqjxjfggkzrlhrwin
+47
+期望输出:
+37
+实际输出:
+37
+
+运行时间: 0.74 ms

@@ -1,0 +1,13 @@
+==== 测试用例 53 (failed) ====
+
+输入:
+7
+659 -906 819 -38 -839 -590 23
+2
+期望输出:
+false
+实际输出:
+Enter the size of the array:
+Enter the elements of the array:
+
+运行时间: 0.60 ms

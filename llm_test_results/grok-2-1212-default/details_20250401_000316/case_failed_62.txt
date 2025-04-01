@@ -1,0 +1,12 @@
+==== 测试用例 62 (failed) ====
+
+输入:
+190
+xdngwfepbiypitwygsryxknlmqabkwxofzctlqvefgifjgvwdpvaxddkfhtkxehynqniqdsidjgfwtdpvzzhhrlbtltecodfczzaxsbbjixgbykqmhthqabiudghewvfftyxdqihkjkttxugqpdbebhmxfisocelyleqqqglkxrdrbjjfjsbwjlumldhuj
+20
+期望输出:
+0
+实际输出:
+36
+
+运行时间: 0.57 ms

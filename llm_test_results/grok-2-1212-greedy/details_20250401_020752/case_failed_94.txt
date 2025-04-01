@@ -1,0 +1,10 @@
+==== 测试用例 94 (failed) ====
+
+输入:
+lwlnxdtrvsnuvonijbamlavdeupgydiyraicngqnhiboyhyqypbyrucolsyprpmwgfbhb
+35
+期望输出:
+0
+实际输出:
+
+运行时间: 0.58 ms

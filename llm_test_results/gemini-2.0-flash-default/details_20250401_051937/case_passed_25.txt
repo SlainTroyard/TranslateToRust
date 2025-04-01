@@ -1,0 +1,12 @@
+==== 测试用例 25 (passed) ====
+
+输入:
+196
+oillamdzwbsecnyjivnegwcgjynwfhlqxmcvugszfkavlmhxcxucsukazcsgmmlvnlsdqafnadbrswxsfhshgzqrfnplmoppdtftzqszorxueoosodzryidscixamxkezukpswejwcddgkisikkezpmaocybjblhgdzkqezzhnqetxbrkjrjrfnwtiybhaevijpt
+155
+期望输出:
+15
+实际输出:
+15
+
+运行时间: 62.87 ms

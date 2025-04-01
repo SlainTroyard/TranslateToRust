@@ -1,0 +1,17 @@
+==== 测试用例 61 (passed) ====
+
+输入:
+5 7
+MESSAGE 866 ALL
+MESSAGE 439 id2 id2 id2 id0 id2
+OFFLINE 374 id3
+MESSAGE 291 ALL
+MESSAGE 741 HERE
+MESSAGE 415 HERE
+MESSAGE 354 HERE
+期望输出:
+6 5 9 4 5
+实际输出:
+6 5 9 4 5 
+
+运行时间: 0.56 ms

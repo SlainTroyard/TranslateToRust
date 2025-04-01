@@ -1,0 +1,25 @@
+==== 测试用例 43 (failed) ====
+
+输入:
+O
+7
+O MHR 1.8
+MHR TEL 9.76
+TEL U 4.11
+U WNM 8.64
+WNM QAH 5.4
+QAH LTB 2.62
+LTB LZI 7.66
+6
+LZI WNB 5.93
+WNB L 3.94
+L ZW 8.68
+ZW MFE 7.18
+MFE W 6.86
+W O 2.0
+期望输出:
+1350675131.90445
+实际输出:
+1.00000
+
+运行时间: 1.14 ms

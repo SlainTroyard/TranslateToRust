@@ -1,0 +1,20 @@
+==== 测试用例 31 (failed) ====
+
+输入:
+k
+期望输出:
+a b c d e f g h i j k
+实际输出:
+Enter the target string: a
+b
+c
+d
+e
+f
+g
+h
+i
+j
+k
+
+运行时间: 0.99 ms

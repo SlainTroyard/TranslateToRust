@@ -1,0 +1,11 @@
+==== 测试用例 135 (passed) ====
+
+输入:
+ipuylkufdjmfiryhxqdyjuxpqtijlgmbkzggvkzgieefzextcasgncylrjfm
+6
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 0.67 ms

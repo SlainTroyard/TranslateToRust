@@ -1,0 +1,37 @@
+==== 测试用例 57 (passed) ====
+
+输入:
+27
+di
+zf
+ii
+kf
+ik
+ip
+fd
+gt
+ft
+tk
+zd
+ki
+tp
+zi
+tf
+pd
+pf
+dt
+fp
+fz
+ig
+tg
+gp
+tt
+gi
+it
+gd
+期望输出:
+0 0 0 1 0 2 1 0 2 0 1 0 0 0 0 1 0 0 0 2 0 0 0 0 0 1
+实际输出:
+0 0 0 1 0 2 1 0 2 0 1 0 0 0 0 1 0 0 0 2 0 0 0 0 0 1 
+
+运行时间: 0.59 ms

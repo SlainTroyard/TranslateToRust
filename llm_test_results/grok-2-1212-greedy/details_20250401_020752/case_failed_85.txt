@@ -1,0 +1,10 @@
+==== 测试用例 85 (failed) ====
+
+输入:
+qiwogoqkxuuuxvxeyqxraeqnewinldesmuortemzrmrcxpxnziamu
+38
+期望输出:
+0
+实际输出:
+
+运行时间: 0.56 ms

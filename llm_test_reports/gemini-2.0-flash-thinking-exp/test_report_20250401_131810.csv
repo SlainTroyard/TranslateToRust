@@ -1,0 +1,381 @@
+总体统计
+总文件数,208
+测试成功,88,42.31%
+测试失败,120,57.69%
+编译成功,136,65.38%
+超时文件,3,1.44%
+超时用例,200
+""
+语言分布
+语言,数量,百分比
+C,104,50.00%
+CPP,104,50.00%
+""
+难度统计
+难度,总数,成功,成功率,失败,失败率,编译成功,编译成功率,超时,超时率
+Easy,44,27,61.36%,17,38.64%,40,90.91%,0,0.00%
+Medium,96,36,37.50%,60,62.50%,64,66.67%,1,1.04%
+Hard,68,25,36.76%,43,63.24%,32,47.06%,2,2.94%
+""
+标签统计
+标签,总数,成功,成功率,编译成功,编译成功率,超时,超时率,平均运行时间,平均成功率,唯一题目数
+Math,58,17,29.31%,34,58.62%,0,0.00%,24.13 ms,57.91%,58
+String,66,25,37.88%,39,59.09%,3,4.55%,280.21 ms,68.00%,66
+Array,134,58,43.28%,88,65.67%,0,0.00%,49.59 ms,67.28%,134
+Heap (Priority Queue),14,5,35.71%,9,64.29%,0,0.00%,55.60 ms,55.56%,14
+Bitmask,6,3,50.00%,4,66.67%,0,0.00%,72.90 ms,75.00%,6
+Matrix,20,8,40.00%,14,70.00%,0,0.00%,43.75 ms,57.14%,20
+Bit Manipulation,16,6,37.50%,10,62.50%,0,0.00%,31.69 ms,69.80%,16
+Dynamic Programming,50,19,38.00%,29,58.00%,1,2.00%,81.77 ms,69.66%,50
+Binary Search,30,13,43.33%,18,60.00%,1,3.33%,259.50 ms,73.28%,30
+Sorting,28,11,39.29%,19,67.86%,1,3.57%,53.31 ms,60.16%,28
+Greedy,28,19,67.86%,25,89.29%,1,3.57%,44.19 ms,76.00%,28
+Breadth-First Search,8,3,37.50%,5,62.50%,0,0.00%,51.45 ms,60.00%,8
+Game Theory,2,0,0.00%,1,50.00%,0,0.00%,0.00 ms,0.00%,2
+Hash Table,54,24,44.44%,36,66.67%,2,3.70%,215.19 ms,66.83%,54
+Trie,4,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,4
+Segment Tree,10,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,10
+Rolling Hash,4,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,4
+Hash Function,6,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,6
+String Matching,4,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,4
+Sliding Window,24,10,41.67%,14,58.33%,1,4.17%,457.62 ms,71.79%,24
+Simulation,16,9,56.25%,14,87.50%,0,0.00%,1.63 ms,73.43%,16
+Recursion,4,2,50.00%,3,75.00%,0,0.00%,0.76 ms,66.67%,4
+Enumeration,20,9,45.00%,11,55.00%,0,0.00%,29.22 ms,81.82%,20
+Graph,14,2,14.29%,9,64.29%,0,0.00%,93.47 ms,22.22%,14
+Breath-First Search,4,0,0.00%,3,75.00%,0,0.00%,0.00 ms,0.00%,4
+Depth-First Search,14,4,28.57%,8,57.14%,0,0.00%,58.17 ms,50.00%,14
+Combinatorics,14,4,28.57%,8,57.14%,0,0.00%,16.42 ms,66.00%,14
+Counting,14,7,50.00%,9,64.29%,0,0.00%,24.51 ms,77.78%,14
+Number Theory,16,9,56.25%,10,62.50%,0,0.00%,38.53 ms,98.50%,16
+Prefix Sum,22,12,54.55%,18,81.82%,0,0.00%,42.11 ms,66.67%,22
+Tree,10,3,30.00%,3,30.00%,0,0.00%,77.26 ms,100.00%,10
+Depth-first Search,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Binary Tree,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Shortest Path,6,1,16.67%,4,66.67%,0,0.00%,186.04 ms,25.00%,6
+Geometry,4,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,4
+Binary Indexed Tree,4,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,4
+Two Pointers,2,1,50.00%,2,100.00%,0,0.00%,1.04 ms,50.00%,2
+Stack,6,2,33.33%,2,33.33%,0,0.00%,5.61 ms,100.00%,6
+Queue,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Monotonic Stack,4,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,4
+Monotonic Queue,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Topological Sort,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Memoization,2,0,0.00%,1,50.00%,0,0.00%,0.00 ms,0.00%,2
+""
+语言特定统计
+语言,总数,成功,成功率,编译成功,编译成功率,超时,超时率,平均运行时间,平均成功率
+C,104,53,50.96%,82,78.85%,2,1.92%,160.33 ms,67.48%
+,C难度分布
+难度,总数,成功,成功率,编译成功,编译成功率,超时,超时率
+Easy,22,14,63.64%,22,100.00%,0,0.00%
+Medium,48,23,47.92%,39,81.25%,0,0.00%
+Hard,34,16,47.06%,21,61.76%,2,5.88%
+,C标签统计
+标签,总数,成功,成功率,编译成功,编译成功率,超时,超时率,平均运行时间,平均成功率,唯一题目数
+Math,29,12,41.38%,23,79.31%,0,0.00%,23.47 ms,57.87%,29
+String,33,14,42.42%,25,75.76%,2,6.06%,440.39 ms,62.08%,33
+Array,67,35,52.24%,52,77.61%,0,0.00%,44.63 ms,68.87%,67
+Heap (Priority Queue),7,3,42.86%,5,71.43%,0,0.00%,76.08 ms,60.00%,7
+Bitmask,3,2,66.67%,3,100.00%,0,0.00%,51.08 ms,66.67%,3
+Matrix,10,6,60.00%,9,90.00%,0,0.00%,49.99 ms,66.67%,10
+Bit Manipulation,8,4,50.00%,6,75.00%,0,0.00%,25.94 ms,66.67%,8
+Dynamic Programming,25,11,44.00%,18,72.00%,0,0.00%,63.37 ms,67.78%,25
+Binary Search,15,8,53.33%,10,66.67%,1,6.67%,356.54 ms,81.90%,15
+Sorting,14,5,35.71%,9,64.29%,0,0.00%,47.23 ms,55.89%,14
+Greedy,14,10,71.43%,13,92.86%,0,0.00%,38.12 ms,76.92%,14
+Breadth-First Search,4,3,75.00%,4,100.00%,0,0.00%,51.45 ms,75.00%,4
+Game Theory,1,0,0.00%,1,100.00%,0,0.00%,0.00 ms,0.00%,1
+Hash Table,27,14,51.85%,23,85.19%,1,3.70%,331.97 ms,61.13%,27
+Trie,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Segment Tree,5,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,5
+Rolling Hash,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Hash Function,3,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,3
+String Matching,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Sliding Window,12,7,58.33%,9,75.00%,1,8.33%,611.91 ms,78.33%,12
+Simulation,8,5,62.50%,8,100.00%,0,0.00%,1.44 ms,73.50%,8
+Recursion,2,1,50.00%,1,50.00%,0,0.00%,0.75 ms,100.00%,2
+Enumeration,10,5,50.00%,7,70.00%,0,0.00%,37.09 ms,71.43%,10
+Graph,7,2,28.57%,5,71.43%,0,0.00%,93.47 ms,40.00%,7
+Breath-First Search,2,0,0.00%,1,50.00%,0,0.00%,0.00 ms,0.00%,2
+Depth-First Search,7,4,57.14%,5,71.43%,0,0.00%,58.17 ms,80.00%,7
+Combinatorics,7,3,42.86%,6,85.71%,0,0.00%,18.69 ms,71.33%,7
+Counting,7,4,57.14%,6,85.71%,0,0.00%,26.76 ms,66.67%,7
+Number Theory,8,7,87.50%,8,100.00%,0,0.00%,26.84 ms,98.12%,8
+Prefix Sum,11,6,54.55%,9,81.82%,0,0.00%,46.58 ms,66.67%,11
+Tree,5,3,60.00%,3,60.00%,0,0.00%,77.26 ms,100.00%,5
+Depth-first Search,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Binary Tree,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Shortest Path,3,1,33.33%,2,66.67%,0,0.00%,186.04 ms,50.00%,3
+Geometry,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Binary Indexed Tree,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Two Pointers,1,0,0.00%,1,100.00%,0,0.00%,0.00 ms,0.00%,1
+Stack,3,1,33.33%,1,33.33%,0,0.00%,4.88 ms,100.00%,3
+Queue,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Monotonic Stack,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Monotonic Queue,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Topological Sort,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Memoization,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+""
+CPP,104,35,33.65%,54,51.92%,1,0.96%,41.57 ms,67.37%
+,CPP难度分布
+难度,总数,成功,成功率,编译成功,编译成功率,超时,超时率
+Easy,22,13,59.09%,18,81.82%,0,0.00%
+Medium,48,13,27.08%,25,52.08%,1,2.08%
+Hard,34,9,26.47%,11,32.35%,0,0.00%
+,CPP标签统计
+标签,总数,成功,成功率,编译成功,编译成功率,超时,超时率,平均运行时间,平均成功率,唯一题目数
+Math,29,5,17.24%,11,37.93%,0,0.00%,25.53 ms,58.00%,29
+String,33,11,33.33%,14,42.42%,1,3.03%,18.12 ms,78.57%,33
+Array,67,23,34.33%,36,53.73%,0,0.00%,57.67 ms,65.00%,67
+Heap (Priority Queue),7,2,28.57%,4,57.14%,0,0.00%,24.89 ms,50.00%,7
+Bitmask,3,1,33.33%,1,33.33%,0,0.00%,116.53 ms,100.00%,3
+Matrix,10,2,20.00%,5,50.00%,0,0.00%,25.02 ms,40.00%,10
+Bit Manipulation,8,2,25.00%,4,50.00%,0,0.00%,39.37 ms,74.50%,8
+Dynamic Programming,25,8,32.00%,11,44.00%,1,4.00%,113.96 ms,72.73%,25
+Binary Search,15,5,33.33%,8,53.33%,0,0.00%,84.84 ms,62.50%,15
+Sorting,14,6,42.86%,10,71.43%,1,7.14%,58.52 ms,64.00%,14
+Greedy,14,9,64.29%,12,85.71%,1,7.14%,50.93 ms,75.00%,14
+Breadth-First Search,4,0,0.00%,1,25.00%,0,0.00%,0.00 ms,0.00%,4
+Game Theory,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Hash Table,27,10,37.04%,13,48.15%,1,3.70%,28.34 ms,76.92%,27
+Trie,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Segment Tree,5,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,5
+Rolling Hash,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Hash Function,3,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,3
+String Matching,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Sliding Window,12,3,25.00%,5,41.67%,0,0.00%,46.17 ms,60.00%,12
+Simulation,8,4,50.00%,6,75.00%,0,0.00%,1.89 ms,73.33%,8
+Recursion,2,1,50.00%,2,100.00%,0,0.00%,0.77 ms,50.00%,2
+Enumeration,10,4,40.00%,4,40.00%,0,0.00%,19.38 ms,100.00%,10
+Graph,7,0,0.00%,4,57.14%,0,0.00%,0.00 ms,0.00%,7
+Breath-First Search,2,0,0.00%,2,100.00%,0,0.00%,0.00 ms,0.00%,2
+Depth-First Search,7,0,0.00%,3,42.86%,0,0.00%,0.00 ms,0.00%,7
+Combinatorics,7,1,14.29%,2,28.57%,0,0.00%,5.05 ms,50.00%,7
+Counting,7,3,42.86%,3,42.86%,0,0.00%,21.51 ms,100.00%,7
+Number Theory,8,2,25.00%,2,25.00%,0,0.00%,85.30 ms,100.00%,8
+Prefix Sum,11,6,54.55%,9,81.82%,0,0.00%,37.65 ms,66.67%,11
+Tree,5,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,5
+Depth-first Search,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Binary Tree,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Shortest Path,3,0,0.00%,2,66.67%,0,0.00%,0.00 ms,0.00%,3
+Geometry,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Binary Indexed Tree,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Two Pointers,1,1,100.00%,1,100.00%,0,0.00%,1.04 ms,100.00%,1
+Stack,3,1,33.33%,1,33.33%,0,0.00%,6.34 ms,100.00%,3
+Queue,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Monotonic Stack,2,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,2
+Monotonic Queue,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Topological Sort,1,0,0.00%,0,0.00%,0,0.00%,0.00 ms,0.00%,1
+Memoization,1,0,0.00%,1,100.00%,0,0.00%,0.00 ms,0.00%,1
+""
+详细测试结果
+文件名,标题,难度,标签,编译状态,测试用例,通过数量,失败数量,成功率,平均运行时间,超时
+weekly_contest_413_p1_c.rs,3274. Check if Two Chessboard Squares Have the Same Color,Easy,"Math, String",成功,102,0,102,0.00%,0.00 ms,否
+weekly_contest_413_p1_cpp.rs,3274. Check if Two Chessboard Squares Have the Same Color,Easy,"Math, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_413_p2_c.rs,3275. K-th Nearest Obstacle Queries,Medium,"Array, Heap (Priority Queue)",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_413_p2_cpp.rs,3275. K-th Nearest Obstacle Queries,Medium,"Array, Heap (Priority Queue)",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_413_p3_c.rs,3276. Select Cells in Grid With Maximum Score,Hard,"Array, Bitmask, Matrix, Bit Manipulation, Dynamic Programming",成功,102,102,0,100.00%,8.58 ms,否
+weekly_contest_413_p3_cpp.rs,3276. Select Cells in Grid With Maximum Score,Hard,"Array, Bitmask, Matrix, Bit Manipulation, Dynamic Programming",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_413_p4_c.rs,3277. Maximum XOR Score Subarray Queries,Hard,"Array, Dynamic Programming",成功,17,17,0,100.00%,247.13 ms,否
+weekly_contest_413_p4_cpp.rs,3277. Maximum XOR Score Subarray Queries,Hard,"Array, Dynamic Programming",成功,17,17,0,100.00%,100.29 ms,否
+weekly_contest_414_p1_c.rs,3280. Convert Date to Binary,Easy,"Math, String",成功,102,102,0,100.00%,0.77 ms,否
+weekly_contest_414_p1_cpp.rs,3280. Convert Date to Binary,Easy,"Math, String",成功,102,102,0,100.00%,0.80 ms,否
+weekly_contest_414_p2_c.rs,3281. Maximize Score of Numbers in Ranges,Medium,"Binary Search, Array, Sorting, Greedy",成功,22,22,0,100.00%,33.42 ms,否
+weekly_contest_414_p2_cpp.rs,3281. Maximize Score of Numbers in Ranges,Medium,"Binary Search, Array, Sorting, Greedy",成功,22,22,0,100.00%,43.33 ms,否
+weekly_contest_414_p3_c.rs,3282. Reach End of Array With Max Score,Medium,"Array, Greedy",成功,22,22,0,100.00%,14.65 ms,否
+weekly_contest_414_p3_cpp.rs,3282. Reach End of Array With Max Score,Medium,"Array, Greedy",成功,22,22,0,100.00%,15.61 ms,否
+weekly_contest_414_p4_c.rs,3283. Maximum Number of Moves to Kill All Pawns,Hard,"Array, Math, Bitmask, Bit Manipulation, Breadth-First Search, Game Theory",成功,103,0,103,0.00%,0.00 ms,否
+weekly_contest_414_p4_cpp.rs,3283. Maximum Number of Moves to Kill All Pawns,Hard,"Array, Math, Bitmask, Bit Manipulation, Breadth-First Search, Game Theory",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_415_p1_c.rs,3289. The Two Sneaky Numbers of Digitville,Easy,"Hash Table, Array, Math",成功,102,0,102,0.00%,0.00 ms,否
+weekly_contest_415_p1_cpp.rs,3289. The Two Sneaky Numbers of Digitville,Easy,"Hash Table, Array, Math",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_415_p2_c.rs,3290. Maximum Multiplication Score,Medium,"Array, Dynamic Programming",成功,22,0,22,0.00%,0.00 ms,否
+weekly_contest_415_p2_cpp.rs,3290. Maximum Multiplication Score,Medium,"Array, Dynamic Programming",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_415_p3_c.rs,3291. Minimum Number of Valid Strings to Form Target I,Medium,"Array, Trie, Segment Tree, Rolling Hash, Dynamic Programming, String, Binary Search, Hash Function, String Matching",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_415_p3_cpp.rs,3291. Minimum Number of Valid Strings to Form Target I,Medium,"Array, Trie, Segment Tree, Rolling Hash, Dynamic Programming, String, Binary Search, Hash Function, String Matching",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_415_p4_c.rs,3292. Minimum Number of Valid Strings to Form Target II,Medium,"Array, Trie, Segment Tree, Rolling Hash, Dynamic Programming, String, Binary Search, Hash Function, String Matching",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_415_p4_cpp.rs,3292. Minimum Number of Valid Strings to Form Target II,Medium,"Array, Trie, Segment Tree, Rolling Hash, Dynamic Programming, String, Binary Search, Hash Function, String Matching",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_416_p1_c.rs,3295. Report Spam Message,Easy,"Hash Table, Array, String",成功,20,20,0,100.00%,123.51 ms,否
+weekly_contest_416_p1_cpp.rs,3295. Report Spam Message,Easy,"Hash Table, Array, String",成功,20,20,0,100.00%,51.76 ms,否
+weekly_contest_416_p2_c.rs,3296. Minimum Number of Seconds to Make Mountain Height Zero,Medium,"Array, Math, Greedy, Heap (Priority Queue), Binary Search",成功,20,0,20,0.00%,0.00 ms,否
+weekly_contest_416_p2_cpp.rs,3296. Minimum Number of Seconds to Make Mountain Height Zero,Medium,"Array, Math, Greedy, Heap (Priority Queue), Binary Search",成功,20,0,20,0.00%,0.00 ms,否
+weekly_contest_416_p3_c.rs,3297. Count Substrings That Can Be Rearranged to Contain a String I,Medium,"Hash Table, Sliding Window, String",成功,20,20,0,100.00%,100.34 ms,否
+weekly_contest_416_p3_cpp.rs,3297. Count Substrings That Can Be Rearranged to Contain a String I,Medium,"Hash Table, Sliding Window, String",成功,20,0,20,0.00%,0.00 ms,否
+weekly_contest_416_p4_c.rs,3298. Count Substrings That Can Be Rearranged to Contain a String II,Hard,"Hash Table, Sliding Window, String",成功,20,1,19,5.00%,4619.41 ms,是
+weekly_contest_416_p4_cpp.rs,3298. Count Substrings That Can Be Rearranged to Contain a String II,Hard,"Hash Table, Sliding Window, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_417_p1_c.rs,3304. Find the K-th Character in String Game I,Easy,"Math, Simulation, Bit Manipulation, Recursion",成功,100,100,0,100.00%,0.75 ms,否
+weekly_contest_417_p1_cpp.rs,3304. Find the K-th Character in String Game I,Easy,"Math, Simulation, Bit Manipulation, Recursion",成功,100,100,0,100.00%,0.77 ms,否
+weekly_contest_417_p2_c.rs,3305. Count of Substrings Containing Every Vowel and K Consonants I,Medium,"Hash Table, Sliding Window, String",成功,100,100,0,100.00%,34.17 ms,否
+weekly_contest_417_p2_cpp.rs,3305. Count of Substrings Containing Every Vowel and K Consonants I,Medium,"Hash Table, Sliding Window, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_417_p3_c.rs,3306. Count of Substrings Containing Every Vowel and K Consonants II,Medium,"Hash Table, Sliding Window, String",成功,100,100,0,100.00%,4.49 ms,否
+weekly_contest_417_p3_cpp.rs,3306. Count of Substrings Containing Every Vowel and K Consonants II,Medium,"Hash Table, Sliding Window, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_417_p4_c.rs,3307. Find the K-th Character in String Game II,Hard,"Math, Bit Manipulation, Recursion",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_417_p4_cpp.rs,3307. Find the K-th Character in String Game II,Hard,"Math, Bit Manipulation, Recursion",成功,20,0,20,0.00%,0.00 ms,否
+weekly_contest_418_p1_c.rs,3309. Maximum Possible Number by Binary Concatenation,Medium,"Array, Enumeration, Bit Manipulation",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_418_p1_cpp.rs,3309. Maximum Possible Number by Binary Concatenation,Medium,"Array, Enumeration, Bit Manipulation",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_418_p2_c.rs,3310. Remove Methods From Project,Medium,"Graph, Breath-First Search, Depth-First Search",成功,10,0,10,0.00%,0.00 ms,否
+weekly_contest_418_p2_cpp.rs,3310. Remove Methods From Project,Medium,"Graph, Breath-First Search, Depth-First Search",成功,10,0,10,0.00%,0.00 ms,否
+weekly_contest_418_p3_c.rs,3311. Construct 2D Grid Matching Graph Layout,Hard,"Hash Table, Array, Graph, Matrix",成功,20,0,20,0.00%,0.00 ms,否
+weekly_contest_418_p3_cpp.rs,3311. Construct 2D Grid Matching Graph Layout,Hard,"Hash Table, Array, Graph, Matrix",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_418_p4_c.rs,3312. Sorted GCD Pair Queries,Hard,"Hash Table, Array, Math, Binary Search, Combinatorics, Counting, Number Theory, Prefix Sum",成功,20,20,0,100.00%,77.30 ms,否
+weekly_contest_418_p4_cpp.rs,3312. Sorted GCD Pair Queries,Hard,"Hash Table, Array, Math, Binary Search, Combinatorics, Counting, Number Theory, Prefix Sum",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_419_p1_c.rs,3318. Find X-Sum of All K-Long Subarrays I,Easy,"Hash Table, Array, Sliding Window, Heap (Priority Queue)",成功,100,100,0,100.00%,0.81 ms,否
+weekly_contest_419_p1_cpp.rs,3318. Find X-Sum of All K-Long Subarrays I,Easy,"Hash Table, Array, Sliding Window, Heap (Priority Queue)",成功,100,100,0,100.00%,0.76 ms,否
+weekly_contest_419_p2_c.rs,3319. K-th Largest Perfect Subtree Size in Binary Tree,Medium,"Tree, Depth-first Search, Sorting, Binary Tree",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_419_p2_cpp.rs,3319. K-th Largest Perfect Subtree Size in Binary Tree,Medium,"Tree, Depth-first Search, Sorting, Binary Tree",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_419_p3_c.rs,3320. Count The Number of Winning Sequences,Hard,"Dynamic Programming, String",成功,100,100,0,100.00%,131.25 ms,否
+weekly_contest_419_p3_cpp.rs,3320. Count The Number of Winning Sequences,Hard,"Dynamic Programming, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_419_p4_c.rs,3321. Find X-Sum of All K-Long Subarrays II,Hard,"Hash Table, Array, Sliding Window, Heap (Priority Queue)",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_419_p4_cpp.rs,3321. Find X-Sum of All K-Long Subarrays II,Hard,"Hash Table, Array, Sliding Window, Heap (Priority Queue)",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_420_p1_c.rs,3324. Find the Sequence of Strings Appeared on the Screen,Medium,"Simulation, String",成功,100,100,0,100.00%,1.23 ms,否
+weekly_contest_420_p1_cpp.rs,3324. Find the Sequence of Strings Appeared on the Screen,Medium,"Simulation, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_420_p2_c.rs,3325. Count Substrings With K-Frequency Characters I,Medium,"Hash Table, Sliding Window, String",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_420_p2_cpp.rs,3325. Count Substrings With K-Frequency Characters I,Medium,"Hash Table, Sliding Window, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_420_p3_c.rs,3326. Minimum Division Operations to Make Array Non Decreasing,Medium,"Array, Math, Greedy, Number Theory",成功,20,20,0,100.00%,21.81 ms,否
+weekly_contest_420_p3_cpp.rs,3326. Minimum Division Operations to Make Array Non Decreasing,Medium,"Array, Math, Greedy, Number Theory",成功,20,20,0,100.00%,54.06 ms,否
+weekly_contest_420_p4_c.rs,3327. Check if DFS Strings Are Palindromes,Hard,"Hash Table, Array, Tree, String, Hash Function, Depth-First Search",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_420_p4_cpp.rs,3327. Check if DFS Strings Are Palindromes,Hard,"Hash Table, Array, Tree, String, Hash Function, Depth-First Search",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_421_p1_c.rs,3334. Find the Maximum Factor Score of Array,Medium,"Array, Math, Number Theory",成功,100,100,0,100.00%,0.81 ms,否
+weekly_contest_421_p1_cpp.rs,3334. Find the Maximum Factor Score of Array,Medium,"Array, Math, Number Theory",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_421_p2_c.rs,3335. Total Characters in String After Transformations I,Medium,"Hash Table, Math, Dynamic Programming, String, Counting",成功,20,0,20,0.00%,0.00 ms,否
+weekly_contest_421_p2_cpp.rs,3335. Total Characters in String After Transformations I,Medium,"Hash Table, Math, Dynamic Programming, String, Counting",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_421_p3_c.rs,3336. Find the Number of Subsequences With Equal GCD,Hard,"Array, Math, Dynamic Programming, Number Theory",成功,100,100,0,100.00%,12.58 ms,否
+weekly_contest_421_p3_cpp.rs,3336. Find the Number of Subsequences With Equal GCD,Hard,"Array, Math, Dynamic Programming, Number Theory",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_421_p4_c.rs,3337. Total Characters in String After Transformations II,Hard,"Hash Table, Math, Dynamic Programming, String, Counting",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_421_p4_cpp.rs,3337. Total Characters in String After Transformations II,Hard,"Hash Table, Math, Dynamic Programming, String, Counting",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_422_p1_c.rs,3340. Check Balanced String,Easy,String,成功,100,100,0,100.00%,0.65 ms,否
+weekly_contest_422_p1_cpp.rs,3340. Check Balanced String,Easy,String,成功,100,100,0,100.00%,0.78 ms,否
+weekly_contest_422_p2_c.rs,3341. Find Minimum Time to Reach Last Room I,Medium,"Array, Matrix, Graph, Heap (Priority Queue), Shortest Path",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_422_p2_cpp.rs,3341. Find Minimum Time to Reach Last Room I,Medium,"Array, Matrix, Graph, Heap (Priority Queue), Shortest Path",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_422_p3_c.rs,3342. Find Minimum Time to Reach Last Room II,Medium,"Array, Matrix, Graph, Heap (Priority Queue), Shortest Path",成功,10,10,0,100.00%,186.04 ms,否
+weekly_contest_422_p3_cpp.rs,3342. Find Minimum Time to Reach Last Room II,Medium,"Array, Matrix, Graph, Heap (Priority Queue), Shortest Path",成功,10,0,10,0.00%,0.00 ms,否
+weekly_contest_422_p4_c.rs,3343. Count Number of Balanced Permutations,Hard,"Combinatorics, Math, Dynamic Programming, String",成功,100,43,57,43.00%,4.40 ms,否
+weekly_contest_422_p4_cpp.rs,3343. Count Number of Balanced Permutations,Hard,"Combinatorics, Math, Dynamic Programming, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_423_p1_c.rs,3349. Adjacent Increasing Subarrays Detection I,Easy,Array,成功,100,100,0,100.00%,0.76 ms,否
+weekly_contest_423_p1_cpp.rs,3349. Adjacent Increasing Subarrays Detection I,Easy,Array,成功,100,100,0,100.00%,0.77 ms,否
+weekly_contest_423_p2_c.rs,3350. Adjacent Increasing Subarrays Detection II,Medium,"Binary Search, Array",成功,20,20,0,100.00%,33.18 ms,否
+weekly_contest_423_p2_cpp.rs,3350. Adjacent Increasing Subarrays Detection II,Medium,"Binary Search, Array",成功,20,0,20,0.00%,0.00 ms,否
+weekly_contest_423_p3_c.rs,3351. Sum of Good Subsequences,Hard,"Hash Table, Array, Dynamic Programming",成功,100,100,0,100.00%,25.69 ms,否
+weekly_contest_423_p3_cpp.rs,3351. Sum of Good Subsequences,Hard,"Hash Table, Array, Dynamic Programming",成功,100,100,0,100.00%,128.68 ms,否
+weekly_contest_423_p4_c.rs,3352. Count K-Reducible Numbers Less Than N,Hard,"Combinatorics, Math, Dynamic Programming, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_423_p4_cpp.rs,3352. Count K-Reducible Numbers Less Than N,Hard,"Combinatorics, Math, Dynamic Programming, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_424_p1_c.rs,3354. Make Array Elements Equal to Zero,Easy,"Array, Prefix Sum, Simulation",成功,100,100,0,100.00%,0.78 ms,否
+weekly_contest_424_p1_cpp.rs,3354. Make Array Elements Equal to Zero,Easy,"Array, Prefix Sum, Simulation",成功,100,100,0,100.00%,0.85 ms,否
+weekly_contest_424_p2_c.rs,3355. Zero Array Transformation I,Medium,"Array, Prefix Sum",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_424_p2_cpp.rs,3355. Zero Array Transformation I,Medium,"Array, Prefix Sum",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_424_p3_c.rs,3356. Zero Array Transformation II,Medium,"Binary Search, Array, Prefix Sum",成功,20,20,0,100.00%,53.81 ms,否
+weekly_contest_424_p3_cpp.rs,3356. Zero Array Transformation II,Medium,"Binary Search, Array, Prefix Sum",成功,20,20,0,100.00%,74.11 ms,否
+weekly_contest_424_p4_c.rs,3357. Minimize the Maximum Adjacent Element Difference,Hard,"Binary Search, Array, Greedy",成功,20,20,0,100.00%,19.89 ms,否
+weekly_contest_424_p4_cpp.rs,3357. Minimize the Maximum Adjacent Element Difference,Hard,"Binary Search, Array, Greedy",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_425_p1_c.rs,3364. Minimum Positive Sum Subarray ,Easy,"Array, Sliding Window, Prefix Sum",成功,100,100,0,100.00%,0.73 ms,否
+weekly_contest_425_p1_cpp.rs,3364. Minimum Positive Sum Subarray ,Easy,"Array, Sliding Window, Prefix Sum",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_425_p2_c.rs,3365. Rearrange K Substrings to Form Target String,Medium,"Hash Table, Sorting, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_425_p2_cpp.rs,3365. Rearrange K Substrings to Form Target String,Medium,"Hash Table, Sorting, String",成功,100,100,0,100.00%,18.18 ms,否
+weekly_contest_425_p3_c.rs,3366. Minimum Array Sum,Medium,"Array, Dynamic Programming",成功,100,2,98,2.00%,0.66 ms,否
+weekly_contest_425_p3_cpp.rs,3366. Minimum Array Sum,Medium,"Array, Dynamic Programming",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_425_p4_c.rs,3367. Maximize Sum of Weights after Edge Removals,Hard,"Depth-First Search, Tree, Dynamic Programming",成功,20,20,0,100.00%,78.35 ms,否
+weekly_contest_425_p4_cpp.rs,3367. Maximize Sum of Weights after Edge Removals,Hard,"Depth-First Search, Tree, Dynamic Programming",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_426_p1_c.rs,3370. Smallest Number With All Set Bits,Easy,"Math, Bit Manipulation",成功,100,100,0,100.00%,0.84 ms,否
+weekly_contest_426_p1_cpp.rs,3370. Smallest Number With All Set Bits,Easy,"Math, Bit Manipulation",成功,100,98,2,98.00%,0.81 ms,否
+weekly_contest_426_p2_c.rs,3371. Identify the Largest Outlier in an Array,Medium,"Hash Table, Array, Counting, Enumeration",成功,100,100,0,100.00%,0.98 ms,否
+weekly_contest_426_p2_cpp.rs,3371. Identify the Largest Outlier in an Array,Medium,"Hash Table, Array, Counting, Enumeration",成功,100,100,0,100.00%,1.12 ms,否
+weekly_contest_426_p3_c.rs,3372. Maximize the Number of Target Nodes After Connecting Trees I,Medium,"Breadth-First Search, Tree, Depth-First Search",成功,100,100,0,100.00%,38.50 ms,否
+weekly_contest_426_p3_cpp.rs,3372. Maximize the Number of Target Nodes After Connecting Trees I,Medium,"Breadth-First Search, Tree, Depth-First Search",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_426_p4_c.rs,3373. Maximize the Number of Target Nodes After Connecting Trees II,Hard,"Breadth-First Search, Tree, Depth-First Search",成功,10,10,0,100.00%,114.93 ms,否
+weekly_contest_426_p4_cpp.rs,3373. Maximize the Number of Target Nodes After Connecting Trees II,Hard,"Breadth-First Search, Tree, Depth-First Search",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_427_p1_c.rs,3379. Transformed Array,Easy,"Array, Simulation",成功,100,100,0,100.00%,0.77 ms,否
+weekly_contest_427_p1_cpp.rs,3379. Transformed Array,Easy,"Array, Simulation",成功,100,100,0,100.00%,0.79 ms,否
+weekly_contest_427_p2_c.rs,3380. Maximum Area Rectangle With Point Constraints I,Medium,"Array, Geometry, Math, Segment Tree, Sorting, Enumeration, Binary Indexed Tree",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_427_p2_cpp.rs,3380. Maximum Area Rectangle With Point Constraints I,Medium,"Array, Geometry, Math, Segment Tree, Sorting, Enumeration, Binary Indexed Tree",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_427_p3_c.rs,3381. Maximum Subarray Sum With Length Divisible by K,Medium,"Hash Table, Array, Prefix Sum",成功,10,0,10,0.00%,0.00 ms,否
+weekly_contest_427_p3_cpp.rs,3381. Maximum Subarray Sum With Length Divisible by K,Medium,"Hash Table, Array, Prefix Sum",成功,10,0,10,0.00%,0.00 ms,否
+weekly_contest_427_p4_c.rs,3382. Maximum Area Rectangle With Point Constraints II,Hard,"Array, Geometry, Math, Segment Tree, Sorting, Binary Indexed Tree",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_427_p4_cpp.rs,3382. Maximum Area Rectangle With Point Constraints II,Hard,"Array, Geometry, Math, Segment Tree, Sorting, Binary Indexed Tree",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_428_p1_c.rs,3386. Button with Longest Push Time,Easy,Array,成功,100,100,0,100.00%,1.71 ms,否
+weekly_contest_428_p1_cpp.rs,3386. Button with Longest Push Time,Easy,Array,成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_428_p2_c.rs,3387. Maximize Amount After Two Days of Conversions,Medium,"Array, Graph, String, Breadth-First Search, Depth-First Search",成功,100,100,0,100.00%,0.91 ms,否
+weekly_contest_428_p2_cpp.rs,3387. Maximize Amount After Two Days of Conversions,Medium,"Array, Graph, String, Breadth-First Search, Depth-First Search",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_428_p3_c.rs,3388. Count Beautiful Splits in an Array,Medium,"Array, Dynamic Programming",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_428_p3_cpp.rs,3388. Count Beautiful Splits in an Array,Medium,"Array, Dynamic Programming",成功,100,100,0,100.00%,349.09 ms,否
+weekly_contest_428_p4_c.rs,3389. Minimum Operations to Make Character Frequencies Equal,Hard,"Hash Table, Dynamic Programming, String, Counting, Enumeration",成功,100,100,0,100.00%,28.01 ms,否
+weekly_contest_428_p4_cpp.rs,3389. Minimum Operations to Make Character Frequencies Equal,Hard,"Hash Table, Dynamic Programming, String, Counting, Enumeration",成功,100,100,0,100.00%,62.69 ms,否
+weekly_contest_429_p1_c.rs,3396. Minimum Number of Operations to Make Elements in Array Distinct,Easy,"Hash Table, Array",成功,100,1,99,1.00%,0.54 ms,否
+weekly_contest_429_p1_cpp.rs,3396. Minimum Number of Operations to Make Elements in Array Distinct,Easy,"Hash Table, Array",成功,100,100,0,100.00%,0.76 ms,否
+weekly_contest_429_p2_c.rs,3397. Maximum Number of Distinct Elements After Operations,Medium,"Array, Sorting, Greedy",成功,10,0,10,0.00%,0.00 ms,否
+weekly_contest_429_p2_cpp.rs,3397. Maximum Number of Distinct Elements After Operations,Medium,"Array, Sorting, Greedy",成功,10,0,10,0.00%,0.00 ms,否
+weekly_contest_429_p3_c.rs,3398. Smallest Substring With Identical Characters I,Hard,"Binary Search, Array, Enumeration",成功,100,100,0,100.00%,29.61 ms,否
+weekly_contest_429_p3_cpp.rs,3398. Smallest Substring With Identical Characters I,Hard,"Binary Search, Array, Enumeration",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_429_p4_c.rs,3399. Smallest Substring With Identical Characters II,Hard,"Binary Search, String",成功,100,19,81,19.00%,2797.67 ms,是
+weekly_contest_429_p4_cpp.rs,3399. Smallest Substring With Identical Characters II,Hard,"Binary Search, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_430_p1_c.rs,3402. Minimum Operations to Make Columns Strictly Increasing,Easy,"Array, Greedy, Matrix",成功,102,102,0,100.00%,1.34 ms,否
+weekly_contest_430_p1_cpp.rs,3402. Minimum Operations to Make Columns Strictly Increasing,Easy,"Array, Greedy, Matrix",成功,102,102,0,100.00%,1.01 ms,否
+weekly_contest_430_p2_c.rs,3403. Find the Lexicographically Largest String From the Box I,Medium,"Two Pointers, Enumeration, String",成功,102,0,102,0.00%,0.00 ms,否
+weekly_contest_430_p2_cpp.rs,3403. Find the Lexicographically Largest String From the Box I,Medium,"Two Pointers, Enumeration, String",成功,102,102,0,100.00%,1.04 ms,否
+weekly_contest_430_p3_c.rs,3404. Count Special Subsequences,Medium,"Hash Table, Array, Enumeration, Math",成功,102,102,0,100.00%,126.15 ms,否
+weekly_contest_430_p3_cpp.rs,3404. Count Special Subsequences,Medium,"Hash Table, Array, Enumeration, Math",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_430_p4_c.rs,3405. Count the Number of Arrays with K Matching Adjacent Elements,Hard,"Combinatorics, Math",成功,103,103,0,100.00%,3.83 ms,否
+weekly_contest_430_p4_cpp.rs,3405. Count the Number of Arrays with K Matching Adjacent Elements,Hard,"Combinatorics, Math",成功,103,103,0,100.00%,5.05 ms,否
+weekly_contest_431_p1_c.rs,3411. Maximum Subarray With Equal Products,Easy,"Array, Sliding Window, Math, Enumeration, Number Theory",成功,100,100,0,100.00%,0.69 ms,否
+weekly_contest_431_p1_cpp.rs,3411. Maximum Subarray With Equal Products,Easy,"Array, Sliding Window, Math, Enumeration, Number Theory",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_431_p2_c.rs,3412. Find Mirror Score of a String,Medium,"Hash Table, Stack, Simulation, String",成功,100,100,0,100.00%,4.88 ms,否
+weekly_contest_431_p2_cpp.rs,3412. Find Mirror Score of a String,Medium,"Hash Table, Stack, Simulation, String",成功,100,100,0,100.00%,6.34 ms,否
+weekly_contest_431_p3_c.rs,3413. Maximum Coins From K Consecutive Bags,Medium,"Array, Sliding Window, Sorting, Greedy, Binary Search, Prefix Sum",成功,20,20,0,100.00%,134.63 ms,否
+weekly_contest_431_p3_cpp.rs,3413. Maximum Coins From K Consecutive Bags,Medium,"Array, Sliding Window, Sorting, Greedy, Binary Search, Prefix Sum",成功,20,20,0,100.00%,125.06 ms,否
+weekly_contest_431_p4_c.rs,3414. Maximum Score of Non-overlapping Intervals,Hard,"Binary Search, Array, Sorting, Dynamic Programming",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_431_p4_cpp.rs,3414. Maximum Score of Non-overlapping Intervals,Hard,"Binary Search, Array, Sorting, Dynamic Programming",成功,20,20,0,100.00%,98.58 ms,否
+weekly_contest_432_p1_c.rs,3417. Zigzag Grid Traversal With Skip,Easy,"Array, Simulation, Matrix",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_432_p1_cpp.rs,3417. Zigzag Grid Traversal With Skip,Easy,"Array, Simulation, Matrix",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_432_p2_c.rs,3418. Maximum Amount of Money Robot Can Earn,Medium,"Array, Dynamic Programming, Matrix",成功,20,20,0,100.00%,61.84 ms,否
+weekly_contest_432_p2_cpp.rs,3418. Maximum Amount of Money Robot Can Earn,Medium,"Array, Dynamic Programming, Matrix",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_432_p3_c.rs,3419. Minimize the Maximum Edge Weight of Graph,Medium,"Breath-First Search, Graph, Binary Search, Shortest Path, Depth-First Search",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_432_p3_cpp.rs,3419. Minimize the Maximum Edge Weight of Graph,Medium,"Breath-First Search, Graph, Binary Search, Shortest Path, Depth-First Search",成功,20,0,20,0.00%,0.00 ms,否
+weekly_contest_432_p4_c.rs,3420. Count Non-Decreasing Subarrays After K Operations,Hard,"Sliding Window, Array, Segment Tree, Queue, Stack, Monotonic Stack, Monotonic Queue",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_432_p4_cpp.rs,3420. Count Non-Decreasing Subarrays After K Operations,Hard,"Sliding Window, Array, Segment Tree, Queue, Stack, Monotonic Stack, Monotonic Queue",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_433_p1_c.rs,3427. Sum of Variable Length Subarrays,Easy,"Array, Prefix Sum",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_433_p1_cpp.rs,3427. Sum of Variable Length Subarrays,Easy,"Array, Prefix Sum",成功,100,100,0,100.00%,0.80 ms,否
+weekly_contest_433_p2_c.rs,3428. Maximum and Minimum Sums of at Most Size K Subsequences,Medium,"Array, Math, Sorting, Dynamic Programming, Combinatorics",成功,20,0,20,0.00%,0.00 ms,否
+weekly_contest_433_p2_cpp.rs,3428. Maximum and Minimum Sums of at Most Size K Subsequences,Medium,"Array, Math, Sorting, Dynamic Programming, Combinatorics",成功,20,0,20,0.00%,0.00 ms,否
+weekly_contest_433_p3_c.rs,3429. Paint House IV,Medium,"Array, Dynamic Programming",成功,20,15,5,75.00%,116.34 ms,否
+weekly_contest_433_p3_cpp.rs,3429. Paint House IV,Medium,"Array, Dynamic Programming",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_433_p4_c.rs,3430. Maximum and Minimum Sums of at Most Size K Subarrays,Hard,"Array, Stack, Math, Monotonic Stack",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_433_p4_cpp.rs,3430. Maximum and Minimum Sums of at Most Size K Subarrays,Hard,"Array, Stack, Math, Monotonic Stack",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_434_p1_c.rs,3432. Count Partitions with Even Sum Difference,Easy,"Array, Prefix Sum, Math",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_434_p1_cpp.rs,3432. Count Partitions with Even Sum Difference,Easy,"Array, Prefix Sum, Math",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_434_p2_c.rs,3433. Count Mentions Per User,Medium,"Array, Sorting, Math, Simulation",成功,100,3,97,3.00%,0.62 ms,否
+weekly_contest_434_p2_cpp.rs,3433. Count Mentions Per User,Medium,"Array, Sorting, Math, Simulation",成功,100,40,60,40.00%,0.72 ms,否
+weekly_contest_434_p3_c.rs,3434. Maximum Frequency After Subarray Operation,Medium,"Hash Table, Array, Greedy, Dynamic Programming, Prefix Sum",成功,100,100,0,100.00%,12.21 ms,否
+weekly_contest_434_p3_cpp.rs,3434. Maximum Frequency After Subarray Operation,Medium,"Hash Table, Array, Greedy, Dynamic Programming, Prefix Sum",成功,100,100,0,100.00%,12.37 ms,否
+weekly_contest_434_p4_c.rs,3435. Frequencies of Shortest Supersequences,Hard,"Array, Topological Sort, Graph, Bit Manipulation, String, Enumeration",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_434_p4_cpp.rs,3435. Frequencies of Shortest Supersequences,Hard,"Array, Topological Sort, Graph, Bit Manipulation, String, Enumeration",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_435_p1_c.rs,3442. Maximum Difference Between Even and Odd Frequency I,Easy,"Hash Table, Counting, String",成功,100,100,0,100.00%,0.74 ms,否
+weekly_contest_435_p1_cpp.rs,3442. Maximum Difference Between Even and Odd Frequency I,Easy,"Hash Table, Counting, String",成功,100,100,0,100.00%,0.72 ms,否
+weekly_contest_435_p2_c.rs,3443. Maximum Manhattan Distance After K Changes,Medium,"Hash Table, Counting, Math, String",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_435_p2_cpp.rs,3443. Maximum Manhattan Distance After K Changes,Medium,"Hash Table, Counting, Math, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_435_p3_c.rs,3444. Minimum Increments for Target Multiples in an Array,Hard,"Array, Math, Bitmask, Bit Manipulation, Dynamic Programming, Number Theory",成功,100,100,0,100.00%,93.58 ms,否
+weekly_contest_435_p3_cpp.rs,3444. Minimum Increments for Target Multiples in an Array,Hard,"Array, Math, Bitmask, Bit Manipulation, Dynamic Programming, Number Theory",成功,100,100,0,100.00%,116.53 ms,否
+weekly_contest_435_p4_c.rs,3445. Maximum Difference Between Even and Odd Frequency II,Hard,"Sliding Window, Enumeration, Prefix Sum, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_435_p4_cpp.rs,3445. Maximum Difference Between Even and Odd Frequency II,Hard,"Sliding Window, Enumeration, Prefix Sum, String",成功,100,100,0,100.00%,12.69 ms,否
+weekly_contest_436_p1_c.rs,3446. Sort Matrix by Diagonals,Medium,"Array, Sorting, Matrix",成功,100,100,0,100.00%,0.78 ms,否
+weekly_contest_436_p1_cpp.rs,3446. Sort Matrix by Diagonals,Medium,"Array, Sorting, Matrix",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_436_p2_c.rs,3447. Assign Elements to Groups with Constraints,Medium,"Hash Table, Array",成功,20,20,0,100.00%,152.32 ms,否
+weekly_contest_436_p2_cpp.rs,3447. Assign Elements to Groups with Constraints,Medium,"Hash Table, Array",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_436_p3_c.rs,3448. Count Substrings Divisible By Last Digit,Hard,"Dynamic Programming, String",成功,100,100,0,100.00%,66.58 ms,否
+weekly_contest_436_p3_cpp.rs,3448. Count Substrings Divisible By Last Digit,Hard,"Dynamic Programming, String",成功,100,100,0,100.00%,43.48 ms,否
+weekly_contest_436_p4_c.rs,3449. Maximize the Minimum Game Score,Hard,"Binary Search, Array, Greedy",成功,100,100,0,100.00%,29.34 ms,否
+weekly_contest_436_p4_cpp.rs,3449. Maximize the Minimum Game Score,Hard,"Binary Search, Array, Greedy",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_437_p1_c.rs,3456. Find Special Substring of Length K,Easy,String,成功,200,0,200,0.00%,0.00 ms,否
+weekly_contest_437_p1_cpp.rs,3456. Find Special Substring of Length K,Easy,String,成功,200,200,0,100.00%,0.80 ms,否
+weekly_contest_437_p2_c.rs,3457. Eat Pizzas!,Medium,"Array, Sorting, Greedy",成功,20,20,0,100.00%,72.55 ms,否
+weekly_contest_437_p2_cpp.rs,3457. Eat Pizzas!,Medium,"Array, Sorting, Greedy",成功,20,20,0,100.00%,74.78 ms,否
+weekly_contest_437_p3_c.rs,3458. Select K Disjoint Special Substrings,Medium,"Hash Table, Sorting, Greedy, Dynamic Programming, String",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_437_p3_cpp.rs,3458. Select K Disjoint Special Substrings,Medium,"Hash Table, Sorting, Greedy, Dynamic Programming, String",成功,100,0,100,0.00%,0.00 ms,是
+weekly_contest_437_p4_c.rs,3459. Length of Longest V-Shaped Diagonal Segment,Hard,"Array, Memoization, Dynamic Programming, Matrix",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_437_p4_cpp.rs,3459. Length of Longest V-Shaped Diagonal Segment,Hard,"Array, Memoization, Dynamic Programming, Matrix",成功,100,0,100,0.00%,0.00 ms,否
+weekly_contest_438_p1_c.rs,3461. Check If Digits Are Equal in String After Operations I,Easy,"Math, String, Combinatorics, Number Theory, Simulation",成功,100,85,15,85.00%,1.06 ms,否
+weekly_contest_438_p1_cpp.rs,3461. Check If Digits Are Equal in String After Operations I,Easy,"Math, String, Combinatorics, Number Theory, Simulation",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_438_p2_c.rs,3462. Maximum Sum With at Most K Elements,Medium,"Array, Matrix, Sorting, Greedy, Heap (Priority Queue)",成功,20,20,0,100.00%,41.39 ms,否
+weekly_contest_438_p2_cpp.rs,3462. Maximum Sum With at Most K Elements,Medium,"Array, Matrix, Sorting, Greedy, Heap (Priority Queue)",成功,20,20,0,100.00%,49.02 ms,否
+weekly_contest_438_p3_c.rs,3463. Check If Digits Are Equal in String After Operations II,Hard,"Number Theory, Combinatorics, Math, String",成功,100,100,0,100.00%,6.87 ms,否
+weekly_contest_438_p3_cpp.rs,3463. Check If Digits Are Equal in String After Operations II,Hard,"Number Theory, Combinatorics, Math, String",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_438_p4_c.rs,3464. Maximize the Distance Between Points on a Square,Hard,"Binary Search, Array, Greedy",失败,N/A,N/A,N/A,N/A,N/A,N/A
+weekly_contest_438_p4_cpp.rs,3464. Maximize the Distance Between Points on a Square,Hard,"Binary Search, Array, Greedy",成功,100,100,0,100.00%,83.13 ms,否

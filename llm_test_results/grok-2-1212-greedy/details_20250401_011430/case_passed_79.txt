@@ -1,0 +1,12 @@
+==== 测试用例 79 (passed) ====
+
+输入:
+114
+sgvzyzczmcjgkzpvmphmoewrbgytxlfuuulnkhfhegflvqxsvngbqbomtnwdhjsajorvbqdmejadfavzyejvpqommvydsdhqslthompybjsnqkzfvq
+66
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 13.15 ms

@@ -1,0 +1,54 @@
+==== 测试用例 49 (passed) ====
+
+输入:
+44
+cx
+cs
+rs
+lx
+lb
+yi
+xx
+sl
+ll
+lc
+bx
+sb
+ss
+bb
+xy
+sx
+yr
+xr
+ci
+bi
+yl
+ic
+is
+iy
+cr
+xi
+ri
+sy
+rx
+bl
+cc
+rc
+xb
+yy
+ry
+ib
+bs
+rb
+by
+yb
+ii
+li
+xs
+il
+期望输出:
+0 2 2 0 0 0 0 0 2 0 0 2 0 0 0 0 0 1 2 0 0 0 0 2 2 0
+实际输出:
+0 2 2 0 0 0 0 0 2 0 0 2 0 0 0 0 0 1 2 0 0 0 0 2 2 0 
+
+运行时间: 0.97 ms

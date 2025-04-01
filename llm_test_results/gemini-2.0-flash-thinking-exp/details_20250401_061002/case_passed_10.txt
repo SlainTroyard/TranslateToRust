@@ -1,0 +1,12 @@
+==== 测试用例 10 (passed) ====
+
+输入:
+232
+zyjyxsjunmugqasqzkdytotgpxtsvcbvieofxofwpnnvgedjtqthyyglsgbcplciuxutpyrlyoeujttfmtpzhgzsctznvonfrxdgxqmvyssmvqjaiexddgjcmhipdhwvcfasoobybxqyigsqnobstyrdwnmjjxayfniwxeyxjqmqleqwaovxdrogxapikmlqpkbixphehfafwbcisyepigubcqttxwwrikqxkngw
+34
+期望输出:
+33
+实际输出:
+33
+
+运行时间: 98.88 ms

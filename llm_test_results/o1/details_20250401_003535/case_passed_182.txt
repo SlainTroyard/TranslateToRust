@@ -1,0 +1,11 @@
+==== 测试用例 182 (passed) ====
+
+输入:
+bsqresvigzfmcbzoeobvbgogxcxjxpdobflewnunuakvmvgqingeoxobcoblnmyvnsmcyrxhe
+1
+期望输出:
+1
+实际输出:
+1
+
+运行时间: 0.56 ms

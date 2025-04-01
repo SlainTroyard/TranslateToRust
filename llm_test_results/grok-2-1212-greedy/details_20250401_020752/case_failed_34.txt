@@ -1,0 +1,10 @@
+==== 测试用例 34 (failed) ====
+
+输入:
+fcvhjttlymbomzwjoziqpwlrasiapeukyyjswsgipmuhcqrgbctqadbqzqcuduwcazdutzrdrqfrniuznuhsqwufflde
+54
+期望输出:
+0
+实际输出:
+
+运行时间: 1.31 ms

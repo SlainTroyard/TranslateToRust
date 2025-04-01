@@ -1,0 +1,10 @@
+==== 测试用例 183 (failed) ====
+
+输入:
+hvresqbcqvpuxrfysuszstrzkhdqvrvoxhbonxxnzkzspvfpgavdhxlodxztuhckxadidsy
+56
+期望输出:
+0
+实际输出:
+
+运行时间: 0.62 ms

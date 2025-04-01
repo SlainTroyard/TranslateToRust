@@ -1,0 +1,11 @@
+==== 测试用例 98 (failed) ====
+
+输入:
+9 44625 2 1
+78156 91096 32004 4383 94103 34332 65748 62585 15688
+期望输出:
+340871
+实际输出:
+Placeholder implementation. To get a proper translation, configure LLM API.
+
+运行时间: 0.60 ms

@@ -1,0 +1,46 @@
+==== 测试用例 72 (passed) ====
+
+输入:
+36
+zm
+zx
+hw
+dw
+wd
+zh
+wm
+dm
+mm
+mx
+zd
+dx
+mw
+dh
+xw
+xx
+dd
+xz
+md
+hd
+xm
+xh
+hh
+dz
+hz
+xd
+zz
+wx
+wh
+mh
+hm
+zw
+mz
+ww
+hx
+wz
+期望输出:
+0 0 0 2 0 0 0 2 0 0 0 0 2 0 0 0 0 0 0 0 0 0 2 2 0 2
+实际输出:
+0 0 0 2 0 0 0 2 0 0 0 0 2 0 0 0 0 0 0 0 0 0 2 2 0 2
+
+运行时间: 0.57 ms

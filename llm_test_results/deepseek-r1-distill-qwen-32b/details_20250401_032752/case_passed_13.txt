@@ -1,0 +1,10 @@
+==== 测试用例 13 (passed) ====
+
+输入:
+fit
+期望输出:
+a b c d e f fa fb fc fd fe ff fg fh fi fia fib fic fid fie fif fig fih fii fij fik fil fim fin fio fip fiq fir fis fit
+实际输出:
+a b c d e f fa fb fc fd fe ff fg fh fi fia fib fic fid fie fif fig fih fii fij fik fil fim fin fio fip fiq fir fis fit 
+
+运行时间: 1.53 ms

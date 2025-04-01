@@ -1,0 +1,12 @@
+==== 测试用例 98 (passed) ====
+
+输入:
+92
+ylpylxehrxnqahzaovkczijmyivimldwsfcrutfnydrfnlkqobmsrojwssyhnacuranxncxhucfqqsjeqizkopzqigqt
+38
+期望输出:
+21
+实际输出:
+21
+
+运行时间: 0.62 ms

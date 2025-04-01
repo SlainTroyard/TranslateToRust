@@ -1,0 +1,37 @@
+==== 测试用例 37 (passed) ====
+
+输入:
+27
+rn
+jr
+nx
+jx
+xf
+fx
+rl
+nf
+nl
+ln
+na
+xr
+lj
+xa
+jl
+nj
+ax
+an
+fl
+xn
+al
+af
+ar
+rf
+lf
+ll
+lr
+期望输出:
+1 0 0 0 0 1 0 0 0 1 0 2 0 2 0 0 0 1 0 0 0 0 0 2 0 0
+实际输出:
+1 0 0 0 0 1 0 0 0 1 0 2 0 2 0 0 0 1 0 0 0 0 0 2 0 0 
+
+运行时间: 0.61 ms

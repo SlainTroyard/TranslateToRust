@@ -1,0 +1,11 @@
+==== 测试用例 21 (failed) ====
+
+输入:
+snqgqcgwkgioqkrbiwqobmddcvzznfytqjjhzhurzhnwjlsiqlhesmqztwgbrbytmdmlrmlmfyyftbxgkfyedfmzcmkpnhpnadajtbrwwfgwnpzzgmcjejbmtlazvqqveug
+30
+期望输出:
+zznfytqjjhzhurzhnwjlsiqlhesmqztwgbrbytmdmlrmlmfyyftbxgkfyedfmzcmkpnhpnadajtbrwwfgwnpzzgmcjejbmtlazvqqv
+实际输出:
+snqgqcgwkgioqkrbiwqobmddcvzznfytqjjhzhurzhnwjlsiqlhesmqztwgbrbytmdmlrmlmfyyftbxgkfyedfmzcmkpnhpnadajtb
+
+运行时间: 0.73 ms

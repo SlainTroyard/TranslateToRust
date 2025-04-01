@@ -1,0 +1,41 @@
+==== 测试用例 27 (passed) ====
+
+输入:
+31
+yc
+kd
+yu
+uk
+td
+lk
+cy
+cc
+ud
+ky
+uc
+cd
+yt
+kk
+dc
+tc
+uy
+dl
+ut
+lt
+cu
+yy
+ll
+kc
+ku
+dd
+ly
+ty
+lc
+uu
+dk
+期望输出:
+0 0 2 2 0 0 0 0 0 0 2 2 0 0 0 0 0 0 0 1 2 0 0 0 2 0
+实际输出:
+0 0 2 2 0 0 0 0 0 0 2 2 0 0 0 0 0 0 0 1 2 0 0 0 2 0 
+
+运行时间: 0.58 ms

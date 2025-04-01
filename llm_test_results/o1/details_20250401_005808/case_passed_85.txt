@@ -1,0 +1,46 @@
+==== 测试用例 85 (passed) ====
+
+输入:
+36
+sf
+fx
+uf
+sx
+sn
+fu
+fy
+us
+yu
+yf
+xy
+ff
+ns
+nx
+uy
+nn
+yn
+ys
+yy
+ss
+xx
+nu
+xs
+ux
+fn
+xn
+un
+su
+uu
+sy
+yx
+xu
+fs
+nf
+ny
+xf
+期望输出:
+0 0 0 0 0 2 0 0 0 0 0 0 0 2 0 0 0 0 2 0 2 0 0 2 2 0
+实际输出:
+0 0 0 0 0 2 0 0 0 0 0 0 0 2 0 0 0 0 2 0 2 0 0 2 2 0
+
+运行时间: 0.75 ms

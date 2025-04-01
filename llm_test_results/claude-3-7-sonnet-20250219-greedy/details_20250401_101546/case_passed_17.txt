@@ -1,0 +1,10 @@
+==== 测试用例 17 (passed) ====
+
+输入:
+lfddeacptolea
+期望输出:
+a b c d e f g h i j k l la lb lc ld le lf lfa lfb lfc lfd lfda lfdb lfdc lfdd lfdda lfddb lfddc lfddd lfdde lfddea lfddeaa lfddeab lfddeac lfddeaca lfddeacb lfddeacc lfddeacd lfddeace lfddeacf lfddeacg lfddeach lfddeaci lfddeacj lfddeack lfddeacl lfddeacm lfddeacn lfddeaco lfddeacp lfddeacpa lfddeacpb lfddeacpc lfddeacpd lfddeacpe lfddeacpf lfddeacpg lfddeacph lfddeacpi lfddeacpj lfddeacpk lfddeacpl lfddeacpm lfddeacpn lfddeacpo lfddeacpp lfddeacpq lfddeacpr lfddeacps lfddeacpt lfddeacpta lfddeacptb lfddeacptc lfddeacptd lfddeacpte lfddeacptf lfddeacptg lfddeacpth lfddeacpti lfddeacptj lfddeacptk lfddeacptl lfddeacptm lfddeacptn lfddeacpto lfddeacptoa lfddeacptob lfddeacptoc lfddeacptod lfddeacptoe lfddeacptof lfddeacptog lfddeacptoh lfddeacptoi lfddeacptoj lfddeacptok lfddeacptol lfddeacptola lfddeacptolb lfddeacptolc lfddeacptold lfddeacptole lfddeacptolea
+实际输出:
+a b c d e f g h i j k l la lb lc ld le lf lfa lfb lfc lfd lfda lfdb lfdc lfdd lfdda lfddb lfddc lfddd lfdde lfddea lfddeaa lfddeab lfddeac lfddeaca lfddeacb lfddeacc lfddeacd lfddeace lfddeacf lfddeacg lfddeach lfddeaci lfddeacj lfddeack lfddeacl lfddeacm lfddeacn lfddeaco lfddeacp lfddeacpa lfddeacpb lfddeacpc lfddeacpd lfddeacpe lfddeacpf lfddeacpg lfddeacph lfddeacpi lfddeacpj lfddeacpk lfddeacpl lfddeacpm lfddeacpn lfddeacpo lfddeacpp lfddeacpq lfddeacpr lfddeacps lfddeacpt lfddeacpta lfddeacptb lfddeacptc lfddeacptd lfddeacpte lfddeacptf lfddeacptg lfddeacpth lfddeacpti lfddeacptj lfddeacptk lfddeacptl lfddeacptm lfddeacptn lfddeacpto lfddeacptoa lfddeacptob lfddeacptoc lfddeacptod lfddeacptoe lfddeacptof lfddeacptog lfddeacptoh lfddeacptoi lfddeacptoj lfddeacptok lfddeacptol lfddeacptola lfddeacptolb lfddeacptolc lfddeacptold lfddeacptole lfddeacptolea 
+
+运行时间: 0.72 ms

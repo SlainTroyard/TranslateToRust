@@ -1,0 +1,11 @@
+==== 测试用例 52 (failed) ====
+
+输入:
+vrxfvmqalwobwglhnvtacamsbgnseoflbtahqdqzhsehteuhjrpijtzbduunadmpgocmgqpbtxokaardwylveppkmqjvboetnjazaxhlmtzjhevpseunummbpcmcmqannqsb
+51
+期望输出:
+zjhevpseunummbpcmcmqannqsb
+实际输出:
+zhsehteuhjrpijtzbduunadmpgocmgqpbtxokaardwylveppkmqjvboetnjazaxhlmtzjhevpseunummbp
+
+运行时间: 1.30 ms

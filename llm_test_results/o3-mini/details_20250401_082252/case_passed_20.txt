@@ -1,0 +1,11 @@
+==== 测试用例 20 (passed) ====
+
+输入:
+kavbaxatezosahzmfskphxmtexukwrbepmiicnbzuglarpageajwyrkydwcvlnhqktpocisvromegwbzingbuydxtsifapzbqudtkaewxqsjhbnltowhwavnscfywtbecrvomagslbxohqgbluphsosonwfvkpgngyjtpmdxhkkiyhfbtwramucaruemheszhkibtvpivazotmwgvrgitjidytxfskcenanisexzvmantqysyzayvnpvdjqzlsxlnytezqdauzthcmnldiisqkawb
+7
+期望输出:
+18806
+实际输出:
+18806
+
+运行时间: 1.67 ms

@@ -1,0 +1,12 @@
+==== 测试用例 70 (passed) ====
+
+输入:
+219
+prywfitlchnbbxyljyoyzegduwvdoohxjskrcylpyxifevfpbdztlqocviayirobhuivcqnbmkjaeukmsipraaaevzzpvtyqyjmgxwjdnzkuyassonargpvtrqirdltuyjroffyhvzybqxxjitchhvhcfspxcabsxatkoivllwlwksfbfgrospwospavvdrirrqpyuozgatdnvaqewggtzgbbro
+126
+期望输出:
+79
+实际输出:
+79
+
+运行时间: 0.55 ms

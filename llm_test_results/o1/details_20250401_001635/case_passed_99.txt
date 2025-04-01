@@ -1,0 +1,12 @@
+==== 测试用例 99 (passed) ====
+
+输入:
+10 2
+OFFLINE 220 id6
+MESSAGE 870 id0
+期望输出:
+Mentions: 1 0 0 0 0 0 0 0 0 0
+实际输出:
+Mentions: 1 0 0 0 0 0 0 0 0 0 
+
+运行时间: 0.55 ms

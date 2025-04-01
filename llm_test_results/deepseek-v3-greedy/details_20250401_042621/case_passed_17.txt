@@ -1,0 +1,46 @@
+==== 测试用例 17 (passed) ====
+
+输入:
+36
+nn
+yb
+ex
+by
+ea
+nf
+ox
+xy
+bb
+eo
+aa
+xe
+xn
+ne
+fb
+ee
+be
+ff
+ab
+yn
+bo
+bf
+en
+oa
+fy
+ob
+af
+yx
+yo
+fo
+fe
+fx
+xx
+fn
+ny
+an
+期望输出:
+2 2 0 0 2 2 0 0 0 0 0 0 0 2 1 0 0 0 0 0 0 0 0 2 1 0
+实际输出:
+2 2 0 0 2 2 0 0 0 0 0 0 0 2 1 0 0 0 0 0 0 0 0 2 1 0 
+
+运行时间: 0.75 ms

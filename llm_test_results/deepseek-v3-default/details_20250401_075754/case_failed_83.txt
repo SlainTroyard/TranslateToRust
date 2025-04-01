@@ -1,0 +1,15 @@
+==== 测试用例 83 (failed) ====
+
+输入:
+4 5
+OFFLINE 577 id2
+MESSAGE 30 HERE
+MESSAGE 498 ALL
+MESSAGE 869 id2
+OFFLINE 361 id3
+期望输出:
+Mentions: 2 2 3 2
+实际输出:
+Mentions: 0 0 0 0 
+
+运行时间: 0.94 ms

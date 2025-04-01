@@ -1,0 +1,12 @@
+==== 测试用例 21 (failed) ====
+
+输入:
+203
+ekufotcijbhaopzpwwoqshkidrmwzbhsswnsfzxlilckyyhtytwymsixtvpakbxzxzwgegxrxljqwatxwixuhdtlvuqkicxnnxkmssoomuwychrvgxjgebrcdghmfgpxiwkoefornbzbpfltffxlnkvzymbpatzvtovawllfojuazvktsyqzyfrhmohsebzbpoklxkrkbff
+147
+期望输出:
+36
+实际输出:
+26
+
+运行时间: 0.71 ms

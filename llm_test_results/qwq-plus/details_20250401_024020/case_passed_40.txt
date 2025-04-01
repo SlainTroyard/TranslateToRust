@@ -1,0 +1,14 @@
+==== 测试用例 40 (passed) ====
+
+输入:
+6 4
+OFFLINE 218 id1
+MESSAGE 364 id2 id5 id2 id3 id1
+OFFLINE 197 id3
+OFFLINE 500 id4
+期望输出:
+Mentions: 0 0 1 0 0 0
+实际输出:
+Mentions: 0 0 1 0 0 0 
+
+运行时间: 0.97 ms

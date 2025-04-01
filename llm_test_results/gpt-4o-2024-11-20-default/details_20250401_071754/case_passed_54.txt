@@ -1,0 +1,11 @@
+==== 测试用例 54 (passed) ====
+
+输入:
+fsolvolvdofpejkwrebhtfpojwofsrnsjruompoktajs
+29
+期望输出:
+wrebhtfpojwofsrn
+实际输出:
+wrebhtfpojwofsrn
+
+运行时间: 0.56 ms

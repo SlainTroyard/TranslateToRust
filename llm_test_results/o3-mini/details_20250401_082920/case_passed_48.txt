@@ -1,0 +1,46 @@
+==== 测试用例 48 (passed) ====
+
+输入:
+36
+vs
+or
+rr
+mo
+mr
+mv
+oo
+rv
+ro
+sv
+vy
+ov
+ms
+my
+yo
+sy
+yv
+ys
+vm
+mm
+sr
+so
+rm
+sm
+vo
+oy
+om
+yr
+ry
+os
+vr
+ym
+rs
+vv
+ss
+yy
+期望输出:
+0 0 0 0 0 0 0 0 0 0 0 0 2 0 2 0 0 2 2 0 0 2 0 0 2 0
+实际输出:
+0 0 0 0 0 0 0 0 0 0 0 0 2 0 2 0 0 2 2 0 0 2 0 0 2 0 
+
+运行时间: 0.61 ms

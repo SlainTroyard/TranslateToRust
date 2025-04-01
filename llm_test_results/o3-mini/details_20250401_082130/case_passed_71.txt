@@ -1,0 +1,14 @@
+==== 测试用例 71 (passed) ====
+
+输入:
+6 4
+MESSAGE 368 id2 id4
+MESSAGE 941 HERE
+MESSAGE 795 HERE
+MESSAGE 407 ALL
+期望输出:
+3 3 4 3 4 3
+实际输出:
+3 3 4 3 4 3 
+
+运行时间: 1.42 ms

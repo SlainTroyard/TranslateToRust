@@ -1,0 +1,10 @@
+==== 测试用例 16 (passed) ====
+
+输入:
+gipqhblcxydhpoclckquickqxkdrzqlxzgkvnaasudgqpbjomjemutepaxlpwngccs
+期望输出:
+3
+实际输出:
+3
+
+运行时间: 0.60 ms

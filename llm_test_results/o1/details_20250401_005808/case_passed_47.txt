@@ -1,0 +1,57 @@
+==== 测试用例 47 (passed) ====
+
+输入:
+47
+sr
+nn
+sq
+qn
+kk
+oo
+ss
+kh
+uq
+kn
+qu
+ok
+hq
+hr
+sh
+nr
+rq
+or
+rs
+ur
+ou
+uh
+us
+no
+nh
+qo
+qk
+ko
+hs
+rn
+oh
+rk
+qq
+sn
+ho
+su
+on
+uo
+nq
+hu
+uk
+nu
+hh
+ro
+oq
+hk
+rr
+期望输出:
+0 0 0 0 0 0 0 2 0 0 2 0 0 2 2 0 2 2 2 0 1 0 0 0 0 0
+实际输出:
+0 0 0 0 0 0 0 2 0 0 2 0 0 2 2 0 2 2 2 0 1 0 0 0 0 0
+
+运行时间: 0.77 ms

@@ -1,0 +1,13 @@
+==== 测试用例 2 (passed) ====
+
+输入:
+2 3
+MESSAGE 10 id0 id1
+OFFLINE 11 id0
+MESSAGE 71 HERE
+期望输出:
+2 2
+实际输出:
+2 2
+
+运行时间: 0.83 ms

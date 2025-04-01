@@ -1,0 +1,17 @@
+==== 测试用例 83 (passed) ====
+
+输入:
+1 7
+OFFLINE 48 id0
+MESSAGE 54 HERE
+MESSAGE 245 ALL
+MESSAGE 419 ALL
+MESSAGE 663 ALL
+MESSAGE 900 HERE
+MESSAGE 123 id0
+期望输出:
+5
+实际输出:
+5 
+
+运行时间: 0.56 ms

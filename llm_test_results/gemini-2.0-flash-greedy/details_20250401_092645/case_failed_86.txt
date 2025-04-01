@@ -1,0 +1,10 @@
+==== 测试用例 86 (failed) ====
+
+输入:
+23057581953708828435794266330356620673461379479231
+期望输出:
+0
+实际输出:
+Placeholder implementation. To get a proper translation, configure LLM API.
+
+运行时间: 0.59 ms

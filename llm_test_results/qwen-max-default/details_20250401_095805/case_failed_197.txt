@@ -1,0 +1,10 @@
+==== 测试用例 197 (failed) ====
+
+输入:
+poduajgjmohquxsollhxlzbpwlutkqektnpmnd
+19
+期望输出:
+0
+实际输出:
+
+运行时间: 0.65 ms

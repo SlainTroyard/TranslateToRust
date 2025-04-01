@@ -1,0 +1,7 @@
+==== Test Results ====
+
+测试文件: weekly_contest_414_p1_c.rs
+编译状态: 失败
+编译错误: Failed to compile Rust solution
+
+结果保存时间: 2025-04-01 05:48:30

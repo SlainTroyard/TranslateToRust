@@ -1,0 +1,12 @@
+==== 测试用例 51 (passed) ====
+
+输入:
+9 2
+MESSAGE 376 ALL
+MESSAGE 929 id1 id2 id7 id0 id3
+期望输出:
+Mentions: 1 2 1 1 1 1 1 1 1
+实际输出:
+Mentions: 1 2 1 1 1 1 1 1 1 
+
+运行时间: 0.73 ms

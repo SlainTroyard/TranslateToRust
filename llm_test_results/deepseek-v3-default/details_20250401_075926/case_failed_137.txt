@@ -1,0 +1,10 @@
+==== 测试用例 137 (failed) ====
+
+输入:
+tjvdsdbogcoabowfycecorjtujxxmuoxeneegcjftpfjqjdxffjzsndvmirlhdqtzvmtfovrntzlwxhmrl
+6
+期望输出:
+0
+实际输出:
+
+运行时间: 0.92 ms

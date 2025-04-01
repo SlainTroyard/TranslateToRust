@@ -1,0 +1,12 @@
+==== 测试用例 15 (passed) ====
+
+输入:
+83
+ukzoogxldveatybmxwrbdmmnvmneyxcyiavfrtyqewngpgjwipnjcylfcrtavndbdttimdszxyxrxpspqxa
+56
+期望输出:
+2
+实际输出:
+2
+
+运行时间: 0.96 ms

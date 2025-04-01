@@ -1,0 +1,12 @@
+==== 测试用例 32 (failed) ====
+
+输入:
+101
+tauxolwxfgsjdjykhywxteggzuqeolqxycnemfbhgefjganxfvsicmgoctjuevswsmkpimhbnyspdhedlrskrtmicxgdyduuiigto
+39
+期望输出:
+48
+实际输出:
+66
+
+运行时间: 0.78 ms

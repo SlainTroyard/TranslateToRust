@@ -1,0 +1,42 @@
+==== 测试用例 67 (passed) ====
+
+输入:
+32
+kf
+ns
+pt
+kn
+hh
+hn
+nt
+nf
+sn
+sh
+tm
+nk
+sf
+fh
+pf
+nm
+pp
+km
+fp
+th
+mt
+mk
+nh
+ss
+mn
+ht
+sp
+ft
+hf
+ts
+fk
+tk
+期望输出:
+0 0 0 0 0 1 0 2 0 0 2 0 2 1 0 2 0 0 2 1 0 0 0 0 0 0
+实际输出:
+0 0 0 0 0 1 0 2 0 0 2 0 2 1 0 2 0 0 2 1 0 0 0 0 0 0
+
+运行时间: 0.59 ms

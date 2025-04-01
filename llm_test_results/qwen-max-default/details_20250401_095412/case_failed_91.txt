@@ -1,0 +1,12 @@
+==== 测试用例 91 (failed) ====
+
+输入:
+inogutndzwubepplhycvymeoekxsuiuxejwneixhqzhhtdsweriobiamiswqbrlhbpvhtypuwryliovxqduqgnbrjeiemzbsncnmcgyxqqzfmmpkfguulydyriwlbblymxavbxqmdecyhtrwnkuqqrwuokprjnazxgrnrjjmjflpwxhflwzqlcuafoehzdfgyfwy
+190
+期望输出:
+zxgrnrj
+实际输出:
+Enter the string:
+Enter the value of k:
+
+运行时间: 1.36 ms

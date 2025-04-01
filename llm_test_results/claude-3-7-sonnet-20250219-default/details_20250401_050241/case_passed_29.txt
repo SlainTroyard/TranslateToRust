@@ -1,0 +1,20 @@
+==== 测试用例 29 (passed) ====
+
+输入:
+4 10
+MESSAGE 132 HERE
+MESSAGE 254 ALL
+MESSAGE 665 ALL
+MESSAGE 788 id2 id2 id3
+OFFLINE 463 id3
+MESSAGE 643 id1
+OFFLINE 135 id0
+OFFLINE 473 id1
+MESSAGE 188 HERE
+OFFLINE 268 id2
+期望输出:
+3 5 6 5
+实际输出:
+3 5 6 5 
+
+运行时间: 0.58 ms

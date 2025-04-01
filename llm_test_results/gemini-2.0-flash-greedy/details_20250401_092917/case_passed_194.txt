@@ -1,0 +1,11 @@
+==== 测试用例 194 (passed) ====
+
+输入:
+cinafgwothpfptsxuzgdaxqwsfelowbkukq
+21
+期望输出:
+0
+实际输出:
+0
+
+运行时间: 0.87 ms

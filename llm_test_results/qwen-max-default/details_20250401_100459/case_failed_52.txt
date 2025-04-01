@@ -1,0 +1,13 @@
+==== 测试用例 52 (failed) ====
+
+输入:
+vrxfvmqalwobwglhnvtacamsbgnseoflbtahqdqzhsehteuhjrpijtzbduunadmpgocmgqpbtxokaardwylveppkmqjvboetnjazaxhlmtzjhevpseunummbpcmcmqannqsb
+51
+期望输出:
+zjhevpseunummbpcmcmqannqsb
+实际输出:
+Enter the word:
+Enter the number of friends:
+zjhevpseunummbpcmcmqannqsb
+
+运行时间: 0.73 ms

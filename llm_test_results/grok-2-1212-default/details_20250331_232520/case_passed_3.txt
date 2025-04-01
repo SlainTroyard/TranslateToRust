@@ -1,0 +1,12 @@
+==== 测试用例 3 (passed) ====
+
+输入:
+99
+hjgkplfsfdzqfasganqewtgiofwvbbbrutiiuhkassfcnxvmtomtbeuywotbdohoyulhpeaokvwymyfizofigwmwyojxvomznrp
+29
+期望输出:
+77
+实际输出:
+77
+
+运行时间: 0.97 ms

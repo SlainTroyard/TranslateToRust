@@ -1,0 +1,13 @@
+==== 测试用例 68 (failed) ====
+
+输入:
+2
+-378 -54
+1
+期望输出:
+true
+实际输出:
+Enter the size of the array:
+Enter the elements of the array:
+
+运行时间: 0.59 ms

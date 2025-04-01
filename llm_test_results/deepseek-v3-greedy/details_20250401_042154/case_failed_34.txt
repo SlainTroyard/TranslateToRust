@@ -1,0 +1,12 @@
+==== 测试用例 34 (failed) ====
+
+输入:
+7 2
+MESSAGE 365 id1 id4 id0
+OFFLINE 891 id1
+期望输出:
+Mentions: 0 1 0 0 0 0 0
+实际输出:
+Mentions: 0 0 0 0 0 0 0 
+
+运行时间: 0.70 ms

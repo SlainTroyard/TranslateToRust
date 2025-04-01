@@ -1,0 +1,27 @@
+==== 测试用例 44 (passed) ====
+
+输入:
+DMV
+6
+DMV TV 3.47
+TV Q 2.07
+Q LUO 2.68
+LUO K 5.03
+K HA 6.5
+HA LMZ 5.72
+9
+LMZ PPX 4.77
+PPX VU 5.61
+VU C 9.84
+C ED 2.32
+ED OUD 2.49
+OUD GOY 6.45
+GOY AL 5.87
+AL IT 2.67
+IT DMV 9.38
+期望输出:
+5192632307.52568
+实际输出:
+5192632307.52568
+
+运行时间: 1.15 ms
