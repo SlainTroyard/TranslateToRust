@@ -1,0 +1,56 @@
+# Fix Rust Compilation Errors
+
+Fix the following Rust compilation errors.
+
+## Errors
+{% for error in errors %}
+### Error {{ loop.index }}
+```
+{{ error.rendered if error.rendered else error }}
+```
+{% if error.code %}
+**Error Code:** {{ error.code.code }}
+{% if error.code.explanation %}
+**Explanation:** {{ error.code.explanation }}
+{% endif %}
+{% endif %}
+
+{% endfor %}
+
+## Current Code
+```rust
+{{ current_code }}
+```
+
+{% if context %}
+## Additional Context
+{{ context }}
+{% endif %}
+
+## Fix Guidelines
+
+1. **Read Errors Carefully**
+   - Each error message contains the exact location and cause
+   - Some errors may cascade from earlier issues
+
+2. **Common Fixes**
+   - Lifetime issues: Add explicit lifetimes or restructure ownership
+   - Type mismatches: Use conversion traits (Into, From, TryFrom)
+   - Borrow checker: Clone data or restructure to avoid conflicts
+   - Missing items: Add imports or implement required traits
+
+3. **Preserve Functionality**
+   - Only change what's necessary to fix the errors
+   - Don't remove functionality
+   - Keep the code's original intent
+
+## Output
+
+Provide the corrected Rust code in a ```rust code block.
+If multiple files need changes, use this format:
+
+// filepath: path/to/file.rs
+```rust
+corrected code here
+```
+

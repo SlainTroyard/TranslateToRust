@@ -1,0 +1,63 @@
+# Generate Rust Benchmark
+
+Generate Criterion benchmarks for the following Rust module.
+
+## Module Code
+{% for rust_file in related_rust_files %}
+### {{ rust_file.path }}
+```rust
+{{ rust_file.content }}
+```
+{% endfor %}
+
+{% if translation_tasks %}
+## Translation Information
+{% for task in translation_tasks %}
+- **{{ task.source.name }}**: {{ task.source.description or 'No description' }}
+{% endfor %}
+{% endif %}
+
+## Benchmark Requirements
+
+1. **Use Criterion Crate**
+```rust
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
+```
+
+2. **Benchmark Key Functions**
+   - Focus on public functions that are performance-critical
+   - Include functions with complex logic or loops
+   - Skip trivial getters/setters
+
+3. **Benchmark Structure**
+```rust
+fn bench_function_name(c: &mut Criterion) {
+    c.bench_function("function_name", |b| {
+        b.iter(|| {
+            // Setup
+            let input = ...;
+            // Call function with black_box
+            black_box(function_name(black_box(input)))
+        })
+    });
+}
+
+criterion_group!(benches, bench_function_name, ...);
+criterion_main!(benches);
+```
+
+4. **Import the Crate**
+```rust
+use {{ crate_name }}::*;  // or specific items
+```
+
+## Output
+
+Provide the benchmark code in a ```rust code block.
+If no functions are suitable for benchmarking, provide an empty block with a comment.
+
+Example:
+```rust
+// No performance-critical functions to benchmark
+```
+

@@ -1,0 +1,44 @@
+# Analyze C/C++ Project
+
+Analyze the following C/C++ project and provide a comprehensive summary.
+
+## Project Structure
+```
+{{ structure }}
+```
+
+{% if file_summaries %}
+## File Summaries
+{% for path, summary in file_summaries.items() %}
+### {{ path }}
+{{ summary }}
+
+{% endfor %}
+{% endif %}
+
+## Required Analysis
+
+Please provide:
+
+1. **Project Purpose**: What does this project do?
+
+2. **Main Components**: List the key modules and their responsibilities.
+
+3. **Dependencies**: What external libraries or system calls are used?
+
+4. **Suggested Rust Modules**: How should we organize the Rust translation?
+
+Format your response as JSON:
+```json
+{
+  "purpose": "Brief description of the project",
+  "components": [
+    {"name": "component_name", "description": "what it does", "files": ["file1.c", "file2.h"]}
+  ],
+  "dependencies": ["libc", "pthread", "..."],
+  "suggested_modules": [
+    {"name": "module_name", "description": "what it contains", "files": ["file1.c"]}
+  ]
+}
+```
+

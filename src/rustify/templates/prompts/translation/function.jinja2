@@ -1,0 +1,60 @@
+{# Function-specific translation prompt #}
+
+你是 Rust 专家，请将以下 C 函数翻译为 Rust。
+
+## C 函数
+
+```c
+{{ function_code }}
+```
+
+{% if function_name %}
+**函数名**: {{ function_name }}
+{% endif %}
+
+{% if return_type %}
+**返回类型**: {{ return_type }}
+{% endif %}
+
+{% if parameters %}
+**参数列表**: {{ parameters }}
+{% endif %}
+
+## 翻译指南
+
+### 参数转换
+- `void*` → 泛型 `T` 或 `*mut c_void`
+- `char*` → `&str` 或 `String`（取决于所有权）
+- `int*` → `&mut i32` 或 `Option<&mut i32>`
+- 数组参数 → 切片 `&[T]` 或 `&mut [T]`
+
+### 返回值转换
+- 错误码 (`int`) → `Result<(), Error>`
+- 可空指针 → `Option<T>`
+- 成功/失败 bool → `Result<(), ()>`
+
+### 内存管理
+- `malloc`/`free` → `Box::new` / 自动 drop
+- 输出参数 → 返回元组或结构体
+- 全局状态 → 参数传递或 `Arc<Mutex<T>>`
+
+### 安全性
+- 尽量使用安全 Rust
+- 如需 unsafe，添加清晰的 `// SAFETY: ` 注释
+- 用 `assert!` 或 `debug_assert!` 替代裸指针检查
+
+{% if context %}
+## 上下文信息
+{{ context }}
+{% endif %}
+
+## 输出
+
+只输出翻译后的 Rust 函数：
+
+```rust
+{{ "fn " + (function_name | to_rust_identifier) + "(...) {" }}
+    // 实现
+}
+```
+

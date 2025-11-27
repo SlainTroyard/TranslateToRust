@@ -1,0 +1,29 @@
+# Rustify 环境配置示例
+# 复制此文件为 .env 并填入你的配置
+
+# ============ LLM 配置 ============
+RUSTIFY_LLM_MODEL=deepseek-chat
+RUSTIFY_LLM_API_KEY=your-api-key-here
+RUSTIFY_LLM_BASE_URL=https://api.deepseek.com
+RUSTIFY_LLM_TEMPERATURE=1.0
+RUSTIFY_LLM_TOP_P=1.0
+RUSTIFY_LLM_MAX_TOKENS=8192
+
+# ============ Reasoner 配置 (可选) ============
+RUSTIFY_REASONER_MODEL=deepseek-reasoner
+RUSTIFY_REASONER_API_KEY=your-api-key-here
+RUSTIFY_REASONER_BASE_URL=https://api.deepseek.com
+RUSTIFY_REASONER_TEMPERATURE=1.0
+RUSTIFY_REASONER_TOP_P=1.0
+RUSTIFY_REASONER_MAX_TOKENS=8192
+
+# ============ Rust 工具链 ============
+RUSTIFY_RUST_CARGO_BIN=cargo
+RUSTIFY_RUST_RUSTC_BIN=rustc
+RUSTIFY_RUST_EDITION=2021
+
+# ============ 通用设置 ============
+RUSTIFY_LOG_LEVEL=INFO
+RUSTIFY_MAX_FIX_ATTEMPTS=10
+RUSTIFY_MAX_TEST_FIX_ATTEMPTS=20
+

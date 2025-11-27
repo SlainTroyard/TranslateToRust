@@ -1,0 +1,56 @@
+# Translate C/C++ Tests to Rust
+
+Translate the following C/C++ test code to Rust tests.
+
+## Source Test Code
+{% for test_file in source_test_files %}
+### {{ test_file.path }}
+```c
+{{ test_file.content }}
+```
+{% endfor %}
+
+## Rust Module Code (Reference)
+{% for rust_file in rust_files %}
+### {{ rust_file.path }}
+```rust
+{{ rust_file.content }}
+```
+{% endfor %}
+
+{% if translation_tasks %}
+## Translation Tasks (for reference)
+{% for task in translation_tasks %}
+- **{{ task.source.name }}** → translated
+{% endfor %}
+{% endif %}
+
+## Test Translation Guidelines
+
+1. **Test Structure**
+   - Use `#[cfg(test)]` module for unit tests
+   - Use `tests/` directory for integration tests
+   - Use `#[test]` attribute for test functions
+
+2. **Assertions**
+   - `assert!()` for boolean conditions
+   - `assert_eq!()` for equality checks
+   - `assert_ne!()` for inequality checks
+   - Consider `#[should_panic]` for expected panics
+
+3. **Test Helpers**
+   - Create setup/teardown helpers as needed
+   - Use `#[fixture]` if using test frameworks
+
+4. **Coverage**
+   - Maintain the same test coverage as original
+   - Test edge cases and error conditions
+
+## Output
+
+Provide the Rust test code in a ```rust code block.
+Start with a filepath comment:
+```rust
+// filepath: tests/{{ module_name }}_tests.rs
+```
+

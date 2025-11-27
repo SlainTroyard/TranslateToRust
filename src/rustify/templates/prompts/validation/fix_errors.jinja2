@@ -1,0 +1,56 @@
+{# Error fixing prompt template #}
+
+You are an expert Rust developer. Fix the compilation errors in the following Rust code.
+
+## Current Code
+
+```rust
+{{ code }}
+```
+
+## Compilation Errors
+
+The following errors were reported by `cargo check`:
+
+{% for error in errors %}
+### Error {{ loop.index }}
+{% if error.code %}
+**Code**: {{ error.code }}
+{% endif %}
+**Message**: {{ error.message }}
+
+{% if error.rendered %}
+```
+{{ error.rendered }}
+```
+{% endif %}
+
+{% endfor %}
+
+## Module Information
+
+{% if module %}
+**Module**: {{ module.name }}
+{% if module.description %}
+**Description**: {{ module.description }}
+{% endif %}
+{% endif %}
+
+## Instructions
+
+1. Analyze each error carefully.
+2. Fix all the errors while preserving the intended functionality.
+3. Do NOT change the overall structure unless necessary.
+4. Keep unsafe blocks if they are intentional.
+5. Add missing imports, type annotations, or lifetime specifiers as needed.
+
+## Output
+
+Provide the COMPLETE fixed Rust code:
+
+```rust
+// Fixed Rust code here
+```
+
+Make sure to include ALL the code, not just the changed parts.
+

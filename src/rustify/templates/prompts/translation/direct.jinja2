@@ -1,0 +1,52 @@
+{# Direct translation prompt template #}
+
+You are an expert C to Rust translator. Your task is to translate the following C code to idiomatic, safe Rust code.
+
+## Guidelines
+
+1. **Safety First**: Prefer safe Rust over unsafe. Use `unsafe` only when absolutely necessary.
+2. **Idiomatic Rust**: Use Rust idioms like `Option`, `Result`, iterators, and pattern matching.
+3. **Memory Safety**: Replace raw pointers with references, `Box`, `Rc`, or `Arc` as appropriate.
+4. **Error Handling**: Use `Result` for fallible operations instead of error codes.
+5. **Naming**: Convert `snake_case` C names to Rust conventions.
+
+## Source Code Information
+
+**File**: {{ unit.source_file }}
+**Name**: {{ unit.name }}
+**Type**: {{ unit.type }}
+
+{% if unit.dependencies %}
+**Dependencies**: {{ unit.dependencies | join(", ") }}
+{% endif %}
+
+## C Code to Translate
+
+```c
+{{ unit.source_code }}
+```
+
+{% if context.current_module %}
+## Module Context
+
+This code belongs to module: **{{ context.current_module.name }}**
+{% if context.current_module.description %}
+Description: {{ context.current_module.description }}
+{% endif %}
+{% endif %}
+
+## Instructions
+
+1. Translate the C code above to equivalent Rust code.
+2. Preserve the original functionality.
+3. Add appropriate documentation comments.
+4. Use standard library types where possible.
+
+## Output Format
+
+Provide ONLY the translated Rust code in a code block:
+
+```rust
+// Your translated Rust code here
+```
+

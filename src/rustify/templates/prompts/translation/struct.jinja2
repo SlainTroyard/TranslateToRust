@@ -1,0 +1,63 @@
+{# Struct-specific translation prompt #}
+
+你是 Rust 专家，请将以下 C 结构体翻译为 Rust。
+
+## C 结构体
+
+```c
+{{ struct_code }}
+```
+
+{% if struct_name %}
+**结构体名**: {{ struct_name }}
+{% endif %}
+
+## 翻译指南
+
+### 字段转换
+- `int`, `long` → `i32`, `i64`
+- `unsigned int` → `u32`
+- `char*` → `String` 或 `Option<String>`
+- `T*` → `Option<Box<T>>` 或 `*mut T`
+- 固定大小数组 `T[N]` → `[T; N]`
+- 可变数组 `T*` + `size_t len` → `Vec<T>`
+
+### 嵌套结构
+- 值类型嵌套 → 直接嵌入
+- 指针嵌套 → `Box<T>` 或 `Option<Box<T>>`
+- 自引用 → `Rc<RefCell<T>>` 或 `Weak<T>`
+
+### 派生特性
+
+根据结构体用途添加：
+- `#[derive(Debug)]` - 调试打印
+- `#[derive(Clone)]` - 如果需要复制
+- `#[derive(PartialEq)]` - 如果需要比较
+- `#[derive(Default)]` - 如果需要默认值
+
+### 生命周期
+
+如果字段包含引用：
+- 添加生命周期参数 `<'a>`
+- 字段使用 `&'a T`
+
+{% if context %}
+## 上下文
+{{ context }}
+{% endif %}
+
+## 输出
+
+```rust
+#[derive(Debug, Clone)]
+pub struct {{ struct_name or "MyStruct" }} {
+    // 字段
+}
+
+impl {{ struct_name or "MyStruct" }} {
+    pub fn new(...) -> Self {
+        // 构造函数
+    }
+}
+```
+

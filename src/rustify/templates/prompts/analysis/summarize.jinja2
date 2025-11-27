@@ -1,0 +1,40 @@
+{# Code summary generation template #}
+
+Analyze the following C/C++ source file and provide a concise summary.
+
+## File Information
+
+**Path**: {{ file.path }}
+**Language**: {{ file.language }}
+**Size**: {{ file.content | length }} characters
+
+## Source Code
+
+```{{ file.language }}
+{{ file.content | truncate_code(200) }}
+```
+
+## Instructions
+
+Provide a summary that includes:
+
+1. **Purpose**: What is the main purpose of this file?
+2. **Key Components**: List the main functions, structs, and types defined.
+3. **Dependencies**: What other files or libraries does this depend on?
+4. **Complexity**: Brief assessment of translation complexity (low/medium/high).
+
+## Output Format
+
+Respond in the following format:
+
+**Purpose**: [One sentence description]
+
+**Key Components**:
+- [Component 1]: [Brief description]
+- [Component 2]: [Brief description]
+...
+
+**Dependencies**: [List of dependencies]
+
+**Translation Complexity**: [low/medium/high] - [Reason]
+

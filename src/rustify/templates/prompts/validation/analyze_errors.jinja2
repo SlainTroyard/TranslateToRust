@@ -1,0 +1,56 @@
+{# Analyze compilation errors and suggest fixes #}
+
+分析以下 Rust 代码的编译错误，并提供修复建议。
+
+## 代码
+
+```rust
+{{ code }}
+```
+
+## 编译错误
+
+{% for error in errors %}
+### 错误 {{ loop.index }}{% if error.code %} ({{ error.code }}){% endif %}
+
+**消息**: {{ error.message }}
+
+{% if error.rendered %}
+```
+{{ error.rendered }}
+```
+{% endif %}
+
+{% if error.suggestion %}
+**建议**: {{ error.suggestion }}
+{% endif %}
+
+{% endfor %}
+
+## 分析任务
+
+请对每个错误进行分析：
+
+1. **根本原因**: 错误的根本原因是什么？
+2. **修复方案**: 具体应该如何修复？
+3. **涉及行**: 需要修改哪些行？
+4. **预防措施**: 如何避免类似错误？
+
+## 输出格式
+
+```json
+{
+  "analysis": [
+    {
+      "error_code": "E0425",
+      "root_cause": "变量 `foo` 未定义",
+      "fix": "添加 `use crate::foo;` 或定义变量",
+      "lines_to_modify": [10, 15],
+      "prevention": "确保所有使用的标识符都已导入或定义"
+    }
+  ],
+  "overall_issues": ["缺少导入", "类型不匹配"],
+  "suggested_order": ["先修复 E0425", "再修复 E0308"]
+}
+```
+

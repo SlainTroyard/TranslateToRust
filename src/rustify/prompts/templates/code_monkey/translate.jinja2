@@ -1,0 +1,62 @@
+# Translate C/C++ to Rust
+
+Translate the following C/C++ code to idiomatic Rust.
+
+## Source Code (C/C++)
+```c
+{{ source_code }}
+```
+
+{% if node_type %}
+## Code Type
+{{ node_type }}
+{% endif %}
+
+{% if context %}
+## Additional Context
+{{ context }}
+{% endif %}
+
+{% if experiences %}
+## Previous Translation Examples
+{% for exp in experiences %}
+### Example {{ loop.index }}
+**Source:**
+```c
+{{ exp.source_code[:500] }}{% if exp.source_code|length > 500 %}...{% endif %}
+```
+
+**Target:**
+```rust
+{{ exp.target_code[:500] }}{% if exp.target_code|length > 500 %}...{% endif %}
+```
+{% endfor %}
+{% endif %}
+
+## Translation Guidelines
+
+1. **Memory Safety**
+   - Replace raw pointers with references, Box, Rc, Arc as appropriate
+   - Use Option for nullable pointers
+   - Handle memory allocation with proper ownership
+
+2. **Error Handling**
+   - Replace error codes with Result types
+   - Use appropriate error types (io::Error, custom errors)
+   - Avoid panics in library code
+
+3. **Idiomacy**
+   - Use iterators instead of manual loops where possible
+   - Use pattern matching for complex conditions
+   - Prefer &str over String for parameters
+
+4. **Safety**
+   - Minimize unsafe blocks
+   - Document safety requirements for unsafe code
+   - Use #[repr(C)] for FFI-compatible types
+
+## Output
+
+Provide the translated Rust code in a single ```rust code block.
+Include documentation comments for public items.
+

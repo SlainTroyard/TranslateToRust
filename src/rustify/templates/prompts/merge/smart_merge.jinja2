@@ -1,0 +1,78 @@
+{# Smart merge prompt for combining translated chunks #}
+
+你是 Rust 专家。请将以下 {{ chunks | length }} 个代码块合并成一个完整、可编译的 Rust 模块。
+
+## 代码块
+
+{% for chunk in chunks %}
+### 块 {{ loop.index }}: {{ chunk.name }} ({{ chunk.kind }})
+
+```rust
+{{ chunk.code }}
+```
+
+{% endfor %}
+
+{% if preamble %}
+## 通用前置代码
+
+```rust
+{{ preamble }}
+```
+{% endif %}
+
+## 合并要求
+
+### 1. 去重
+- 合并相同的 `use` 语句
+- 保留类型定义的第一次出现（struct, enum, type）
+- 检测并解决同名但不同实现的冲突
+
+### 2. 组织结构
+
+按以下顺序组织代码：
+1. 模块属性 (`#![allow(...)]`)
+2. `use` 语句
+3. 常量和静态变量
+4. 类型定义 (struct, enum, union)
+5. 类型别名 (type)
+6. impl 块（紧跟其类型定义）
+7. 自由函数
+8. 测试模块
+
+### 3. 冲突解决
+
+如果发现命名冲突：
+- 同名类型但定义不同 → 重命名其中一个（加后缀 `_v2` 或 `_alt`）
+- 同名函数 → 保留更完整的实现
+- 使用注释标记 `// MERGED: ...` 说明合并决策
+
+### 4. 补全
+
+- 添加缺失的 `use` 语句
+- 添加缺失的模块可见性 (`pub`)
+- 确保所有类型都有合适的 `#[derive(...)]`
+
+{% if context %}
+## 上下文
+{{ context }}
+{% endif %}
+
+## 输出
+
+```rust
+//! Merged from {{ chunks | length }} chunks
+
+{{ "// Common imports" }}
+// ...
+
+{{ "// Type definitions" }}
+// ...
+
+{{ "// Implementations" }}
+// ...
+
+{{ "// Functions" }}
+// ...
+```
+
