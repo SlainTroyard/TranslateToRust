@@ -102,9 +102,12 @@ def translate(
     if dashboard:
         try:
             from rustify.web import Dashboard
-            web_dashboard = Dashboard(auto_open=True)
+            web_dashboard = Dashboard(host="0.0.0.0", port=8765, auto_open=False)
             web_dashboard.start()
-            rprint(f"[green]Dashboard[/green]: {web_dashboard.url}")
+            rprint(f"\n[bold cyan]╔═══════════════════════════════════════════╗[/bold cyan]")
+            rprint(f"[bold cyan]║[/bold cyan]  [green]Dashboard[/green]: http://0.0.0.0:8765        [bold cyan]║[/bold cyan]")
+            rprint(f"[bold cyan]║[/bold cyan]  [dim]Remote: ssh -L 8765:localhost:8765 ...[/dim]  [bold cyan]║[/bold cyan]")
+            rprint(f"[bold cyan]╚═══════════════════════════════════════════╝[/bold cyan]\n")
         except ImportError:
             rprint("[yellow]Warning:[/yellow] Flask not installed. Dashboard disabled.")
             rprint("  Install with: pip install flask flask-cors")
@@ -116,7 +119,8 @@ def translate(
     ) as progress:
         progress.add_task("Translating...", total=None)
         
-        rustify = Rustify(config=cfg)
+        # Pass dashboard to Rustify for real-time updates
+        rustify = Rustify(config=cfg, dashboard=web_dashboard)
         
         # Use incremental mode if requested
         if incremental:
@@ -313,34 +317,54 @@ def fix(
 
 @app.command()
 def dashboard(
-    project: str = typer.Argument(None, help="Path to project (optional)"),
+    project: str = typer.Argument(None, help="Path to target project to monitor (watches states.json)"),
     port: int = typer.Option(8765, "--port", "-p", help="Port number"),
-    host: str = typer.Option("127.0.0.1", "--host", "-H", help="Host to bind (use 0.0.0.0 for remote access)"),
+    host: str = typer.Option("0.0.0.0", "--host", "-H", help="Host to bind"),
 ):
     """
     Start the web dashboard for monitoring translations.
     
+    The dashboard watches the target project's states.json file for real-time updates.
+    Run this in one terminal, then run 'rustify translate' in another.
+    
     Examples:
-        rustify dashboard
-        rustify dashboard ./my-project --port 9000
-        rustify dashboard --host 0.0.0.0  # Allow remote access
+        rustify dashboard /tmp/my-rust-project    # Watch this project
+        rustify dashboard /tmp/bzip2_rs           # Monitor bzip2 translation
+        
+    Usage:
+        Terminal 1: rustify dashboard /tmp/output_rs
+        Terminal 2: rustify translate ./source /tmp/output_rs --overwrite
+        
+    Remote Access:
+        ssh -L 8765:localhost:8765 user@server
+        Then open http://localhost:8765
     """
-    from rustify.web import Dashboard
+    from rustify.web.server import WebServer
     
     try:
-        # Don't auto-open browser if binding to 0.0.0.0 (remote server)
-        auto_open = (host == "127.0.0.1")
-        d = Dashboard(host=host, port=port, auto_open=auto_open)
-        d.start()
+        # Resolve project path
+        watch_dir = None
+        if project:
+            watch_dir = os.path.abspath(project)
+            if not os.path.exists(watch_dir):
+                os.makedirs(watch_dir, exist_ok=True)
+                rprint(f"[yellow]Created directory:[/yellow] {watch_dir}")
         
-        rprint(f"[bold green]Dashboard running at[/bold green] {d.url}")
-        rprint("[dim]Press Ctrl+C to stop[/dim]\n")
+        # Create server with watch capability
+        server = WebServer(host=host, port=port, watch_dir=watch_dir)
+        server.start(blocking=False)
         
-        if project and os.path.exists(project):
-            # Load project state if available
-            state_file = os.path.join(project, "states.json")
-            if os.path.exists(state_file):
-                rprint(f"[green]✓[/green] Loaded project state from {state_file}")
+        rprint(f"\n[bold]═══════════════════════════════════════════════════[/bold]")
+        rprint(f"  [bold]RUSTIFY DASHBOARD[/bold]")
+        rprint(f"[bold]═══════════════════════════════════════════════════[/bold]")
+        rprint(f"  URL: [green]http://{host}:{port}[/green]")
+        if watch_dir:
+            rprint(f"  Watching: [cyan]{watch_dir}[/cyan]")
+        rprint(f"")
+        rprint(f"  [dim]In another terminal, run:[/dim]")
+        rprint(f"  [dim]rustify translate <source> {watch_dir or '<target>'} --overwrite[/dim]")
+        rprint(f"[bold]═══════════════════════════════════════════════════[/bold]")
+        rprint(f"\n[dim]Press Ctrl+C to stop[/dim]\n")
         
         # Keep running
         import time

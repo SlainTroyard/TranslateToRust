@@ -5,7 +5,7 @@ Tech Leader Agent - Manages module translation workflow.
 
 import os
 import asyncio
-from typing import Optional, List
+from typing import Optional, List, Callable
 import logging
 
 from rustify.agents.base import BaseAgent
@@ -41,7 +41,10 @@ class TechLeader(BaseAgent):
         reasoner_config: Optional[dict] = None,
         *,
         name: Optional[str] = None,
-        logger: Optional[logging.Logger] = None
+        logger: Optional[logging.Logger] = None,
+        on_task_start: Optional[Callable[[str], None]] = None,
+        on_task_done: Optional[Callable[[str], None]] = None,
+        on_task_error: Optional[Callable[[str, str], None]] = None,
     ):
         """
         Initialize the Tech Leader.
@@ -52,6 +55,9 @@ class TechLeader(BaseAgent):
             reasoner_config: Reasoner LLM configuration.
             name: Agent name.
             logger: Logger instance.
+            on_task_start: Callback when a task starts.
+            on_task_done: Callback when a task completes.
+            on_task_error: Callback when a task fails.
         """
         super().__init__(llm_config, name=name, logger=logger)
         self.state_manager = state_manager
@@ -59,6 +65,11 @@ class TechLeader(BaseAgent):
         self.reasoner = Reasoner(self.reasoner_config, logger=self.logger)
         
         self.current_module_id: Optional[str] = None
+        
+        # Dashboard callbacks
+        self.on_task_start = on_task_start
+        self.on_task_done = on_task_done
+        self.on_task_error = on_task_error
     
     @property
     def module(self) -> Optional[ModuleTranslation]:
@@ -162,14 +173,34 @@ class TechLeader(BaseAgent):
             if task.status == TranslationTaskStatus.DONE:
                 continue
             
-            self.logger.info(f"Translating task: {task.source.name}")
+            task_name = task.source.name
+            self.logger.info(f"Translating task: {task_name}")
+            
+            # Notify dashboard: task started
+            if self.on_task_start:
+                try:
+                    self.on_task_start(task_name)
+                except Exception:
+                    pass
             
             response = code_monkey.translate(module.id, task)
             
             if response.status != "done":
-                self.logger.error(f"Task failed: {task.source.name}")
+                self.logger.error(f"Task failed: {task_name}")
+                # Notify dashboard: task error
+                if self.on_task_error:
+                    try:
+                        self.on_task_error(task_name, response.error or "Unknown error")
+                    except Exception:
+                        pass
             else:
-                self.logger.info(f"Task completed: {task.source.name}")
+                self.logger.info(f"Task completed: {task_name}")
+                # Notify dashboard: task done
+                if self.on_task_done:
+                    try:
+                        self.on_task_done(task_name)
+                    except Exception:
+                        pass
         
         return AgentResponse.done(
             self,

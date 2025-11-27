@@ -7,7 +7,7 @@ A multi-agent system for translating C/C++ code to idiomatic Rust.
 
 import os
 import logging
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, TYPE_CHECKING
 from pathlib import Path
 
 from rustify.config import RustifyConfig
@@ -15,6 +15,9 @@ from rustify.state.state_manager import StateManager
 from rustify.agents.project_manager import ProjectManager
 from rustify.agents.tech_leader import TechLeader
 from rustify.schema.translation import ModuleTranslation, ModuleTranslationStatus
+
+if TYPE_CHECKING:
+    from rustify.web.dashboard import Dashboard
 
 __version__ = "0.1.0"
 __author__ = "Rustify Team"
@@ -41,6 +44,7 @@ class Rustify:
         llm_config: Optional[Dict[str, Any]] = None,
         reasoner_config: Optional[Dict[str, Any]] = None,
         state_file: Optional[str] = None,
+        dashboard: Optional["Dashboard"] = None,
     ):
         """
         Initialize Rustify.
@@ -50,6 +54,7 @@ class Rustify:
             llm_config: LLM configuration dict.
             reasoner_config: Reasoner LLM configuration (defaults to llm_config).
             state_file: Path to state file for persistence.
+            dashboard: Optional Dashboard instance for real-time updates.
         """
         # Load config
         self.config = config or RustifyConfig()
@@ -61,6 +66,9 @@ class Rustify:
         # State file
         self.state_file = state_file
         self.state_manager: Optional[StateManager] = None
+        
+        # Dashboard for real-time updates
+        self.dashboard = dashboard
         
         # Agents
         self.project_manager: Optional[ProjectManager] = None
@@ -158,17 +166,99 @@ class Rustify:
         
         if response.status != "done":
             logger.error(f"Project initialization failed: {response.error}")
+            self._dashboard_error("Project initialization failed")
             return False
+        
+        # Initialize dashboard with project info
+        self._init_dashboard(str(source_path), str(target_path))
         
         # Process each module
         success = self._process_modules()
         
         if success:
             logger.info("Translation completed successfully!")
+            self._dashboard_complete()
         else:
             logger.warning("Translation completed with some failures")
         
         return success
+    
+    def _init_dashboard(self, source_dir: str, target_dir: str) -> None:
+        """Initialize dashboard with project information."""
+        if not self.dashboard:
+            return
+        
+        # Count total files (module_translations is a list, not dict)
+        modules = self.state_manager.state.module_translations
+        total_tasks = sum(len(m.translation_tasks) for m in modules)
+        
+        self.dashboard.set_project_info(
+            source_dir=source_dir,
+            target_dir=target_dir,
+            total_files=total_tasks
+        )
+        
+        # Register all tasks (use task.source.name as the identifier)
+        for module in modules:
+            for task in module.translation_tasks:
+                task_name = task.source.name
+                task_id = f"{module.name}/{task_name}"
+                self.dashboard.register_task(task_id, task_name)
+        
+        # Build dependency graph for visualization
+        self._update_dashboard_graph()
+    
+    def _update_dashboard_graph(self) -> None:
+        """Update dashboard dependency graph."""
+        if not self.dashboard:
+            return
+        
+        files = []
+        deps = []
+        
+        for module in self.state_manager.state.module_translations:
+            for task in module.translation_tasks:
+                files.append(task.source.name)
+        
+        # Simple dependency chain based on translation order
+        if len(files) > 1:
+            for i in range(len(files) - 1):
+                deps.append((files[i], files[i + 1]))
+        
+        self.dashboard.set_dependency_graph(files, deps)
+    
+    def _dashboard_task_start(self, module_name: str, task_name: str) -> None:
+        """Notify dashboard that a task started."""
+        if not self.dashboard:
+            return
+        task_id = f"{module_name}/{task_name}"
+        self.dashboard.task_started(task_id, task_name)
+    
+    def _dashboard_task_done(self, module_name: str, task_name: str) -> None:
+        """Notify dashboard that a task completed."""
+        if not self.dashboard:
+            return
+        task_id = f"{module_name}/{task_name}"
+        self.dashboard.task_completed(task_id)
+    
+    def _dashboard_task_error(self, module_name: str, task_name: str, error: str) -> None:
+        """Notify dashboard of task error."""
+        if not self.dashboard:
+            return
+        task_id = f"{module_name}/{task_name}"
+        self.dashboard.task_failed(task_id, error)
+    
+    def _dashboard_error(self, message: str) -> None:
+        """Send error to dashboard."""
+        if not self.dashboard:
+            return
+        self.dashboard._server.update_state(status=f"Error: {message}")
+    
+    def _dashboard_complete(self) -> None:
+        """Mark translation as complete in dashboard."""
+        if not self.dashboard:
+            return
+        self.dashboard._server.update_state(status="Done", progress=1.0)
     
     def _process_modules(self) -> bool:
         """Process all modules through translation."""
@@ -185,11 +275,14 @@ class Rustify:
             
             logger.info(f"Processing module {index + 1}: {module.name}")
             
-            # Create TechLeader for this module
+            # Create TechLeader for this module (pass dashboard callbacks)
             tech_leader = TechLeader(
                 state_manager=self.state_manager,
                 llm_config=self.llm_config,
                 reasoner_config=self.reasoner_config,
+                on_task_start=lambda t: self._dashboard_task_start(module.name, t),
+                on_task_done=lambda t: self._dashboard_task_done(module.name, t),
+                on_task_error=lambda t, e: self._dashboard_task_error(module.name, t, e),
             )
             
             # Start module translation
