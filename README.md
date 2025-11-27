@@ -6,13 +6,6 @@ Rustify 是一个基于多智能体系统的 C/C++ 到 Rust 自动翻译工具�
 
 ## ✨ 特性
 
-- **多智能体架构**
-  - ProjectManager：项目管理与分析
-  - TechLeader：模块翻译工作流协调
-  - CodeMonkey：代码翻译与修复
-  - TestEngineer：测试翻译与执行
-  - BenchEngineer：性能测试生成
-
 - **智能依赖分析**
   - 基于 Tree-sitter 的 AST 解析
   - NetworkX 构建依赖图
