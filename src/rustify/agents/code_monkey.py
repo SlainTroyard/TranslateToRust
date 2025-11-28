@@ -141,8 +141,18 @@ class CodeMonkey(BaseAgent):
         
         source_code = "\n".join(source_code_parts)
         
+        # Collect header file context (types, macros, structs)
+        header_context = self._collect_header_context(task)
+        
         # Get context from memory
-        context = self.memory.to_context(node_type)
+        memory_context = self.memory.to_context(node_type)
+        
+        # Combine contexts: header files + memory
+        context = ""
+        if header_context:
+            context += f"## Header File Definitions\n{header_context}\n\n"
+        if memory_context:
+            context += memory_context
         
         # Build translation prompt
         prompt = self._build_translation_prompt(source_code, node_type, context)
@@ -227,6 +237,110 @@ class CodeMonkey(BaseAgent):
         
         return True
     
+    def _cleanup_rust_code(self, code: str) -> str:
+        """
+        Clean up common issues in generated Rust code.
+        
+        Fixes:
+        - Trailing doc comments without items (error: expected item after doc comment)
+        - Empty doc comment lines
+        - Multiple consecutive empty lines
+        """
+        lines = code.split('\n')
+        cleaned_lines = []
+        i = 0
+        
+        while i < len(lines):
+            line = lines[i]
+            stripped = line.strip()
+            
+            # Check if this is a doc comment
+            if stripped.startswith('///'):
+                # Collect all consecutive doc comment lines
+                doc_block_start = i
+                doc_lines = []
+                
+                while i < len(lines) and lines[i].strip().startswith('///'):
+                    doc_lines.append(lines[i])
+                    i += 1
+                
+                # Skip empty lines after doc comments
+                while i < len(lines) and lines[i].strip() == '':
+                    i += 1
+                
+                # Check if there's an item after the doc comment
+                if i < len(lines):
+                    next_line = lines[i].strip()
+                    # Check if the next line is a valid item start
+                    is_item = (
+                        next_line.startswith('pub ') or
+                        next_line.startswith('fn ') or
+                        next_line.startswith('struct ') or
+                        next_line.startswith('enum ') or
+                        next_line.startswith('type ') or
+                        next_line.startswith('const ') or
+                        next_line.startswith('static ') or
+                        next_line.startswith('impl ') or
+                        next_line.startswith('trait ') or
+                        next_line.startswith('mod ') or
+                        next_line.startswith('use ') or
+                        next_line.startswith('#[')  # attribute
+                    )
+                    
+                    if is_item:
+                        # Clean doc lines - remove empty /// lines
+                        clean_doc_lines = []
+                        for doc_line in doc_lines:
+                            doc_stripped = doc_line.strip()
+                            # Keep non-empty doc comments
+                            if doc_stripped != '///' and doc_stripped != '/// ':
+                                clean_doc_lines.append(doc_line)
+                            elif clean_doc_lines:  # Keep empty lines in middle of doc block
+                                # But not at the end
+                                pass
+                        
+                        # Remove trailing empty doc lines
+                        while clean_doc_lines and clean_doc_lines[-1].strip() in ('///', '/// '):
+                            clean_doc_lines.pop()
+                        
+                        cleaned_lines.extend(clean_doc_lines)
+                    else:
+                        # No valid item follows - convert to regular comments
+                        for doc_line in doc_lines:
+                            # Convert /// to //
+                            if doc_line.strip().startswith('///'):
+                                indent = len(doc_line) - len(doc_line.lstrip())
+                                comment_content = doc_line.strip()[3:]  # Remove ///
+                                cleaned_lines.append(' ' * indent + '//' + comment_content)
+                            else:
+                                cleaned_lines.append(doc_line)
+                else:
+                    # End of file - convert to regular comments
+                    for doc_line in doc_lines:
+                        if doc_line.strip().startswith('///'):
+                            indent = len(doc_line) - len(doc_line.lstrip())
+                            comment_content = doc_line.strip()[3:]
+                            cleaned_lines.append(' ' * indent + '//' + comment_content)
+                        else:
+                            cleaned_lines.append(doc_line)
+                
+                continue
+            
+            cleaned_lines.append(line)
+            i += 1
+        
+        # Remove multiple consecutive empty lines
+        result_lines = []
+        prev_empty = False
+        for line in cleaned_lines:
+            is_empty = line.strip() == ''
+            if is_empty and prev_empty:
+                continue
+            result_lines.append(line)
+            prev_empty = is_empty
+        
+        return '\n'.join(result_lines)
+    
     def _ensure_code_completeness(
         self,
         rust_code: str,
@@ -238,6 +352,9 @@ class CodeMonkey(BaseAgent):
         
         If the code appears truncated, request the LLM to complete it.
         """
+        # First, clean up common Rust code issues
+        rust_code = self._cleanup_rust_code(rust_code)
+        
         if self._is_code_complete(rust_code):
             return rust_code
         
@@ -282,6 +399,222 @@ Provide the complete code in a ```rust code block.
         self.logger.warning("Could not complete code after max attempts, using last version")
         return rust_code
     
+    def _collect_header_context(self, task: TranslationTask) -> str:
+        """
+        Collect relevant header file content for context.
+        
+        Uses Clang AST parser if available for precise dependency analysis,
+        falls back to regex-based parsing otherwise.
+        
+        This ensures the LLM has access to type definitions, macros, and constants.
+        """
+        if not task.source.nodes:
+            return ""
+        
+        # Get the source project path
+        source_project = self.state_manager.state.source_project
+        if not source_project:
+            return ""
+        
+        project_path = source_project.path
+        
+        # Try to use Clang AST parser for precise analysis
+        try:
+            from rustify.graph.clang_parser import ClangASTParser
+            
+            parser = ClangASTParser(project_path)
+            
+            # Get context for each source file
+            context_parts = []
+            for node in task.source.nodes:
+                source_file = node.filepath
+                if not os.path.isabs(source_file):
+                    source_file = os.path.join(project_path, source_file)
+                
+                # Get header context using Clang parser
+                header_context = parser.get_header_context(source_file)
+                context_str = header_context.to_context_string()
+                
+                if context_str:
+                    context_parts.append(context_str)
+            
+            if context_parts:
+                self.logger.info(f"Collected header context using {'Clang AST' if parser.is_clang_available else 'regex'} parser")
+                return "\n\n".join(context_parts)
+                
+        except Exception as e:
+            self.logger.debug(f"Clang parser failed, using fallback: {e}")
+        
+        # Fallback to original method
+        return self._collect_header_context_fallback(task)
+    
+    def _collect_header_context_fallback(self, task: TranslationTask) -> str:
+        """
+        Fallback method to collect header context using regex parsing.
+        """
+        source_project = self.state_manager.state.source_project
+        if not source_project:
+            return ""
+        
+        project_path = source_project.path
+        collected_headers = {}
+        visited = set()
+        
+        # Start from each source file
+        for node in task.source.nodes:
+            source_file = node.filepath
+            if not os.path.isabs(source_file):
+                source_file = os.path.join(project_path, source_file)
+            
+            self._collect_headers_recursive(
+                source_file, project_path, collected_headers, visited
+            )
+        
+        if not collected_headers:
+            return ""
+        
+        # Build context string
+        context_parts = []
+        for header_name, header_content in collected_headers.items():
+            # Extract only important parts: types, structs, enums, macros, constants
+            important_content = self._extract_important_definitions(header_content)
+            if important_content:
+                context_parts.append(f"### {header_name}\n```c\n{important_content}\n```")
+        
+        return "\n\n".join(context_parts)
+    
+    def _collect_headers_recursive(
+        self,
+        filepath: str,
+        project_path: str,
+        collected: dict,
+        visited: set,
+        depth: int = 0
+    ) -> None:
+        """Recursively collect header files from #include directives."""
+        if depth > 5:  # Prevent infinite recursion
+            return
+        
+        if filepath in visited:
+            return
+        visited.add(filepath)
+        
+        try:
+            with open(filepath, "r", encoding="utf-8", errors="replace") as f:
+                content = f.read()
+        except Exception:
+            return
+        
+        # Find #include directives for local headers (with quotes)
+        include_pattern = re.compile(r'#include\s*"([^"]+)"')
+        
+        for match in include_pattern.finditer(content):
+            include_path = match.group(1)
+            
+            # Try to resolve the header path
+            header_paths = [
+                os.path.join(os.path.dirname(filepath), include_path),
+                os.path.join(project_path, include_path),
+            ]
+            
+            for header_path in header_paths:
+                if os.path.exists(header_path) and header_path not in visited:
+                    # Read header content
+                    try:
+                        with open(header_path, "r", encoding="utf-8", errors="replace") as f:
+                            header_content = f.read()
+                        
+                        header_name = os.path.basename(header_path)
+                        collected[header_name] = header_content
+                        
+                        # Recursively collect headers included by this header
+                        self._collect_headers_recursive(
+                            header_path, project_path, collected, visited, depth + 1
+                        )
+                    except Exception:
+                        pass
+                    break
+    
+    def _extract_important_definitions(self, content: str) -> str:
+        """
+        Extract important definitions from header content.
+        
+        Focuses on: structs, enums, typedefs, #define macros, function declarations
+        """
+        lines = content.split('\n')
+        result_lines = []
+        in_block = False
+        block_lines = []
+        brace_count = 0
+        
+        for line in lines:
+            stripped = line.strip()
+            
+            # Skip empty lines and comments when not in a block
+            if not in_block:
+                if not stripped or stripped.startswith('//'):
+                    continue
+                # Skip license headers
+                if stripped.startswith('/*') and ('Copyright' in line or 'LICENSE' in line):
+                    continue
+            
+            # Check for struct/enum/typedef start
+            if not in_block and (
+                stripped.startswith('typedef ') or
+                stripped.startswith('struct ') or
+                stripped.startswith('enum ') or
+                stripped.startswith('#define ') or
+                # Function declarations (ending with ;)
+                (re.match(r'^(extern\s+)?\w+[\s\*]+\w+\s*\([^)]*\)\s*;', stripped))
+            ):
+                # Handle #define (might be multiline)
+                if stripped.startswith('#define '):
+                    result_lines.append(line)
+                    while stripped.endswith('\\'):
+                        # Continue reading multiline macro
+                        idx = lines.index(line) + 1
+                        if idx < len(lines):
+                            line = lines[idx]
+                            stripped = line.strip()
+                            result_lines.append(line)
+                    continue
+                
+                # Check if it's a single-line declaration
+                if stripped.endswith(';') and '{' not in stripped:
+                    result_lines.append(line)
+                    continue
+                
+                # Start of a block
+                in_block = True
+                block_lines = [line]
+                brace_count = line.count('{') - line.count('}')
+                
+                if brace_count == 0 and '{' in line:
+                    # Complete single-line block
+                    result_lines.append(line)
+                    in_block = False
+                    block_lines = []
+                continue
+            
+            if in_block:
+                block_lines.append(line)
+                brace_count += line.count('{') - line.count('}')
+                
+                if brace_count <= 0 and (stripped.endswith(';') or stripped.endswith('}')):
+                    # End of block
+                    result_lines.extend(block_lines)
+                    result_lines.append('')  # Add empty line after block
+                    in_block = False
+                    block_lines = []
+                    brace_count = 0
+        
+        # Limit the size to avoid overwhelming the context
+        result = '\n'.join(result_lines)
+        if len(result) > 15000:  # Limit to ~15KB
+            result = result[:15000] + "\n// ... (truncated)"
+        
+        return result
+
     def _build_translation_prompt(
         self,
         source_code: str,
@@ -289,17 +622,26 @@ Provide the complete code in a ```rust code block.
         context: str
     ) -> str:
         """Build the translation prompt."""
-        return f"""Translate the following C/C++ code to idiomatic Rust:
+        context_section = ""
+        if context:
+            context_section = f"""
+## Context Information
 
-## Source Code (C/C++)
+{context}
+
+IMPORTANT: Use the type definitions, structs, and constants from the header files above 
+when translating. These define the types used in the source code.
+"""
+        
+        return f"""Translate the following C/C++ code to idiomatic Rust:
+{context_section}
+## Source Code (C/C++) to Translate
 ```c
 {source_code}
 ```
 
 ## Node Type
 {node_type}
-
-{context if context else ""}
 
 ## Translation Guidelines
 1. Use idiomatic Rust patterns
@@ -308,6 +650,9 @@ Provide the complete code in a ```rust code block.
 4. Add documentation comments
 5. Use appropriate visibility (pub, pub(crate), etc.)
 6. Handle unsafe code properly with `unsafe` blocks when necessary
+7. Translate C structs to Rust structs with appropriate #[derive] attributes
+8. Translate C enums to Rust enums
+9. Translate #define constants to const or enum values
 
 Provide only the Rust code in a ```rust code block.
 """
@@ -553,6 +898,9 @@ Explain your fixes briefly before the code.
                 CodeMonkeyResponseType.FIX_FAILED,
                 {"message": "No fixed code extracted"}
             )
+        
+        # Clean up common Rust code issues
+        fixed_code = self._cleanup_rust_code(fixed_code)
         
         # Write fixed code
         with open(target_path, "w", encoding="utf-8") as f:

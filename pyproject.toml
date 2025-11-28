@@ -82,6 +82,10 @@ tree-sitter = [
     "tree-sitter-c>=0.20.0",
 ]
 
+clang = [
+    "libclang>=16.0.0",
+]
+
 mcp = [
     "mcp>=0.1.0",
 ]
@@ -92,7 +96,7 @@ web = [
 ]
 
 all = [
-    "rustify[dev,tree-sitter,mcp,web]",
+    "rustify[dev,tree-sitter,clang,mcp,web]",
 ]
 
 [project.scripts]

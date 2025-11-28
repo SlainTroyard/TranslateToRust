@@ -1,0 +1,15 @@
+[package]
+name = "bzip2_rs"
+version = "0.1.0"
+edition = "2021"
+description = "Rust translation of bzip2"
+
+[lib]
+name = "bzip2_rs"
+path = "src/lib.rs"
+
+[dependencies]
+libc = "0.2"
+
+[dev-dependencies]
+criterion = "0.5"
