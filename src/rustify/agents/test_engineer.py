@@ -303,7 +303,11 @@ Start with: // filepath: tests/{module.name}_tests.rs
     
     def _run_test(self) -> AgentResponse:
         """Run the tests."""
-        from rustify.tools.rust_utils import cargo_test
+        from rustify.tools.rust_utils import (
+            cargo_test, 
+            auto_add_missing_dependencies,
+            detect_missing_crates
+        )
         
         target_project = self.state_manager.state.target_project
         
@@ -328,11 +332,40 @@ Start with: // filepath: tests/{module.name}_tests.rs
                 {"failed_tests": failed_tests}
             )
         else:
-            # Compilation failed
+            # Compilation failed - first try to auto-add missing dependencies
+            errors = result.get("errors", [])
+            missing_crates = detect_missing_crates(errors)
+            
+            if missing_crates:
+                self.logger.info(f"Detected missing crates: {missing_crates}")
+                added = auto_add_missing_dependencies(
+                    target_project.path, 
+                    errors, 
+                    dev_only=True
+                )
+                if added:
+                    self.logger.info(f"Auto-added dependencies: {added}")
+                    # Retry compilation after adding dependencies
+                    result = cargo_test(target_project.path, self.test_name)
+                    if result["success"]:
+                        failed_tests = result.get("failed_tests", [])
+                        if not failed_tests:
+                            return AgentResponse.done(
+                                self,
+                                TestEngineerResponseType.TEST_PASSED
+                            )
+                        self._record_history(failed_tests=failed_tests)
+                        return AgentResponse.done(
+                            self,
+                            TestEngineerResponseType.TEST_RUN_DONE,
+                            {"failed_tests": failed_tests}
+                        )
+                    errors = result.get("errors", [])
+            
             return AgentResponse.done(
                 self,
                 TestEngineerResponseType.TEST_RUN_FAILURE,
-                {"errors": result.get("errors", [])}
+                {"errors": errors}
             )
     
     def _fix_syntax_errors(self, errors: List[dict]) -> AgentResponse:

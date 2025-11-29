@@ -53,13 +53,20 @@ def extract_code_block_changes(
     """
     Extract code changes from LLM response.
     
-    Parses code blocks with change markers:
+    Supports multiple formats:
+    
+    Format 1 (TransFactor style - most precise):
+    ```rust:filepath:start_line:end_line
+    new code
+    ```
+    
+    Format 2: ```rust:filepath with line markers
     ```rust:filepath
     // [start_line:end_line]
     new code
     ```
     
-    Or simpler format:
+    Format 3: // filepath: comment followed by code block
     // filepath: path/to/file.rs
     ```rust
     code
@@ -72,6 +79,40 @@ def extract_code_block_changes(
         Dict mapping filepath to list of changes.
     """
     changes: Dict[str, List[Dict]] = {}
+    
+    # Pattern 0: TransFactor style - ```lang:filepath:start_line:end_line (most precise)
+    # This is the format used by the winning competition entry
+    pattern0 = re.compile(
+        r'```(\w+):([^:]+):(\d+):(\d+)\s*\n'
+        r'([\s\S]*?)'
+        r'```',
+        re.DOTALL
+    )
+    
+    for match in pattern0.finditer(content):
+        language = match.group(1)
+        filepath = match.group(2).strip()
+        start_line = int(match.group(3))
+        end_line = int(match.group(4))
+        new_code = match.group(5)
+        
+        # Remove trailing newline if present
+        if new_code.endswith('\n'):
+            new_code = new_code[:-1]
+        
+        if filepath not in changes:
+            changes[filepath] = []
+        
+        changes[filepath].append({
+            "start_line": start_line,
+            "end_line": end_line,
+            "new_code": new_code,
+            "language": language
+        })
+    
+    # If we found TransFactor style changes, prefer those
+    if changes:
+        return changes
     
     # Pattern 1: ```rust:filepath with line markers
     pattern1 = re.compile(
@@ -122,6 +163,42 @@ def extract_code_block_changes(
         })
     
     return changes
+
+
+# Change block format prompt for LLM
+CHANGE_BLOCK_FORMAT_PROMPT = """
+请使用以下格式返回代码变更：
+
+```lang:filepath:start_line:end_line
+code
+```
+
+其中：
+- `lang` 是编程语言 (如 rust, c, cpp)
+- `filepath` 是文件的相对路径
+- `start_line` 是变更的起始行号（从 1 开始）
+- `end_line` 是变更的结束行号（从 1 开始）
+- `code` 是新的代码内容
+
+示例：
+
+创建新文件：
+```rust:src/utils.rs:1:1
+fn helper() -> i32 {
+    42
+}
+```
+
+修改现有代码（替换第5-7行）：
+```rust:src/main.rs:5:7
+    let result = calculate();
+    println!("{}", result);
+```
+
+删除代码（第10-12行）：
+```rust:src/main.rs:10:12
+```
+"""
 
 
 def apply_file_changes(

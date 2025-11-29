@@ -61,6 +61,8 @@ logs/
 # Result
 /results
 
+/codecomp
+
 # Cache
 .rustify_cache/
 .cache/

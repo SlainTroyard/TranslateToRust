@@ -315,3 +315,81 @@ def update_cargo_toml(
     with open(cargo_path, "w") as f:
         toml.dump(cargo, f)
 
+
+# Common crates that may be needed for tests
+COMMON_TEST_CRATES = {
+    "tempfile": "3",
+    "rand": "0.8",
+    "quickcheck": "1",
+    "proptest": "1",
+    "criterion": "0.5",
+    "test-case": "3",
+    "serial_test": "3",
+    "pretty_assertions": "1",
+}
+
+
+def detect_missing_crates(errors: List[Dict[str, Any]]) -> List[str]:
+    """
+    Detect missing crates from compilation errors.
+    
+    Args:
+        errors: List of cargo error dicts.
+        
+    Returns:
+        List of crate names that appear to be missing.
+    """
+    import re
+    missing = []
+    
+    for error in errors:
+        rendered = error.get("rendered", "")
+        code = error.get("code", {}) or {}
+        error_code = code.get("code", "") if isinstance(code, dict) else ""
+        
+        # E0432: unresolved import
+        if error_code == "E0432" or "unresolved import" in rendered:
+            # Extract crate name from error message
+            match = re.search(r'use of undeclared crate or module `(\w+)`', rendered)
+            if match:
+                crate_name = match.group(1)
+                if crate_name not in missing:
+                    missing.append(crate_name)
+    
+    return missing
+
+
+def auto_add_missing_dependencies(
+    project_path: str,
+    errors: List[Dict[str, Any]],
+    *,
+    dev_only: bool = True
+) -> List[str]:
+    """
+    Automatically add missing dependencies to Cargo.toml.
+    
+    Args:
+        project_path: Path to the Rust project.
+        errors: List of cargo error dicts.
+        dev_only: If True, add to dev-dependencies instead of dependencies.
+        
+    Returns:
+        List of crate names that were added.
+    """
+    missing = detect_missing_crates(errors)
+    added = []
+    
+    section = "dev-dependencies" if dev_only else "dependencies"
+    
+    for crate_name in missing:
+        if crate_name in COMMON_TEST_CRATES:
+            version = COMMON_TEST_CRATES[crate_name]
+            try:
+                update_cargo_toml(project_path, section, crate_name, version)
+                added.append(crate_name)
+                logger.info(f"Added {crate_name} = \"{version}\" to {section}")
+            except Exception as e:
+                logger.warning(f"Failed to add {crate_name}: {e}")
+    
+    return added
+
