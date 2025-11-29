@@ -20,6 +20,7 @@ wheels/
 .installed.cfg
 *.egg
 
+
 # Virtual environments
 .env
 .venv
@@ -54,6 +55,11 @@ logs/
 *.db
 *.sqlite
 *.sqlite3
+
+# Dataset
+/dataset/
+# Result
+/results
 
 # Cache
 .rustify_cache/
