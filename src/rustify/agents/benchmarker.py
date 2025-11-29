@@ -1,5 +1,5 @@
 """
-Bench Engineer Agent - Handles benchmark generation and execution.
+Benchmarker Agent - Handles benchmark generation and execution.
 
 """
 
@@ -8,24 +8,24 @@ from typing import Optional, List
 import logging
 
 from rustify.agents.base import BaseAgent
-from rustify.agents.reasoner import Reasoner
+from rustify.agents.analyzer import Analyzer
 from rustify.schema.response import (
     AgentResponse,
-    BenchEngineerResponseType,
+    BenchmarkerResponseType,
 )
 from rustify.schema.translation import ModuleTranslation
 from rustify.state.state_manager import StateManager
 
 
-class BenchEngineer(BaseAgent):
+class Benchmarker(BaseAgent):
     """
-    Bench Engineer agent responsible for:
+    Benchmarker agent responsible for:
     - Generating benchmark code
     - Running benchmarks
     - Fixing benchmark errors
     """
     
-    ROLE = "bench_engineer"
+    ROLE = "benchmarker"
     DESCRIPTION = "An AI assistant specialized in generating and running performance benchmarks."
     
     MAX_FIX_ATTEMPTS = 5
@@ -34,25 +34,25 @@ class BenchEngineer(BaseAgent):
         self,
         state_manager: StateManager,
         llm_config: dict,
-        reasoner_config: Optional[dict] = None,
+        analyzer_config: Optional[dict] = None,
         *,
         name: Optional[str] = None,
         logger: Optional[logging.Logger] = None
     ):
         """
-        Initialize the Bench Engineer.
+        Initialize the Benchmarker.
         
         Args:
             state_manager: State manager instance.
             llm_config: LLM configuration.
-            reasoner_config: Reasoner LLM configuration.
+            analyzer_config: Analyzer LLM configuration.
             name: Agent name.
             logger: Logger instance.
         """
         super().__init__(llm_config, name=name, logger=logger)
         self.state_manager = state_manager
-        self.reasoner_config = reasoner_config or llm_config
-        self.reasoner = Reasoner(self.reasoner_config, logger=self.logger)
+        self.analyzer_config = analyzer_config or llm_config
+        self.analyzer = Analyzer(self.analyzer_config, logger=self.logger)
         
         # Current module
         self.current_module_id: Optional[str] = None
@@ -103,16 +103,16 @@ class BenchEngineer(BaseAgent):
         while True:
             response = self._run_benchmark()
             
-            if response.type == BenchEngineerResponseType.BENCH_DONE:
+            if response.type == BenchmarkerResponseType.BENCH_DONE:
                 return response
             
-            if response.type == BenchEngineerResponseType.BENCH_FAILED:
+            if response.type == BenchmarkerResponseType.BENCH_FAILED:
                 if self.fix_attempts >= self.MAX_FIX_ATTEMPTS:
                     self.logger.error("Max fix attempts reached")
                     self._revert_files()
                     return AgentResponse.error(
                         self,
-                        BenchEngineerResponseType.BENCH_DONE,
+                        BenchmarkerResponseType.BENCH_DONE,
                         {"message": "Max fix attempts reached"}
                     )
                 
@@ -152,7 +152,7 @@ class BenchEngineer(BaseAgent):
         
         return AgentResponse.done(
             self,
-            BenchEngineerResponseType.BENCH_PREPARE_DONE
+            BenchmarkerResponseType.BENCH_PREPARE_DONE
         )
     
     def _update_cargo_toml(self, project_path: str) -> None:
@@ -236,7 +236,7 @@ If there are no suitable functions to benchmark, provide an empty code block.
             self.logger.info("No benchmark code generated")
             return AgentResponse.done(
                 self,
-                BenchEngineerResponseType.BENCH_DONE,
+                BenchmarkerResponseType.BENCH_DONE,
                 {"message": "No benchmarks needed"}
             )
         
@@ -249,7 +249,7 @@ If there are no suitable functions to benchmark, provide an empty code block.
         
         return AgentResponse.done(
             self,
-            BenchEngineerResponseType.BENCH_COMPLETION
+            BenchmarkerResponseType.BENCH_COMPLETION
         )
     
     def _run_benchmark(self) -> AgentResponse:
@@ -264,12 +264,12 @@ If there are no suitable functions to benchmark, provide an empty code block.
             self.logger.info("Benchmark completed successfully")
             return AgentResponse.done(
                 self,
-                BenchEngineerResponseType.BENCH_DONE
+                BenchmarkerResponseType.BENCH_DONE
             )
         else:
             return AgentResponse.done(
                 self,
-                BenchEngineerResponseType.BENCH_FAILED,
+                BenchmarkerResponseType.BENCH_FAILED,
                 {"errors": result.get("errors", [])}
             )
     
@@ -318,13 +318,13 @@ If there are no suitable functions to benchmark, provide an empty code block.
 Provide the corrected benchmark code in a ```rust code block.
 """
         
-        response = self.reasoner.call_llm([{"role": "user", "content": prompt}])
+        response = self.analyzer.call_llm([{"role": "user", "content": prompt}])
         fixed_code = self.extract_rust_code(response.content)
         
         if not fixed_code:
             return AgentResponse.error(
                 self,
-                BenchEngineerResponseType.BENCH_FIX_DONE,
+                BenchmarkerResponseType.BENCH_FIX_DONE,
                 {"message": "No fixed code extracted"}
             )
         
@@ -333,7 +333,7 @@ Provide the corrected benchmark code in a ```rust code block.
         
         return AgentResponse.done(
             self,
-            BenchEngineerResponseType.BENCH_FIX_DONE
+            BenchmarkerResponseType.BENCH_FIX_DONE
         )
     
     def _revert_files(self) -> None:

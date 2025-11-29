@@ -28,10 +28,10 @@ class LLMConfig(BaseSettings):
     )
 
 
-class ReasonerConfig(BaseSettings):
-    """Reasoner LLM configuration (for complex reasoning tasks)."""
+class AnalyzerConfig(BaseSettings):
+    """Analyzer LLM configuration (for complex reasoning tasks)."""
     
-    model: str = Field(default="gpt-4", description="Reasoner model name")
+    model: str = Field(default="gpt-4", description="Analyzer model name")
     api_key: Optional[str] = Field(default=None, description="API key")
     base_url: Optional[str] = Field(default=None, description="API base URL")
     temperature: float = Field(default=1.0, description="Sampling temperature")
@@ -39,7 +39,7 @@ class ReasonerConfig(BaseSettings):
     max_tokens: int = Field(default=8192, description="More tokens for reasoning")
     
     model_config = SettingsConfigDict(
-        env_prefix="RUSTIFY_REASONER_",
+        env_prefix="RUSTIFY_ANALYZER_",
         env_file=".env",
         extra="ignore"
     )
@@ -64,15 +64,15 @@ class RustifyConfig(BaseSettings):
     
     # Sub-configs
     llm: LLMConfig = Field(default_factory=LLMConfig)
-    reasoner: ReasonerConfig = Field(default_factory=ReasonerConfig)
+    analyzer: AnalyzerConfig = Field(default_factory=AnalyzerConfig)
     rust: RustConfig = Field(default_factory=RustConfig)
     
     # General settings
     log_level: str = Field(default="INFO", description="Logging level")
     
     # Translation settings
-    max_fix_attempts: int = Field(default=10, description="Max error fix attempts")
-    max_test_fix_attempts: int = Field(default=20, description="Max test fix attempts")
+    max_fix_attempts: int = Field(default=10, description="Max compilation/logic fix attempts per task")
+    max_test_fix_attempts: int = Field(default=20, description="Max syntax fix attempts in test phase")
     parallel_tasks: int = Field(default=1, description="Parallel translation tasks")
     
     # Paths
@@ -107,9 +107,9 @@ class RustifyConfig(BaseSettings):
             # Build config from dict
             return cls(
                 llm=LLMConfig(**data.get('llm', {})),
-                reasoner=ReasonerConfig(**data.get('reasoner', {})),
+                analyzer=AnalyzerConfig(**data.get('analyzer', {})),
                 rust=RustConfig(**data.get('rust', {})),
-                **{k: v for k, v in data.items() if k not in ('llm', 'reasoner', 'rust')}
+                **{k: v for k, v in data.items() if k not in ('llm', 'analyzer', 'rust')}
             )
         
         return cls()
@@ -125,7 +125,7 @@ class RustifyConfig(BaseSettings):
         
         data = {
             'llm': self.llm.model_dump(),
-            'reasoner': self.reasoner.model_dump(),
+            'analyzer': self.analyzer.model_dump(),
             'rust': self.rust.model_dump(),
             'log_level': self.log_level,
             'max_fix_attempts': self.max_fix_attempts,

@@ -1,5 +1,5 @@
 """
-Reasoner Agent - Specialized agent for complex reasoning tasks.
+Analyzer Agent - Specialized agent for complex reasoning tasks.
 
 """
 
@@ -9,9 +9,9 @@ import logging
 from rustify.agents.base import BaseAgent
 
 
-class Reasoner(BaseAgent):
+class Analyzer(BaseAgent):
     """
-    Reasoning agent specialized for complex problem solving.
+    Analyzer agent specialized for complex problem solving.
     
     Uses advanced LLM reasoning capabilities for:
     - Error analysis
@@ -19,7 +19,7 @@ class Reasoner(BaseAgent):
     - Complex translation decisions
     """
     
-    ROLE = "reasoner"
+    ROLE = "analyzer"
     DESCRIPTION = "A powerful agent specialized in deep reasoning and analysis."
     
     def __init__(
@@ -30,7 +30,7 @@ class Reasoner(BaseAgent):
         logger: Optional[logging.Logger] = None
     ):
         """
-        Initialize the reasoner.
+        Initialize the analyzer.
         
         Args:
             llm_config: LLM config (should use a reasoning-capable model).

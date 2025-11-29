@@ -8,8 +8,7 @@
 
 [llm]
 # 主翻译模型配置
-model = "deepseek/deepseek-chat"
-base_url = "https://api.deepseek.com"
+model = "deepseek-chat"
 # api_key = "..."          # 建议放在 .env: RUSTIFY_LLM_API_KEY=xxx
 # base_url = "https://api.deepseek.com"
 temperature = 1.0
@@ -19,8 +18,7 @@ max_tokens = 8192
 [analyzer]
 # Analyzer 模型配置（用于深度分析和复杂推理）
 # 如果不设置，默认使用 [llm] 的配置
-model = "deepseek/deepseek-reasoner"
-base_url = "https://api.deepseek.com"
+model = "deepseek-reasoner"
 # api_key = "..."          # 建议放在 .env: RUSTIFY_ANALYZER_API_KEY=xxx
 temperature = 1.0
 top_p = 1.0

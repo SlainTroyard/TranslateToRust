@@ -23,9 +23,9 @@ class AgentResponseType(str, Enum):
     TOOL = "tool"
 
 
-# Project Manager Response Types
-class ProjectManagerResponseType(str, Enum):
-    """Response types for ProjectManager agent."""
+# Orchestrator Response Types
+class OrchestratorResponseType(str, Enum):
+    """Response types for Orchestrator agent."""
     
     LOAD_SOURCE_PROJECT = "load_source_project"
     SUMMARIZE_SOURCE_PROJECT = "summarize_source_project"
@@ -35,9 +35,9 @@ class ProjectManagerResponseType(str, Enum):
     ALL_TASKS_DONE = "all_tasks_done"
 
 
-# Tech Leader Response Types
-class TechLeaderResponseType(str, Enum):
-    """Response types for TechLeader agent."""
+# Architect Response Types
+class ArchitectResponseType(str, Enum):
+    """Response types for Architect agent."""
     
     PREPARE_MODULE_TRANSLATION_TASKS = "prepare_module_translation_tasks"
     MODULE_TRANSLATION_COMPLETION_DONE = "module_translation_completion_done"
@@ -47,9 +47,9 @@ class TechLeaderResponseType(str, Enum):
     MODULE_DONE = "module_done"
 
 
-# Code Monkey Response Types
-class CodeMonkeyResponseType(str, Enum):
-    """Response types for CodeMonkey agent."""
+# Translator Response Types
+class TranslatorResponseType(str, Enum):
+    """Response types for Translator agent."""
     
     PREPARE_TRANSLATION_TASK = "prepare_translation_task"
     TRANSLATION_COMPLETION = "translation_completion"
@@ -60,9 +60,9 @@ class CodeMonkeyResponseType(str, Enum):
     TRANSLATION_TASK_DONE = "translation_task_done"
 
 
-# Test Engineer Response Types
-class TestEngineerResponseType(str, Enum):
-    """Response types for TestEngineer agent."""
+# Validator Response Types
+class ValidatorResponseType(str, Enum):
+    """Response types for Validator agent."""
     
     TEST_PREPARE_DONE = "test_prepare_done"
     TEST_CODE_TRANSLATION_COMPLETION = "test_code_translation_completion"
@@ -74,9 +74,9 @@ class TestEngineerResponseType(str, Enum):
     TEST_FAILED = "test_failed"
 
 
-# Bench Engineer Response Types
-class BenchEngineerResponseType(str, Enum):
-    """Response types for BenchEngineer agent."""
+# Benchmarker Response Types
+class BenchmarkerResponseType(str, Enum):
+    """Response types for Benchmarker agent."""
     
     BENCH_PREPARE_DONE = "bench_prepare_done"
     BENCH_COMPLETION = "bench_completion"
@@ -140,4 +140,3 @@ class AgentResponse:
     
     def __repr__(self):
         return self.__str__()
-

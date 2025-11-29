@@ -232,7 +232,7 @@ class LiteLLMAdapter:
     def stream_chat(
         self,
         messages: List[Dict[str, str]],
-        temperature: float = 0.7,
+        temperature: float = 1.0,
         **kwargs
     ):
         """

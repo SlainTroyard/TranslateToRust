@@ -1,5 +1,5 @@
 """
-Project Manager Agent - Manages the overall translation project.
+Orchestrator Agent - Manages the overall translation project.
 
 """
 
@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field
 from rustify.agents.base import BaseAgent
 from rustify.schema.response import (
     AgentResponse,
-    ProjectManagerResponseType,
+    OrchestratorResponseType,
 )
 from rustify.schema.translation import ModuleTranslation, ModuleTranslationStatus
 from rustify.state.state_manager import StateManager
@@ -31,40 +31,40 @@ class ModulesResponse(BaseModel):
     modules: List[ModuleInfo] = Field(description="List of modules")
 
 
-class ProjectManager(BaseAgent):
+class Orchestrator(BaseAgent):
     """
-    Project Manager agent responsible for:
+    Orchestrator agent responsible for:
     - Loading and analyzing source projects
     - Creating target Rust projects
     - Managing module translation assignments
-    - Coordinating Tech Leaders
+    - Coordinating Architects
     """
     
-    ROLE = "project_manager"
+    ROLE = "orchestrator"
     DESCRIPTION = "An AI assistant responsible for managing the C to Rust translation project."
     
     def __init__(
         self,
         state_manager: StateManager,
         llm_config: dict,
-        reasoner_config: Optional[dict] = None,
+        analyzer_config: Optional[dict] = None,
         *,
         name: Optional[str] = None,
         logger: Optional[logging.Logger] = None
     ):
         """
-        Initialize the Project Manager.
+        Initialize the Orchestrator.
         
         Args:
             state_manager: State manager instance.
             llm_config: LLM configuration.
-            reasoner_config: Reasoner LLM configuration.
+            analyzer_config: Analyzer LLM configuration.
             name: Agent name.
             logger: Logger instance.
         """
         super().__init__(llm_config, name=name, logger=logger)
         self.state_manager = state_manager
-        self.reasoner_config = reasoner_config or llm_config
+        self.analyzer_config = analyzer_config or llm_config
         self.dep_graph = None  # Dependency graph from AST analysis
     
     def start(
@@ -125,7 +125,7 @@ class ProjectManager(BaseAgent):
         if not os.path.exists(project_dir):
             return AgentResponse.error(
                 self,
-                ProjectManagerResponseType.LOAD_SOURCE_PROJECT,
+                OrchestratorResponseType.LOAD_SOURCE_PROJECT,
                 {"message": f"Source project directory not found: {project_dir}"}
             )
         
@@ -138,7 +138,7 @@ class ProjectManager(BaseAgent):
         
         return AgentResponse.done(
             self,
-            ProjectManagerResponseType.LOAD_SOURCE_PROJECT,
+            OrchestratorResponseType.LOAD_SOURCE_PROJECT,
             {"file_count": len(files)}
         )
     
@@ -149,7 +149,7 @@ class ProjectManager(BaseAgent):
         if not self.state_manager.state.source_project:
             return AgentResponse.error(
                 self,
-                ProjectManagerResponseType.SUMMARIZE_SOURCE_PROJECT,
+                OrchestratorResponseType.SUMMARIZE_SOURCE_PROJECT,
                 {"message": "Source project not loaded"}
             )
         
@@ -201,7 +201,7 @@ Format as JSON:
         
         return AgentResponse.done(
             self,
-            ProjectManagerResponseType.SUMMARIZE_SOURCE_PROJECT
+            OrchestratorResponseType.SUMMARIZE_SOURCE_PROJECT
         )
     
     def analyze_dependencies(self) -> AgentResponse:
@@ -217,7 +217,7 @@ Format as JSON:
         if not project:
             return AgentResponse.error(
                 self,
-                ProjectManagerResponseType.ANALYZE_DEPENDENCIES,
+                OrchestratorResponseType.ANALYZE_DEPENDENCIES,
                 {"message": "Source project not loaded"}
             )
         
@@ -255,7 +255,7 @@ Format as JSON:
         
         return AgentResponse.done(
             self,
-            ProjectManagerResponseType.ANALYZE_DEPENDENCIES,
+            OrchestratorResponseType.ANALYZE_DEPENDENCIES,
             {
                 "source_files": c_files,
                 "header_files": h_files,
@@ -284,7 +284,7 @@ Format as JSON:
         
         return AgentResponse.done(
             self,
-            ProjectManagerResponseType.CREATE_TARGET_PROJECT,
+            OrchestratorResponseType.CREATE_TARGET_PROJECT,
             {"target_path": target.path}
         )
     
@@ -440,7 +440,7 @@ Format as JSON:
         if not project:
             return AgentResponse.error(
                 self,
-                ProjectManagerResponseType.ALL_MODULES_DONE,
+                OrchestratorResponseType.ALL_MODULES_DONE,
                 {"message": "Source project not loaded"}
             )
         
@@ -450,12 +450,12 @@ Format as JSON:
             self.logger.info(f"Found {len(existing_modules)} existing module(s), skipping creation")
             return AgentResponse.done(
                 self,
-                ProjectManagerResponseType.ALL_MODULES_DONE,
+                OrchestratorResponseType.ALL_MODULES_DONE,
                 {"module_count": len(existing_modules), "skipped": True}
             )
         
         # Get all C files, EXCLUDING test files
-        # 测试文件由 TestEngineer 在核心代码翻译完成后单独处理
+        # 测试文件由 Validator 在核心代码翻译完成后单独处理
         all_c_files = [
             f for f in project.list_files()
             if f.path.endswith('.c') or f.path.endswith('.cpp')
@@ -472,8 +472,8 @@ Format as JSON:
                 c_files.append(f)
         
         if test_files:
-            self.logger.info(f"Excluded {len(test_files)} test file(s), will be handled by TestEngineer later")
-            # Store test files for later use by TestEngineer
+            self.logger.info(f"Excluded {len(test_files)} test file(s), will be handled by Validator later")
+            # Store test files for later use by Validator
             self.state_manager.state.test_files = test_files
         
         # Sort files by dependency order:
@@ -533,7 +533,7 @@ Format as JSON:
         
         return AgentResponse.done(
             self,
-            ProjectManagerResponseType.ALL_MODULES_DONE,
+            OrchestratorResponseType.ALL_MODULES_DONE,
             {"module_count": len(self.state_manager.state.module_translations)}
         )
 

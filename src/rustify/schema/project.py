@@ -249,51 +249,102 @@ class TargetProject(Project):
         """
         Write or update Cargo.toml.
         
+        Uses OrderedDict to preserve key ordering (like the competition entry).
+        
         Args:
             crate_type: 'lib' for library or 'bin' for binary
-            dependencies: Additional dependencies to add
+            dependencies: Additional dependencies to add (crate_name -> version)
         """
         import toml
+        from collections import OrderedDict
+        
+        # Keys that are NOT valid dependency names (they belong in other sections)
+        INVALID_DEP_KEYS = {
+            "name", "version", "edition", "authors", "description", 
+            "license", "repository", "homepage", "documentation",
+            "readme", "keywords", "categories", "workspace", "build",
+            "links", "exclude", "include", "publish", "metadata",
+            "default-run", "autobins", "autoexamples", "autotests",
+            "autobenches", "resolver", "path", "harness", "crate-type",
+        }
         
         cargo_path = os.path.join(self.path, "Cargo.toml")
         
-        if os.path.exists(cargo_path):
-            with open(cargo_path, "r") as f:
-                cargo = toml.load(f)
-        else:
-            cargo = {}
+        # Always start fresh to avoid corruption issues
+        # If file exists and is valid, we still rebuild it properly
+        cargo = OrderedDict()
         
-        # Package section
-        if "package" not in cargo:
-            cargo["package"] = {}
-        cargo["package"]["name"] = self.name
-        cargo["package"]["version"] = "0.1.0"
-        cargo["package"]["edition"] = "2021"
+        if os.path.exists(cargo_path):
+            try:
+                with open(cargo_path, "r") as f:
+                    content = f.read()
+                existing = toml.loads(content, _dict=OrderedDict)
+                if isinstance(existing, dict):
+                    # Only preserve valid dependencies from existing file
+                    if "dependencies" in existing and isinstance(existing["dependencies"], dict):
+                        for key, val in existing["dependencies"].items():
+                            if key.lower() not in INVALID_DEP_KEYS:
+                                if "dependencies" not in cargo:
+                                    cargo["dependencies"] = OrderedDict()
+                                cargo["dependencies"][key] = val
+                    if "dev-dependencies" in existing and isinstance(existing["dev-dependencies"], dict):
+                        for key, val in existing["dev-dependencies"].items():
+                            if key.lower() not in INVALID_DEP_KEYS:
+                                if "dev-dependencies" not in cargo:
+                                    cargo["dev-dependencies"] = OrderedDict()
+                                cargo["dev-dependencies"][key] = val
+            except Exception:
+                # If parsing fails, start completely fresh
+                cargo = OrderedDict()
+        
+        # Package section (ensure it comes first)
+        package = OrderedDict()
+        package["name"] = self.name
+        package["version"] = "0.1.0"
+        package["edition"] = "2021"
         if self.description:
-            cargo["package"]["description"] = self.description
+            package["description"] = self.description
+        cargo["package"] = package
         
         # Specify lib or bin target explicitly
         if crate_type == "lib":
-            if "lib" not in cargo:
-                cargo["lib"] = {}
-            cargo["lib"]["name"] = self.name.replace("-", "_")
-            cargo["lib"]["path"] = "src/lib.rs"
-        else:
-            # For binary, Cargo auto-detects src/main.rs
-            pass
+            lib = OrderedDict()
+            lib["name"] = self.name.replace("-", "_")
+            lib["path"] = "src/lib.rs"
+            cargo["lib"] = lib
         
-        # Dependencies
+        # Dependencies - filter out invalid keys
         if "dependencies" not in cargo:
-            cargo["dependencies"] = {}
+            cargo["dependencies"] = OrderedDict()
         cargo["dependencies"]["libc"] = "0.2"
         if dependencies:
-            cargo["dependencies"].update(dependencies)
+            for key, val in dependencies.items():
+                # Only add valid dependency names
+                if key.lower() not in INVALID_DEP_KEYS:
+                    cargo["dependencies"][key] = val
         
         # Dev dependencies
         if "dev-dependencies" not in cargo:
-            cargo["dev-dependencies"] = {}
+            cargo["dev-dependencies"] = OrderedDict()
         cargo["dev-dependencies"]["criterion"] = "0.5"
         
+        # Validate the structure before writing
+        try:
+            toml_content = toml.dumps(cargo)
+            # Verify it can be parsed back
+            toml.loads(toml_content)
+        except Exception as e:
+            # If validation fails, write a minimal valid Cargo.toml
+            cargo = OrderedDict()
+            cargo["package"] = OrderedDict([
+                ("name", self.name),
+                ("version", "0.1.0"),
+                ("edition", "2021"),
+            ])
+            cargo["dependencies"] = OrderedDict([("libc", "0.2")])
+            toml_content = toml.dumps(cargo)
+        
+        # Write using dumps to ensure proper formatting
         with open(cargo_path, "w") as f:
-            toml.dump(cargo, f)
+            f.write(toml_content)
 

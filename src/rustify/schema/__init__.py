@@ -21,11 +21,11 @@ from rustify.schema.response import (
     AgentResponseStatus,
     AgentResponseType,
     AgentResponse,
-    ProjectManagerResponseType,
-    TechLeaderResponseType,
-    CodeMonkeyResponseType,
-    TestEngineerResponseType,
-    BenchEngineerResponseType,
+    OrchestratorResponseType,
+    ArchitectResponseType,
+    TranslatorResponseType,
+    ValidatorResponseType,
+    BenchmarkerResponseType,
 )
 
 __all__ = [
@@ -45,10 +45,10 @@ __all__ = [
     "AgentResponseStatus",
     "AgentResponseType",
     "AgentResponse",
-    "ProjectManagerResponseType",
-    "TechLeaderResponseType",
-    "CodeMonkeyResponseType",
-    "TestEngineerResponseType",
-    "BenchEngineerResponseType",
+    "OrchestratorResponseType",
+    "ArchitectResponseType",
+    "TranslatorResponseType",
+    "ValidatorResponseType",
+    "BenchmarkerResponseType",
 ]
 

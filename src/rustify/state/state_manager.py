@@ -32,7 +32,7 @@ class State:
     source_project: Optional[Project] = None
     target_project: Optional[TargetProject] = None
     module_translations: List[ModuleTranslation] = field(default_factory=list)
-    test_files: List[str] = field(default_factory=list)  # 测试文件列表，由 TestEngineer 后续处理
+    test_files: List[str] = field(default_factory=list)  # 测试文件列表，由 Validator 后续处理
     dep_graph_data: Optional[dict] = None  # AST 依赖图数据
     
     @property

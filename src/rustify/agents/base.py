@@ -227,7 +227,7 @@ class BaseAgent(ABC):
         self.messages.clear()
 
 
-class TranspileMemory:
+class TranslationMemory:
     """
     Memory system for storing translation experiences.
     

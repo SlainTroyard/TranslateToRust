@@ -9,8 +9,8 @@ from pathlib import Path
 
 from rustify.incremental.tracker import ChangeTracker, FileChange, ChangeType
 from rustify.state.state_manager import StateManager
-from rustify.agents.project_manager import ProjectManager
-from rustify.agents.tech_leader import TechLeader
+from rustify.agents.orchestrator import Orchestrator
+from rustify.agents.architect import Architect
 from rustify.schema.translation import (
     TranslationTask,
     TranslationTaskSource,
@@ -36,17 +36,17 @@ class IncrementalTranslator:
     def __init__(
         self,
         llm_config: Dict[str, Any],
-        reasoner_config: Optional[Dict[str, Any]] = None,
+        analyzer_config: Optional[Dict[str, Any]] = None,
     ):
         """
         Initialize the incremental translator.
         
         Args:
             llm_config: LLM configuration.
-            reasoner_config: Reasoner configuration.
+            analyzer_config: Analyzer configuration.
         """
         self.llm_config = llm_config
-        self.reasoner_config = reasoner_config or llm_config
+        self.analyzer_config = analyzer_config or llm_config
         self.tracker: Optional[ChangeTracker] = None
         self.state_manager: Optional[StateManager] = None
     
@@ -210,14 +210,14 @@ class IncrementalTranslator:
         # Add module to state
         self.state_manager.add_module_translation(module)
         
-        # Translate using TechLeader
-        tech_leader = TechLeader(
+        # Translate using Architect
+        architect = Architect(
             state_manager=self.state_manager,
             llm_config=self.llm_config,
-            reasoner_config=self.reasoner_config,
+            analyzer_config=self.analyzer_config,
         )
         
-        response = tech_leader.start(module)
+        response = architect.start(module)
         
         results.append({
             "module": module.name,

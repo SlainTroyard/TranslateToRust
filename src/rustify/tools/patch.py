@@ -218,9 +218,17 @@ def apply_file_changes(
     import os
     from rustify.tools.file_tools import read_file, write_file
     
+    # Files that should NOT be modified by LLM code changes
+    # These files have their own update mechanisms
+    PROTECTED_FILES = {"Cargo.toml", "Cargo.lock", "rust-toolchain.toml"}
+    
     modified = []
     
     for filepath, file_changes in changes.items():
+        # Skip protected files
+        if os.path.basename(filepath) in PROTECTED_FILES:
+            continue
+        
         full_path = os.path.join(base_path, filepath)
         
         # Read current content

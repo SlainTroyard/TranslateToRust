@@ -12,8 +12,8 @@ from pathlib import Path
 
 from rustify.config import RustifyConfig
 from rustify.state.state_manager import StateManager
-from rustify.agents.project_manager import ProjectManager
-from rustify.agents.tech_leader import TechLeader
+from rustify.agents.orchestrator import Orchestrator
+from rustify.agents.architect import Architect
 from rustify.schema.translation import ModuleTranslation, ModuleTranslationStatus
 
 if TYPE_CHECKING:
@@ -30,11 +30,11 @@ class Rustify:
     Main Rustify translator class.
     
     Orchestrates the multi-agent translation workflow:
-    1. ProjectManager: Loads and analyzes source project
-    2. TechLeader: Manages module translation
-    3. CodeMonkey: Performs actual code translation
-    4. TestEngineer: Translates and runs tests
-    5. BenchEngineer: Generates and runs benchmarks
+    1. Orchestrator: Loads and analyzes source project
+    2. Architect: Manages module translation
+    3. Translator: Performs actual code translation
+    4. Validator: Translates and runs tests
+    5. Benchmarker: Generates and runs benchmarks
     """
     
     def __init__(
@@ -42,7 +42,7 @@ class Rustify:
         config: Optional[RustifyConfig] = None,
         *,
         llm_config: Optional[Dict[str, Any]] = None,
-        reasoner_config: Optional[Dict[str, Any]] = None,
+        analyzer_config: Optional[Dict[str, Any]] = None,
         state_file: Optional[str] = None,
         dashboard: Optional["Dashboard"] = None,
     ):
@@ -52,7 +52,7 @@ class Rustify:
         Args:
             config: RustifyConfig instance (or loads from file).
             llm_config: LLM configuration dict.
-            reasoner_config: Reasoner LLM configuration (defaults to llm_config).
+            analyzer_config: Analyzer LLM configuration (defaults to llm_config).
             state_file: Path to state file for persistence.
             dashboard: Optional Dashboard instance for real-time updates.
         """
@@ -61,7 +61,7 @@ class Rustify:
         
         # LLM configs
         self.llm_config = llm_config or self._build_llm_config()
-        self.reasoner_config = reasoner_config or self.llm_config
+        self.analyzer_config = analyzer_config or self.llm_config
         
         # State file
         self.state_file = state_file
@@ -71,7 +71,7 @@ class Rustify:
         self.dashboard = dashboard
         
         # Agents
-        self.project_manager: Optional[ProjectManager] = None
+        self.orchestrator: Optional[Orchestrator] = None
         
         # Incremental translation filter
         self._files_filter: Optional[List[str]] = None
@@ -150,15 +150,15 @@ class Rustify:
         logger.info(f"Source: {source_path}")
         logger.info(f"Target: {target_path}")
         
-        # Initialize ProjectManager
-        self.project_manager = ProjectManager(
+        # Initialize Orchestrator
+        self.orchestrator = Orchestrator(
             state_manager=self.state_manager,
             llm_config=self.llm_config,
-            reasoner_config=self.reasoner_config,
+            analyzer_config=self.analyzer_config,
         )
         
         # Start project (loads, analyzes, creates target)
-        response = self.project_manager.start(
+        response = self.orchestrator.start(
             source_project_dir=str(source_path),
             target_project_dir=str(target_path),
             overwrite=overwrite,
@@ -275,18 +275,21 @@ class Rustify:
             
             logger.info(f"Processing module {index + 1}: {module.name}")
             
-            # Create TechLeader for this module (pass dashboard callbacks)
-            tech_leader = TechLeader(
+            # Create Architect for this module (pass dashboard callbacks and config)
+            architect = Architect(
                 state_manager=self.state_manager,
                 llm_config=self.llm_config,
-                reasoner_config=self.reasoner_config,
+                analyzer_config=self.analyzer_config,
+                max_fix_attempts=self.config.max_fix_attempts,
+                max_syntax_attempts=self.config.max_test_fix_attempts,
+                max_logic_attempts=self.config.max_fix_attempts,
                 on_task_start=lambda t: self._dashboard_task_start(module.name, t),
                 on_task_done=lambda t: self._dashboard_task_done(module.name, t),
                 on_task_error=lambda t, e: self._dashboard_task_error(module.name, t, e),
             )
             
             # Start module translation
-            response = tech_leader.start(module)
+            response = architect.start(module)
             
             if response.status != "done":
                 logger.error(f"Module {module.name} failed: {response.error}")

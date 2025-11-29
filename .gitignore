@@ -57,11 +57,13 @@ logs/
 *.sqlite3
 
 # Dataset
-/dataset/
+dataset/
 # Result
-/results
+results/
 
+#others
 /codecomp
+REFACTORING_PLAN.md
 
 # Cache
 .rustify_cache/
@@ -85,4 +87,7 @@ Cargo.lock
 # Local temp / output
 tmp/
 **/tmp/
-
+DEMO_SCRIPT.md
+compare_result/
+compare_c2saferust/
+howtocmake

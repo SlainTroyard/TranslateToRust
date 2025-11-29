@@ -426,6 +426,82 @@ def diff(
             rprint(f"  - {f}")
 
 
+@app.command("add-deps")
+def add_deps(
+    project: str = typer.Argument(..., help="Path to Rust project"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
+    check_online: bool = typer.Option(True, "--online/--offline", help="Check crates.io for unknown crates"),
+):
+    """
+    Scan a Rust project and automatically add missing dependencies to Cargo.toml.
+    
+    This command analyzes the Rust source code for 'use' statements and adds
+    any missing crate dependencies to Cargo.toml.
+    
+    Crate versions are determined by:
+    1. Built-in mapping of 100+ common crates
+    2. Live query to crates.io API for unknown crates (unless --offline)
+    
+    Examples:
+        rustify add-deps ./my-rust-project
+        rustify add-deps /tmp/grabc_rs -v
+        rustify add-deps ./project --offline  # Skip crates.io lookup
+    """
+    setup_logging(verbose)
+    
+    from rustify.tools.rust_utils import (
+        detect_used_crates_in_project,
+        add_detected_dependencies,
+        check_crate_exists,
+        COMMON_CRATES,
+    )
+    
+    if not os.path.exists(project):
+        rprint(f"[red]Error:[/red] Project not found: {project}")
+        raise typer.Exit(1)
+    
+    cargo_path = os.path.join(project, "Cargo.toml")
+    if not os.path.exists(cargo_path):
+        rprint(f"[red]Error:[/red] Cargo.toml not found in {project}")
+        raise typer.Exit(1)
+    
+    rprint(f"[bold blue]Scanning project for dependencies...[/bold blue]")
+    
+    # Detect used crates
+    used_crates = detect_used_crates_in_project(project)
+    
+    if not used_crates:
+        rprint("[green]No external crates detected in the project.[/green]")
+        raise typer.Exit(0)
+    
+    rprint(f"\n[cyan]Detected {len(used_crates)} potential crates:[/cyan]")
+    for crate in sorted(used_crates):
+        # Check if crate exists
+        if crate in COMMON_CRATES:
+            version = COMMON_CRATES[crate]
+            rprint(f"  • {crate} [dim](v{version}, known)[/dim]")
+        elif check_online:
+            rprint(f"  • {crate} [dim](checking crates.io...)[/dim]", end="")
+            version = check_crate_exists(crate)
+            if version:
+                rprint(f"\r  • {crate} [green](v{version}, from crates.io)[/green]")
+            else:
+                rprint(f"\r  • {crate} [red](not found on crates.io)[/red]")
+        else:
+            rprint(f"  • {crate} [yellow](unknown, skipped)[/yellow]")
+    
+    # Add dependencies
+    rprint(f"\n[bold]Adding dependencies...[/bold]")
+    added = add_detected_dependencies(project, used_crates)
+    
+    if added:
+        rprint(f"\n[green]✓ Added {len(added)} dependencies to Cargo.toml:[/green]")
+        for crate in added:
+            rprint(f"  + {crate}")
+    else:
+        rprint(f"\n[yellow]All valid crates are already in Cargo.toml (or not found on crates.io).[/yellow]")
+
+
 @app.command()
 def version():
     """Show version information."""
@@ -438,6 +514,7 @@ def version():
     rprint(f"  • Interactive fixing (rustify fix)")
     rprint(f"  • Web dashboard (rustify dashboard)")
     rprint(f"  • Human-in-the-loop review (--interactive)")
+    rprint(f"  • Auto dependency detection (rustify add-deps)")
 
 
 def main():

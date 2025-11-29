@@ -1,5 +1,5 @@
 """
-Code Monkey Agent - Handles actual code translation and fixing.
+Translator Agent - Handles actual code translation and fixing.
 
 """
 
@@ -8,11 +8,11 @@ import re
 from typing import Optional, List
 import logging
 
-from rustify.agents.base import BaseAgent, TranspileMemory
-from rustify.agents.reasoner import Reasoner
+from rustify.agents.base import BaseAgent, TranslationMemory
+from rustify.agents.analyzer import Analyzer
 from rustify.schema.response import (
     AgentResponse,
-    CodeMonkeyResponseType,
+    TranslatorResponseType,
 )
 from rustify.schema.translation import (
     ModuleTranslation,
@@ -23,45 +23,49 @@ from rustify.schema.translation import (
 from rustify.state.state_manager import StateManager
 
 
-class CodeMonkey(BaseAgent):
+class Translator(BaseAgent):
     """
-    Code Monkey agent responsible for:
+    Translator agent responsible for:
     - Translating C/C++ code to Rust
     - Fixing compilation errors
     - Evaluating translation quality
     """
     
-    ROLE = "code_monkey"
+    ROLE = "translator"
     DESCRIPTION = "An AI assistant specialized in translating C/C++ code to Rust."
     
-    MAX_FIX_ATTEMPTS = 10
+    DEFAULT_FIX_ATTEMPTS = 10
     
     def __init__(
         self,
         state_manager: StateManager,
         llm_config: dict,
-        reasoner_config: Optional[dict] = None,
+        analyzer_config: Optional[dict] = None,
         *,
+        max_fix_attempts: Optional[int] = None,
         name: Optional[str] = None,
         logger: Optional[logging.Logger] = None
     ):
         """
-        Initialize the Code Monkey.
+        Initialize the Translator.
         
         Args:
             state_manager: State manager instance.
             llm_config: LLM configuration.
-            reasoner_config: Reasoner LLM configuration.
+            analyzer_config: Analyzer LLM configuration.
             name: Agent name.
             logger: Logger instance.
         """
         super().__init__(llm_config, name=name, logger=logger)
         self.state_manager = state_manager
-        self.reasoner_config = reasoner_config or llm_config
-        self.reasoner = Reasoner(self.reasoner_config, logger=self.logger)
+        self.analyzer_config = analyzer_config or llm_config
+        self.analyzer = Analyzer(self.analyzer_config, logger=self.logger)
+        
+        # Configurable limits
+        self.max_fix_attempts = max_fix_attempts or self.DEFAULT_FIX_ATTEMPTS
         
         # Translation memory
-        self.memory = TranspileMemory()
+        self.memory = TranslationMemory()
         
         # Current task info
         self.current_module_id: Optional[str] = None
@@ -109,7 +113,7 @@ class CodeMonkey(BaseAgent):
         )
         
         # Step 1: Perform translation
-        response = self.translate_with_reasoner()
+        response = self.translate_with_analyzer()
         if response.status != "done":
             return response
         
@@ -118,13 +122,13 @@ class CodeMonkey(BaseAgent):
         
         return response
     
-    def translate_with_reasoner(self) -> AgentResponse:
-        """Translate the current task using the reasoner."""
+    def translate_with_analyzer(self) -> AgentResponse:
+        """Translate the current task using the analyzer."""
         task = self.task
         if not task:
             return AgentResponse.error(
                 self,
-                CodeMonkeyResponseType.TRANSLATION_COMPLETION_FAILED,
+                TranslatorResponseType.TRANSLATION_COMPLETION_FAILED,
                 {"message": "No task selected"}
             )
         
@@ -157,8 +161,8 @@ class CodeMonkey(BaseAgent):
         # Build translation prompt
         prompt = self._build_translation_prompt(source_code, node_type, context)
         
-        # Call reasoner for translation
-        rust_code = self.reasoner.suggest_translation(
+        # Call analyzer for translation
+        rust_code = self.analyzer.suggest_translation(
             source_code,
             node_type,
             context
@@ -167,7 +171,7 @@ class CodeMonkey(BaseAgent):
         if not rust_code:
             return AgentResponse.error(
                 self,
-                CodeMonkeyResponseType.TRANSLATION_COMPLETION_FAILED,
+                TranslatorResponseType.TRANSLATION_COMPLETION_FAILED,
                 {"message": "Translation returned empty result"}
             )
         
@@ -202,7 +206,7 @@ class CodeMonkey(BaseAgent):
         
         return AgentResponse.done(
             self,
-            CodeMonkeyResponseType.TRANSLATION_COMPLETION,
+            TranslatorResponseType.TRANSLATION_COMPLETION,
             {"rust_code": rust_code}
         )
     
@@ -382,7 +386,7 @@ IMPORTANT:
 Provide the complete code in a ```rust code block.
 """
             
-            response = self.reasoner.call_llm(
+            response = self.analyzer.call_llm(
                 [{"role": "user", "content": prompt}],
                 temperature=0.3  # Lower temperature for more consistent output
             )
@@ -777,18 +781,28 @@ Provide only the Rust code in a ```rust code block.
         if not task or not task.target:
             return AgentResponse.error(
                 self,
-                CodeMonkeyResponseType.COMPILE_CHECK_FAILED,
+                TranslatorResponseType.COMPILE_CHECK_FAILED,
                 {"message": "No translation to check"}
             )
         
-        from rustify.tools.rust_utils import cargo_check
+        from rustify.tools.rust_utils import (
+            cargo_check,
+            add_detected_dependencies,
+            auto_add_missing_dependencies,
+        )
         
         target_path = self.state_manager.state.target_project.path
         
+        # First, auto-detect and add dependencies before checking
+        self.logger.info("Scanning for required dependencies...")
+        added_deps = add_detected_dependencies(target_path)
+        if added_deps:
+            self.logger.info(f"Auto-added dependencies: {added_deps}")
+        
         attempt = 0
-        while attempt < self.MAX_FIX_ATTEMPTS:
+        while attempt < self.max_fix_attempts:
             attempt += 1
-            self.logger.info(f"Compile check attempt {attempt}/{self.MAX_FIX_ATTEMPTS}")
+            self.logger.info(f"Compile check attempt {attempt}/{self.max_fix_attempts}")
             
             # Run cargo check
             result = cargo_check(target_path)
@@ -805,12 +819,32 @@ Provide only the Rust code in a ```rust code block.
                 
                 return AgentResponse.done(
                     self,
-                    CodeMonkeyResponseType.TRANSLATION_TASK_DONE
+                    TranslatorResponseType.TRANSLATION_TASK_DONE
                 )
             
             # Need to fix errors
             errors = result.get("errors", [])
             self.logger.warning(f"Compilation failed with {len(errors)} errors")
+            
+            # Try to auto-add missing dependencies from errors
+            auto_added = auto_add_missing_dependencies(target_path, errors, dev_only=False)
+            if auto_added:
+                self.logger.info(f"Auto-added missing dependencies from errors: {auto_added}")
+                # Retry compilation after adding dependencies
+                result = cargo_check(target_path)
+                if result["success"]:
+                    self.logger.info("Compilation successful after adding dependencies!")
+                    self.state_manager.update_translation_task_status(
+                        self.current_module_id,
+                        task.id,
+                        TranslationTaskStatus.DONE
+                    )
+                    return AgentResponse.done(
+                        self,
+                        TranslatorResponseType.TRANSLATION_TASK_DONE
+                    )
+                # Update errors for fixing
+                errors = result.get("errors", [])
             
             # Update status to fixing
             self.state_manager.update_translation_task_status(
@@ -820,7 +854,7 @@ Provide only the Rust code in a ```rust code block.
             )
             
             # Try to fix
-            fix_response = self.fix_with_reasoner(errors)
+            fix_response = self.fix_with_analyzer(errors)
             
             if fix_response.status != "done":
                 break
@@ -836,17 +870,28 @@ Provide only the Rust code in a ```rust code block.
         
         return AgentResponse.error(
             self,
-            CodeMonkeyResponseType.FIX_FAILED,
+            TranslatorResponseType.FIX_FAILED,
             {"message": "Max fix attempts reached"}
         )
     
-    def fix_with_reasoner(self, errors: List[dict]) -> AgentResponse:
-        """Fix compilation errors using the reasoner."""
+    def fix_with_analyzer(self, errors: List[dict]) -> AgentResponse:
+        """
+        Fix compilation errors using the analyzer with line-level precision.
+        
+        Uses TransFactor-style format: ```rust:filepath:start:end
+        Falls back to full file replacement if precise changes fail.
+        """
+        from rustify.tools.patch import (
+            extract_code_block_changes,
+            apply_file_changes,
+            CHANGE_BLOCK_FORMAT_PROMPT,
+        )
+        
         task = self.task
         if not task or not task.target:
             return AgentResponse.error(
                 self,
-                CodeMonkeyResponseType.FIX_FAILED,
+                TranslatorResponseType.FIX_FAILED,
                 {"message": "No task to fix"}
             )
         
@@ -862,7 +907,7 @@ Provide only the Rust code in a ```rust code block.
         
         error_text = "\n\n".join(error_messages)
         
-        # Read current code
+        # Read current code with line numbers
         target_path = os.path.join(
             self.state_manager.state.target_project.path,
             task.target.filepath
@@ -871,31 +916,56 @@ Provide only the Rust code in a ```rust code block.
         with open(target_path, "r", encoding="utf-8") as f:
             current_code = f.read()
         
-        # Build fix prompt
-        prompt = f"""Fix the following Rust compilation errors:
+        lines = current_code.split("\n")
+        numbered_code = "\n".join([f"{i+1:4d} | {line}" for i, line in enumerate(lines)])
+        
+        # Build fix prompt with line-level format
+        prompt = f"""Fix the following Rust compilation errors using PRECISE line-level changes.
 
-## Errors
+## Compilation Errors
 {error_text}
 
-## Current Code
+## Current Code ({task.target.filepath}) - with line numbers
 ```rust
-{current_code}
+{numbered_code}
 ```
 
-Provide the corrected code in a ```rust code block.
-Explain your fixes briefly before the code.
+{CHANGE_BLOCK_FORMAT_PROMPT}
+
+Analyze each error carefully and provide the minimal changes needed.
+Use the exact format above for line-level modifications.
 """
         
-        # Call reasoner default temperature 1.0, 0.2 is too low
-        response = self.reasoner.call_llm([{"role": "user", "content": prompt}], temperature=1.0)
+        # Call analyzer
+        response = self.analyzer.call_llm([{"role": "user", "content": prompt}], temperature=1.0)
         
-        # Extract fixed code
+        # Try to extract and apply line-level changes
+        changes = extract_code_block_changes(response.content)
+        
+        if changes:
+            modified = apply_file_changes(changes, self.state_manager.state.target_project.path)
+            if modified:
+                self.logger.info(f"Applied line-level fixes to: {modified}")
+                
+                # Read updated code
+                with open(target_path, "r", encoding="utf-8") as f:
+                    task.target.text = f.read()
+                
+                return AgentResponse.done(
+                    self,
+                    TranslatorResponseType.COMPILE_CHECK_DONE,
+                    {"modified_files": modified}
+                )
+        
+        # Fallback: full file replacement
+        self.logger.warning("No line-level changes found, using full file replacement")
+        
         fixed_code = self.extract_rust_code(response.content)
         
         if not fixed_code:
             return AgentResponse.error(
                 self,
-                CodeMonkeyResponseType.FIX_FAILED,
+                TranslatorResponseType.FIX_FAILED,
                 {"message": "No fixed code extracted"}
             )
         
@@ -911,6 +981,6 @@ Explain your fixes briefly before the code.
         
         return AgentResponse.done(
             self,
-            CodeMonkeyResponseType.COMPILE_CHECK_DONE
+            TranslatorResponseType.COMPILE_CHECK_DONE
         )
 

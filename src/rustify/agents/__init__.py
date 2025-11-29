@@ -3,20 +3,21 @@ Rustify Agents - Multi-agent system for C2Rust translation.
 
 """
 
-from rustify.agents.base import BaseAgent
-from rustify.agents.reasoner import Reasoner
-from rustify.agents.project_manager import ProjectManager
-from rustify.agents.tech_leader import TechLeader
-from rustify.agents.code_monkey import CodeMonkey
-from rustify.agents.test_engineer import TestEngineer
-from rustify.agents.bench_engineer import BenchEngineer
+from rustify.agents.base import BaseAgent, TranslationMemory
+from rustify.agents.analyzer import Analyzer
+from rustify.agents.orchestrator import Orchestrator
+from rustify.agents.architect import Architect
+from rustify.agents.translator import Translator
+from rustify.agents.validator import Validator
+from rustify.agents.benchmarker import Benchmarker
 
 __all__ = [
     "BaseAgent",
-    "Reasoner",
-    "ProjectManager",
-    "TechLeader",
-    "CodeMonkey",
-    "TestEngineer",
-    "BenchEngineer",
+    "TranslationMemory",
+    "Analyzer",
+    "Orchestrator",
+    "Architect",
+    "Translator",
+    "Validator",
+    "Benchmarker",
 ]

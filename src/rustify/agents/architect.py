@@ -1,5 +1,5 @@
 """
-Tech Leader Agent - Manages module translation workflow.
+Architect Agent - Manages module translation workflow.
 
 """
 
@@ -9,10 +9,10 @@ from typing import Optional, List, Callable
 import logging
 
 from rustify.agents.base import BaseAgent
-from rustify.agents.reasoner import Reasoner
+from rustify.agents.analyzer import Analyzer
 from rustify.schema.response import (
     AgentResponse,
-    TechLeaderResponseType,
+    ArchitectResponseType,
 )
 from rustify.schema.translation import (
     ModuleTranslation,
@@ -23,23 +23,26 @@ from rustify.schema.translation import (
 from rustify.state.state_manager import StateManager
 
 
-class TechLeader(BaseAgent):
+class Architect(BaseAgent):
     """
-    Tech Leader agent responsible for:
+    Architect agent responsible for:
     - Managing translation workflow for a module
-    - Coordinating CodeMonkey agents
+    - Coordinating Translator agents
     - Initiating test and benchmark phases
     """
     
-    ROLE = "tech_leader"
+    ROLE = "architect"
     DESCRIPTION = "An AI assistant responsible for managing the translation process of a module."
     
     def __init__(
         self,
         state_manager: StateManager,
         llm_config: dict,
-        reasoner_config: Optional[dict] = None,
+        analyzer_config: Optional[dict] = None,
         *,
+        max_fix_attempts: int = 10,
+        max_syntax_attempts: int = 20,
+        max_logic_attempts: int = 10,
         name: Optional[str] = None,
         logger: Optional[logging.Logger] = None,
         on_task_start: Optional[Callable[[str], None]] = None,
@@ -47,12 +50,15 @@ class TechLeader(BaseAgent):
         on_task_error: Optional[Callable[[str, str], None]] = None,
     ):
         """
-        Initialize the Tech Leader.
+        Initialize the Architect.
         
         Args:
             state_manager: State manager instance.
             llm_config: LLM configuration.
-            reasoner_config: Reasoner LLM configuration.
+            analyzer_config: Analyzer LLM configuration.
+            max_fix_attempts: Max compilation fix attempts for Translator.
+            max_syntax_attempts: Max syntax fix attempts for Validator.
+            max_logic_attempts: Max logic fix attempts for Validator.
             name: Agent name.
             logger: Logger instance.
             on_task_start: Callback when a task starts.
@@ -61,8 +67,13 @@ class TechLeader(BaseAgent):
         """
         super().__init__(llm_config, name=name, logger=logger)
         self.state_manager = state_manager
-        self.reasoner_config = reasoner_config or llm_config
-        self.reasoner = Reasoner(self.reasoner_config, logger=self.logger)
+        self.analyzer_config = analyzer_config or llm_config
+        self.analyzer = Analyzer(self.analyzer_config, logger=self.logger)
+        
+        # Fix attempt limits
+        self.max_fix_attempts = max_fix_attempts
+        self.max_syntax_attempts = max_syntax_attempts
+        self.max_logic_attempts = max_logic_attempts
         
         self.current_module_id: Optional[str] = None
         
@@ -117,7 +128,7 @@ class TechLeader(BaseAgent):
         
         return AgentResponse.done(
             self,
-            TechLeaderResponseType.MODULE_DONE,
+            ArchitectResponseType.MODULE_DONE,
             {"module_name": module.name}
         )
     
@@ -141,7 +152,7 @@ class TechLeader(BaseAgent):
         
         return AgentResponse.done(
             self,
-            TechLeaderResponseType.PREPARE_MODULE_TRANSLATION_TASKS,
+            ArchitectResponseType.PREPARE_MODULE_TRANSLATION_TASKS,
             {"task_count": len(module.translation_tasks)}
         )
     
@@ -151,20 +162,21 @@ class TechLeader(BaseAgent):
         if not module:
             return AgentResponse.error(
                 self,
-                TechLeaderResponseType.MODULE_TRANSLATION_DONE,
+                ArchitectResponseType.MODULE_TRANSLATION_DONE,
                 {"message": "No module selected"}
             )
         
         self.logger.info(f"Executing {len(module.translation_tasks)} translation tasks")
         
-        # Import CodeMonkey here to avoid circular imports
-        from rustify.agents.code_monkey import CodeMonkey
+        # Import Translator here to avoid circular imports
+        from rustify.agents.translator import Translator
         
-        # Create CodeMonkey
-        code_monkey = CodeMonkey(
+        # Create Translator
+        translator = Translator(
             state_manager=self.state_manager,
             llm_config=self.llm_config,
-            reasoner_config=self.reasoner_config,
+            analyzer_config=self.analyzer_config,
+            max_fix_attempts=self.max_fix_attempts,
             logger=self.logger
         )
         
@@ -183,7 +195,7 @@ class TechLeader(BaseAgent):
                 except Exception:
                     pass
             
-            response = code_monkey.translate(module.id, task)
+            response = translator.translate(module.id, task)
             
             if response.status != "done":
                 self.logger.error(f"Task failed: {task_name}")
@@ -204,7 +216,7 @@ class TechLeader(BaseAgent):
         
         return AgentResponse.done(
             self,
-            TechLeaderResponseType.MODULE_TRANSLATION_DONE
+            ArchitectResponseType.MODULE_TRANSLATION_DONE
         )
     
     def run_tests(self) -> AgentResponse:
@@ -213,7 +225,7 @@ class TechLeader(BaseAgent):
         if not module:
             return AgentResponse.error(
                 self,
-                TechLeaderResponseType.MODULE_TEST_DONE,
+                ArchitectResponseType.MODULE_TEST_DONE,
                 {"message": "No module selected"}
             )
         
@@ -225,21 +237,23 @@ class TechLeader(BaseAgent):
             ModuleTranslationStatus.TEST
         )
         
-        # Import TestEngineer here
-        from rustify.agents.test_engineer import TestEngineer
+        # Import Validator here
+        from rustify.agents.validator import Validator
         
-        test_engineer = TestEngineer(
+        validator = Validator(
             state_manager=self.state_manager,
             llm_config=self.llm_config,
-            reasoner_config=self.reasoner_config,
+            analyzer_config=self.analyzer_config,
+            max_syntax_attempts=self.max_syntax_attempts,
+            max_logic_attempts=self.max_logic_attempts,
             logger=self.logger
         )
         
-        response = test_engineer.start(module)
+        response = validator.start(module)
         
         return AgentResponse.done(
             self,
-            TechLeaderResponseType.MODULE_TEST_DONE,
+            ArchitectResponseType.MODULE_TEST_DONE,
             {"test_passed": response.status == "done"}
         )
     
@@ -249,7 +263,7 @@ class TechLeader(BaseAgent):
         if not module:
             return AgentResponse.error(
                 self,
-                TechLeaderResponseType.MODULE_BENCH_DONE,
+                ArchitectResponseType.MODULE_BENCH_DONE,
                 {"message": "No module selected"}
             )
         
@@ -261,21 +275,21 @@ class TechLeader(BaseAgent):
             ModuleTranslationStatus.BENCHMARK
         )
         
-        # Import BenchEngineer here
-        from rustify.agents.bench_engineer import BenchEngineer
+        # Import Benchmarker here
+        from rustify.agents.benchmarker import Benchmarker
         
-        bench_engineer = BenchEngineer(
+        benchmarker = Benchmarker(
             state_manager=self.state_manager,
             llm_config=self.llm_config,
-            reasoner_config=self.reasoner_config,
+            analyzer_config=self.analyzer_config,
             logger=self.logger
         )
         
-        response = bench_engineer.start(module)
+        response = benchmarker.start(module)
         
         return AgentResponse.done(
             self,
-            TechLeaderResponseType.MODULE_BENCH_DONE,
+            ArchitectResponseType.MODULE_BENCH_DONE,
             {"bench_passed": response.status == "done"}
         )
 
