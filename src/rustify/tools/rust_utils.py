@@ -665,12 +665,21 @@ def detect_used_crates(rust_code: str) -> List[str]:
     
     # Standard library modules that should be ignored
     STD_MODULES = {
-        "std", "core", "alloc", "proc_macro",
-        "self", "super", "crate",
-        # Common std submodules
-        "collections", "env", "ffi", "fmt", "fs", "io", "iter",
-        "mem", "net", "ops", "os", "path", "process", "ptr",
-        "slice", "str", "string", "sync", "thread", "time", "vec",
+        # Top-level std crates
+        "std", "core", "alloc", "proc_macro", "test",
+        # Keywords
+        "self", "super", "crate", "Self",
+        # All std submodules (comprehensive list)
+        "any", "arch", "array", "ascii", "backtrace", "borrow",
+        "boxed", "cell", "char", "clone", "cmp", "collections",
+        "convert", "default", "env", "error", "f32", "f64",
+        "ffi", "fmt", "fs", "future", "hash", "hint", "i8", "i16",
+        "i32", "i64", "i128", "io", "isize", "iter", "marker",
+        "mem", "net", "num", "ops", "option", "os", "panic",
+        "path", "pin", "prelude", "primitive", "process", "ptr",
+        "rc", "result", "slice", "str", "string", "sync", "task",
+        "thread", "time", "u8", "u16", "u32", "u64", "u128",
+        "usize", "vec",
     }
     
     # Combined set of things to ignore

@@ -432,6 +432,50 @@ Format as JSON:
         
         return False
     
+    def _is_build_artifact(self, filepath: str) -> bool:
+        """
+        Check if a file is a build system artifact that should be skipped.
+        
+        Build artifacts include:
+        - Files in build/, Build/, cmake-build-*/, CMakeFiles/ directories
+        - CMake compiler detection files (CMakeCCompilerId.c, etc.)
+        - Auto-generated files (*.gen.c, etc.)
+        
+        Args:
+            filepath: Relative file path
+            
+        Returns:
+            True if the file is a build artifact
+        """
+        filepath_lower = filepath.lower().replace('\\', '/')
+        basename = os.path.basename(filepath).lower()
+        
+        # Check for build directories
+        build_dirs = {
+            'build', 'builds', '_build',
+            'cmake-build-debug', 'cmake-build-release', 'cmake-build',
+            'cmakefiles', 'cmake_files',
+            '.build', 'out', 'output',
+        }
+        
+        path_parts = filepath_lower.split('/')
+        for part in path_parts:
+            if part in build_dirs:
+                return True
+            # CMakeFiles can be nested
+            if part.startswith('cmakefiles'):
+                return True
+        
+        # Check for CMake compiler detection files
+        if 'compilerid' in basename:
+            return True
+        
+        # Check for auto-generated files
+        if basename.endswith(('.gen.c', '.gen.h', '.generated.c', '.generated.h')):
+            return True
+        
+        return False
+    
     def assign_module_translations(self) -> AgentResponse:
         """Create and assign module translation tasks."""
         self.logger.info("Assigning module translations")
@@ -454,22 +498,29 @@ Format as JSON:
                 {"module_count": len(existing_modules), "skipped": True}
             )
         
-        # Get all C files, EXCLUDING test files
+        # Get all C files, EXCLUDING test files and build artifacts
         # 测试文件由 Validator 在核心代码翻译完成后单独处理
         all_c_files = [
             f for f in project.list_files()
             if f.path.endswith('.c') or f.path.endswith('.cpp')
         ]
         
-        # Filter out test files
+        # Filter out test files and build artifacts
         c_files = []
         test_files = []
+        build_artifacts = []
         for f in all_c_files:
-            if self._is_test_file(f.path):
+            if self._is_build_artifact(f.path):
+                build_artifacts.append(f.path)
+                self.logger.info(f"Excluding build artifact: {f.path}")
+            elif self._is_test_file(f.path):
                 test_files.append(f.path)
                 self.logger.info(f"Excluding test file: {f.path}")
             else:
                 c_files.append(f)
+        
+        if build_artifacts:
+            self.logger.info(f"Excluded {len(build_artifacts)} build artifact(s)")
         
         if test_files:
             self.logger.info(f"Excluded {len(test_files)} test file(s), will be handled by Validator later")

@@ -386,6 +386,29 @@ class Validator(BaseAgent):
         
         rust_context = "\n\n".join(rust_code_parts)
         
+        # Get crate name for correct imports
+        crate_name = target_project.name
+        
+        # Determine available modules from lib.rs
+        lib_rs_path = os.path.join(target_project.path, "src", "lib.rs")
+        available_modules = []
+        if os.path.exists(lib_rs_path):
+            try:
+                with open(lib_rs_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        if line.strip().startswith("pub mod "):
+                            mod_name = line.strip().replace("pub mod ", "").replace(";", "").strip()
+                            available_modules.append(mod_name)
+            except Exception:
+                pass
+        
+        # Build import examples
+        import_examples = f"use {crate_name}::*;"
+        if available_modules:
+            import_examples += f"\n// Or for specific modules:\n"
+            for mod_name in available_modules[:3]:  # Show first 3 as examples
+                import_examples += f"// use {crate_name}::{mod_name}::*;\n"
+        
         # Build prompt
         prompt = f"""Translate the following C/C++ test code to Rust tests:
 
@@ -399,11 +422,21 @@ class Validator(BaseAgent):
 {rust_context}
 ```
 
+## Crate Information
+- Crate name: `{crate_name}`
+- Available modules: {available_modules if available_modules else "See lib.rs exports"}
+
+## Import Examples
+```rust
+{import_examples}
+```
+
 ## Requirements
 1. Use Rust's #[test] attribute
 2. Use assert!, assert_eq!, assert_ne! macros
-3. Group tests in a tests module
-4. Handle any setup/teardown logic
+3. **IMPORTANT**: Import from the correct crate: `{crate_name}` (NOT the original C library name)
+4. Group tests in a tests module
+5. Handle any setup/teardown logic
 
 Provide the test code in a ```rust code block.
 Start with: // filepath: tests/{module.name}_tests.rs

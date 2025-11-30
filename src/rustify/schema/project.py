@@ -26,7 +26,22 @@ class Project:
     Manages file listing, structure display, and metadata.
     """
     
-    DEFAULT_IGNORES = [".git", ".vcs", ".gitignore", "target", "Cargo.lock", "__pycache__", ".venv"]
+    DEFAULT_IGNORES = [
+        # Version control
+        ".git", ".vcs", ".gitignore", ".gitmodules",
+        # Build directories (should not be translated)
+        "build", "Build", "BUILD", "_build",
+        "cmake-build-debug", "cmake-build-release",
+        "CMakeFiles", "CMakeCache.txt",
+        # Rust/Cargo
+        "target", "Cargo.lock",
+        # Python
+        "__pycache__", ".venv", "venv", ".env",
+        # IDE
+        ".idea", ".vscode", ".vs",
+        # Other
+        "node_modules", ".DS_Store",
+    ]
     
     def __init__(
         self,

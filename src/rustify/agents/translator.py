@@ -776,7 +776,7 @@ Provide only the Rust code in a ```rust code block.
         self.logger.info(f"Updated lib.rs: added '{mod_declaration}'")
     
     def check_and_fix(self) -> AgentResponse:
-        """Check compilation and fix errors if needed."""
+        """Check compilation and fix errors if needed, then run tests."""
         task = self.task
         if not task or not task.target:
             return AgentResponse.error(
@@ -787,6 +787,7 @@ Provide only the Rust code in a ```rust code block.
         
         from rustify.tools.rust_utils import (
             cargo_check,
+            cargo_test,
             add_detected_dependencies,
             auto_add_missing_dependencies,
         )
@@ -799,28 +800,55 @@ Provide only the Rust code in a ```rust code block.
         if added_deps:
             self.logger.info(f"Auto-added dependencies: {added_deps}")
         
+        # Phase 1: Cargo build/check
+        build_success = self._run_build_fix_loop(target_path, cargo_check, auto_add_missing_dependencies)
+        
+        if not build_success:
+            self.logger.error("Max build fix attempts reached")
+            self.state_manager.update_translation_task_status(
+                self.current_module_id,
+                task.id,
+                TranslationTaskStatus.FAILED
+            )
+            return AgentResponse.error(
+                self,
+                TranslatorResponseType.FIX_FAILED,
+                {"message": "Max build fix attempts reached"}
+            )
+        
+        # Phase 2: Cargo test
+        self.logger.info("Build successful! Running tests...")
+        test_success = self._run_test_fix_loop(target_path, cargo_test, auto_add_missing_dependencies)
+        
+        if not test_success:
+            self.logger.warning("Tests failed after max attempts, but build succeeded")
+            # Still mark as done since build passed
+        
+        # Update task status
+        self.state_manager.update_translation_task_status(
+            self.current_module_id,
+            task.id,
+            TranslationTaskStatus.DONE
+        )
+        
+        return AgentResponse.done(
+            self,
+            TranslatorResponseType.TRANSLATION_TASK_DONE
+        )
+    
+    def _run_build_fix_loop(self, target_path: str, cargo_check, auto_add_missing_dependencies) -> bool:
+        """Run cargo check with fix loop. Returns True if successful."""
         attempt = 0
         while attempt < self.max_fix_attempts:
             attempt += 1
-            self.logger.info(f"Compile check attempt {attempt}/{self.max_fix_attempts}")
+            self.logger.info(f"Build check attempt {attempt}/{self.max_fix_attempts}")
             
             # Run cargo check
             result = cargo_check(target_path)
             
             if result["success"]:
                 self.logger.info("Compilation successful!")
-                
-                # Update task status
-                self.state_manager.update_translation_task_status(
-                    self.current_module_id,
-                    task.id,
-                    TranslationTaskStatus.DONE
-                )
-                
-                return AgentResponse.done(
-                    self,
-                    TranslatorResponseType.TRANSLATION_TASK_DONE
-                )
+                return True
             
             # Need to fix errors
             errors = result.get("errors", [])
@@ -834,24 +862,18 @@ Provide only the Rust code in a ```rust code block.
                 result = cargo_check(target_path)
                 if result["success"]:
                     self.logger.info("Compilation successful after adding dependencies!")
-                    self.state_manager.update_translation_task_status(
-                        self.current_module_id,
-                        task.id,
-                        TranslationTaskStatus.DONE
-                    )
-                    return AgentResponse.done(
-                        self,
-                        TranslatorResponseType.TRANSLATION_TASK_DONE
-                    )
+                    return True
                 # Update errors for fixing
                 errors = result.get("errors", [])
             
             # Update status to fixing
-            self.state_manager.update_translation_task_status(
-                self.current_module_id,
-                task.id,
-                TranslationTaskStatus.FIXING
-            )
+            task = self.task
+            if task:
+                self.state_manager.update_translation_task_status(
+                    self.current_module_id,
+                    task.id,
+                    TranslationTaskStatus.FIXING
+                )
             
             # Try to fix
             fix_response = self.fix_with_analyzer(errors)
@@ -859,19 +881,214 @@ Provide only the Rust code in a ```rust code block.
             if fix_response.status != "done":
                 break
         
-        # Max attempts reached
-        self.logger.error("Max fix attempts reached")
+        return False
+    
+    def _run_test_fix_loop(
+        self, 
+        target_path: str, 
+        cargo_test, 
+        auto_add_missing_dependencies,
+        is_integration_test: bool = False
+    ) -> bool:
+        """
+        Run cargo test with fix loop. Returns True if successful.
         
-        self.state_manager.update_translation_task_status(
-            self.current_module_id,
-            task.id,
-            TranslationTaskStatus.FAILED
+        Args:
+            target_path: Path to the Rust project
+            cargo_test: Function to run cargo test
+            auto_add_missing_dependencies: Function to auto-add deps
+            is_integration_test: If True, we're testing integration tests (tests/*.rs),
+                                 if False, we're testing src/*.rs inline tests
+        """
+        attempt = 0
+        while attempt < self.max_fix_attempts:
+            attempt += 1
+            self.logger.info(f"Test check attempt {attempt}/{self.max_fix_attempts}")
+            
+            # Run cargo test
+            result = cargo_test(target_path)
+            
+            if result["success"]:
+                self.logger.info("All tests passed!")
+                return True
+            
+            # Check for compilation errors first
+            errors = result.get("errors", [])
+            failed_tests = result.get("failed_tests", [])
+            
+            if errors:
+                self.logger.warning(f"Test compilation failed with {len(errors)} errors")
+                
+                # Try to auto-add missing dependencies (dev-dependencies for tests)
+                auto_added = auto_add_missing_dependencies(target_path, errors, dev_only=True)
+                if auto_added:
+                    self.logger.info(f"Auto-added test dependencies: {auto_added}")
+                    continue
+                
+                # Try to fix compilation errors
+                fix_response = self.fix_with_analyzer(errors)
+                if fix_response.status != "done":
+                    break
+            elif failed_tests:
+                self.logger.warning(f"Tests failed: {len(failed_tests)} test(s)")
+                
+                # Try to fix failed tests
+                fix_response = self._fix_failed_tests(
+                    failed_tests, 
+                    target_path,
+                    is_integration_test=is_integration_test
+                )
+                if fix_response.status != "done":
+                    break
+            else:
+                # Unknown failure
+                self.logger.warning("Tests failed with unknown error")
+                break
+        
+        return False
+    
+    def _fix_failed_tests(
+        self, 
+        failed_tests: list, 
+        target_path: str,
+        is_integration_test: bool = False
+    ) -> AgentResponse:
+        """
+        Try to fix failed tests.
+        
+        Args:
+            failed_tests: List of failed test info
+            target_path: Path to the Rust project
+            is_integration_test: If True, focus on tests/*.rs (integration tests)
+                                 If False, focus on src/*.rs (inline tests + main code)
+        
+        Note: Tests may fail because:
+        1. The test code itself is wrong
+        2. The main code has bugs (e.g., using extern "C" for missing functions)
+        3. Logic errors in the translated code
+        """
+        from rustify.tools.patch import (
+            extract_code_block_changes,
+            apply_file_changes,
+            CHANGE_BLOCK_FORMAT_PROMPT,
         )
+        
+        # Format failed test info
+        test_failures = []
+        for test in failed_tests[:5]:  # Limit to 5 failures
+            test_failures.append(f"- Test: {test.get('name', 'unknown')}")
+            if 'message' in test:
+                test_failures.append(f"  Error: {test['message']}")
+            if 'stdout' in test:
+                test_failures.append(f"  Output: {test['stdout'][:500]}")
+        
+        failure_info = "\n".join(test_failures)
+        
+        source_context = ""
+        
+        if is_integration_test:
+            # Integration test phase: focus on tests/ directory
+            # Also include src/*.rs for reference (to see the API being tested)
+            self.logger.info("Fixing integration tests (tests/*.rs)")
+            
+            # Read tests/ directory (primary focus)
+            tests_dir = os.path.join(target_path, "tests")
+            if os.path.exists(tests_dir):
+                for test_file in os.listdir(tests_dir):
+                    if test_file.endswith(".rs"):
+                        file_path = os.path.join(tests_dir, test_file)
+                        try:
+                            with open(file_path, "r", encoding="utf-8") as f:
+                                source_context += f"\n// File: tests/{test_file}\n{f.read()}\n"
+                        except Exception:
+                            pass
+            
+            # Also read lib.rs for API reference
+            lib_rs = os.path.join(target_path, "src", "lib.rs")
+            if os.path.exists(lib_rs):
+                try:
+                    with open(lib_rs, "r", encoding="utf-8") as f:
+                        source_context += f"\n// File: src/lib.rs (API reference)\n{f.read()}\n"
+                except Exception:
+                    pass
+            
+            instructions = """
+## Instructions
+1. Analyze why the integration tests are failing
+2. Fix the TEST code in tests/*.rs
+3. Make sure imports are correct (use the right crate name)
+4. Make sure the API calls match the actual module exports
+"""
+        else:
+            # Source translation phase: focus on src/*.rs (inline tests + main code)
+            self.logger.info("Fixing src inline tests and main code (src/*.rs)")
+            
+            # Read SOURCE files (src/*.rs) - these contain inline tests (#[cfg(test)])
+            src_dir = os.path.join(target_path, "src")
+            if os.path.exists(src_dir):
+                for src_file in os.listdir(src_dir):
+                    if src_file.endswith(".rs"):
+                        file_path = os.path.join(src_dir, src_file)
+                        try:
+                            with open(file_path, "r", encoding="utf-8") as f:
+                                content = f.read()
+                                # Include files that have tests or are likely related
+                                if "#[test]" in content or "#[cfg(test)]" in content or len(content) < 5000:
+                                    source_context += f"\n// File: src/{src_file}\n{content}\n"
+                        except Exception:
+                            pass
+            
+            instructions = """
+## Instructions
+1. Analyze why the tests are failing
+2. **IMPORTANT**: The bug may be in the MAIN CODE, not just the test code
+   - Check for `extern "C"` declarations that reference missing C functions
+   - Check for incorrect logic in the main functions
+   - Check for missing implementations
+3. Fix the appropriate code (main code or test code)
+4. If a function uses `extern "C"` to call a C function, replace it with the Rust implementation from this project
+"""
+        
+        # Build fix prompt
+        prompt = f"""Fix the following test failures in a Rust project:
+
+## Failed Tests
+{failure_info}
+
+## Source Code
+```rust
+{source_context}
+```
+{instructions}
+{CHANGE_BLOCK_FORMAT_PROMPT}
+"""
+        
+        messages = [{"role": "user", "content": prompt}]
+        response = self.call_llm(messages)
+        
+        if not response.content:
+            return AgentResponse.error(
+                self,
+                TranslatorResponseType.FIX_FAILED,
+                {"message": "Empty LLM response"}
+            )
+        
+        # Extract and apply changes
+        changes = extract_code_block_changes(response.content)
+        
+        if changes:
+            applied = apply_file_changes(target_path, changes)
+            if applied:
+                self.logger.info(f"Applied {len(applied)} test fixes")
+                return AgentResponse.done(
+                    self,
+                    TranslatorResponseType.FIX_APPLIED
+                )
         
         return AgentResponse.error(
             self,
             TranslatorResponseType.FIX_FAILED,
-            {"message": "Max fix attempts reached"}
+            {"message": "Failed to extract or apply test fixes"}
         )
     
     def fix_with_analyzer(self, errors: List[dict]) -> AgentResponse:
